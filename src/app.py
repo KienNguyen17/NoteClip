@@ -11,3 +11,7 @@ def home():
 @app.route("/<postName>")
 def viewPost(postName):
     return render_template("post.html", postName=postName)
+
+@app.route("/new")
+def createPost():
+    return render_template("createPost.html")
