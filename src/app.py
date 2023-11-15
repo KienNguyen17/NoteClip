@@ -1,6 +1,39 @@
-from flask import Flask, render_template, make_response
+from flask import Flask, render_template, make_response, request, redirect, url_for
+from flask_login import LoginManager, UserMixin, login_user
 
 app = Flask(__name__)
+
+# login setup
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+key = {"noteclipadmin":"admin"}
+
+class User(UserMixin):
+    pass
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get_id(user_id)
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template("login.html")
+    if request.method == 'POST':
+        if checkPassword(request.form["username"], request.form["password"]):
+            load_user("admin")
+            login_user(User())
+            return "<p>Good Login</p>"
+        else:
+            return "<p>Bad Login</p>"
+        
+        
+def checkPassword(username, password):
+    if username in key and password == key[username]:
+        return True
+    else:
+        return False
 
 @app.route("/")
 def home():
