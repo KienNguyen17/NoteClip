@@ -19,7 +19,7 @@
         <header>
             <!-- Final back button will probably just be visual, no words (will need accessibility for that) -->
             <a href="../"><button id="backButton" type="button">Go Back</button></a>
-            <button type="button">Finish Post</button>
+            <button type="button" onClick="finishPost()">Finish Post</button>
         </header>
         <!-- Final button will probably just be visual, no words (will need accessibility for that) -->
         <!-- Joslenne question??? -->
@@ -31,7 +31,15 @@
                     <button type="button" onClick="addText()">Text</button>
                 </div>    
             </div>
-        </article>      
+        </article>
+        
+        <form id="finishForm" style="display:none">
+            <label>Enter a title for your post:</label>
+            <input type="text" name="title"><br/>
+            <label>Enter a description:</label><br/>
+            <textarea name="description"></textarea><br/>
+            <input type="submit" value="Post">
+        </form>	
         <script src="..\static\script.js" async defer></script>
     </body>
 </html>
