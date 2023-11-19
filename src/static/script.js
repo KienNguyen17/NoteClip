@@ -31,8 +31,31 @@ function doSearch() {
     // only able to play 30 seconds right now.... is this what we really want? (if so yikes) https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
     exampleEmbed = "<iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/"+spotifyID+"?utm_source=generator\" width=\"100%\" height=\"352\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
     $(exampleEmbed).insertBefore("#addDiv")
+
 }
 
+// window.onSpotifyIframeApiReady = (IFrameAPI) => {
+//     const element = document.getElementById('embed-iframe');
+//     const options = {
+//         uri: 'spotify:track:5omLfecV0S68gitZpQpMjQ'
+//       };
+//     const callback = (EmbedController) => {};
+//     IFrameAPI.createController(element, options, callback);
+//   };
+
+// from https://www.w3schools.com/howto/howto_css_modals.asp
+// // When the user clicks anywhere outside of the modal, close it
+// finishBox = document.getElementById("finishDiv")
+// window.onclick = function(event) {
+//     if (event.target == finishBox) {
+//         finishBox.style.display = "none"
+//     }
+// }
+
 function finishPost() {
-    $("#finishForm").show()
+    $("#finishDiv").show()
+}
+
+function closeFinishPost() {
+    $("#finishDiv").hide()
 }

@@ -26,20 +26,27 @@
         <article>
             <div id="addDiv">
                 <button id="addButton" type="button" onClick="addElement()">Add Element</button>
-                <div id="addChoice" style="display:none">
+                <div id="addChoice">
                     <button type="button" onClick="addMusic()">Music</button>
                     <button type="button" onClick="addText()">Text</button>
                 </div>    
             </div>
         </article>
-        
-        <form id="finishForm" style="display:none">
-            <label>Enter a title for your post:</label>
-            <input type="text" name="title"><br/>
-            <label>Enter a description:</label><br/>
-            <textarea name="description"></textarea><br/>
-            <input type="submit" value="Post">
-        </form>	
+
+        <!-- <div id="embed-iframe"></div> -->
+        <div id="finishDiv">
+            <div id="finishInsides">
+                <button type="button" onClick="closeFinishPost()">Go Back</button>
+                <form id="finishForm">
+                    <label>Enter a title for your post:</label>
+                    <input type="text" name="title"><br/>
+                    <label>Enter a description:</label><br/>
+                    <textarea name="description"></textarea><br/>
+                    <input type="submit" value="Post">
+                </form>	    
+            </div>
+        </div>
         <script src="..\static\script.js" async defer></script>
+        <!-- <script src="https://open.spotify.com/embed/iframe-api/v1" async></script> -->
     </body>
 </html>
