@@ -1,9 +1,13 @@
+import requests
+from base64 import b64encode 
 from flask import Flask, render_template, make_response, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 
 app = Flask(__name__)
 
 app.config.update(SECRET_KEY = "adminview")
+client_id = "b7bc1b3b25c64838b631dcd8fbda3894"
+client_secret = "3ca65cbb7c374c0da726c9cca1e9da57"
 
 # login setup
 login_manager = LoginManager()
@@ -57,3 +61,13 @@ def createPost():
 def logout():
     logout_user()
     return redirect("/")
+
+def authorize():
+    url = 'https://accounts.spotify.com/api/token'
+    headers = {"Authorization": "Basic " + b64encode((client_id + ":" + client_secret).encode("ascii")).decode("ascii")}
+    data = {"grant_type":"client_credentials"}
+    r = requests.post(url, headers=headers, data=data)
+    return r.text
+
+if __name__ == "__main__":
+    print(authorize())
