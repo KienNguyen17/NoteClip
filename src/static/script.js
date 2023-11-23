@@ -34,15 +34,14 @@ function doSearch() {
 
 }
 
-// window.onSpotifyIframeApiReady = (IFrameAPI) => {
-//     const element = document.getElementById('embed-iframe');
-//     const options = {
-//         uri: 'spotify:track:5omLfecV0S68gitZpQpMjQ'
-//       };
-//     const callback = (EmbedController) => {};
-//     IFrameAPI.createController(element, options, callback);
-//   };
-
+// window.onSpotifyWebPlaybackSDKReady = () => {
+//     const token = '[My access token]';
+//     const player = new Spotify.Player({
+//       name: 'Web Playback SDK Quick Start Player',
+//       getOAuthToken: cb => { cb(token); },
+//       volume: 0.5
+//     });
+    
 // from https://www.w3schools.com/howto/howto_css_modals.asp
 // // When the user clicks anywhere outside of the modal, close it
 // finishBox = document.getElementById("finishDiv")
