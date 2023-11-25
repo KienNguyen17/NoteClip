@@ -30,6 +30,7 @@ def login():
     if request.method == 'POST':
         if checkPassword(request.form["username"], request.form["password"]):
             login_user(User("admin"))
+            authorize()
             return redirect("/new")
         else:
             return "<p>Bad Login</p>"
@@ -49,6 +50,7 @@ def home():
 # ohhh how are we gonna store all these formatting things like order of elements and such....
 @app.route("/<postName>")
 def viewPost(postName):
+    print(authorize())
     return render_template("post.html", postName=postName)
 
 @app.route("/new")
