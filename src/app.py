@@ -2,6 +2,10 @@ import requests
 from base64 import b64encode 
 from flask import Flask, render_template, make_response, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from mongoengine import *
+import names
+
+connect(host="mongodb+srv://noteclipadmin:n0t3c1ip_4dm1n@noteclip.s8vwzbm.mongodb.net/")
 
 app = Flask(__name__)
 
