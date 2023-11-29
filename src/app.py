@@ -5,7 +5,9 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from mongoengine import *
 import names
 
-connect(host="mongodb+srv://noteclipadmin:n0t3c1ip_4dm1n@noteclip.s8vwzbm.mongodb.net/")
+# need to fill in password
+password = ""
+connect(host="mongodb+srv://noteclipadmin:" + password + "@noteclip.s8vwzbm.mongodb.net/")
 
 app = Flask(__name__)
 
