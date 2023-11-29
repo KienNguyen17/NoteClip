@@ -35,7 +35,7 @@ function doSearch() {
 }
 
 window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = '[My access token]';
+    const token = getAccessKey();
     const player = new Spotify.Player({
       name: 'Web Playback SDK Quick Start Player',
       getOAuthToken: cb => { cb(token); },
@@ -67,6 +67,9 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     player.connect();
 }
 
+function getAccessKey() {
+
+}
 
 
 
