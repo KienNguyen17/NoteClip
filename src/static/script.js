@@ -67,11 +67,25 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     player.connect();
 }
 
-function getAccessKey() {
+async function getAccessKey() {
+    const client_id = "b7bc1b3b25c64838b631dcd8fbda3894";
+    const client_secret = "3ca65cbb7c374c0da726c9cca1e9da57";
+    const options = {
+        url: "https://accounts.spotify.com/api/token",
+        method: "POST",
+        headers: {
+            "Authorization":"Basic " + btoa(client_id + ":" + client_secret),
+            "Content-Type":"application/x-www-form-urlencoded",
+        },
+        body:"grant_type=client_credentials&client_id=" + client_id +"&client_secret=" + client_secret,
+        json:true
+    };
+    const response = await fetch("https://accounts.spotify.com/api/token", options);
+    
+    const token = await response.json();
 
-}
-
-
+    return token["access_token"]
+};
 
 // from https://www.w3schools.com/howto/howto_css_modals.asp
 // // When the user clicks anywhere outside of the modal, close it

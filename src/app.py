@@ -50,7 +50,7 @@ def login():
     if request.method == 'POST':
         if checkPassword(request.form["username"], request.form["password"]):
             login_user(User("admin"))
-            authorize()
+            # authorize()
             return redirect("/new")
         else:
             return "<p>Bad Login</p>"
@@ -91,7 +91,7 @@ def home():
 # ohhh how are we gonna store all these formatting things like order of elements and such....
 @app.route("/<postName>")
 def viewPost(postName):
-    print(authorize())
+    # print(authorize())
     return render_template("post.html", postName=postName)
 
 @app.route("/new")
@@ -106,13 +106,14 @@ def logout():
     return redirect("/")
 
 # todo: move to javascript!!!!
-@app.route("/authorize")
-def authorize():
-    url = 'https://accounts.spotify.com/api/token'
-    headers = {"Authorization": "Basic " + b64encode((client_id + ":" + client_secret).encode("ascii")).decode("ascii")}
-    data = {"grant_type":"client_credentials"}
-    r = requests.post(url, headers=headers, data=data)
-    return r.text
+# @app.route("/authorize")
+# def authorize():
+#     url = 'https://accounts.spotify.com/api/token'
+#     headers = {"Authorization": "Basic " + b64encode((client_id + ":" + client_secret).encode("ascii")).decode("ascii")}
+#     data = {"grant_type":"client_credentials"}
+#     r = requests.post(url, headers=headers, data=data)
+#     return r.text
 
 if __name__ == "__main__":
-    print(authorize())
+    # print(authorize())
+    pass
