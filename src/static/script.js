@@ -1,9 +1,16 @@
 let textNum = 0
 
+// Coded with help from: https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click
 var loginButton = document.getElementById('loginButton');
 loginButton.onclick = function() {
-  location.assign('/login');
+    location.assign("/login");
 }
+
+// TODO: Not working, not sure why
+// var createAccount = document.getElementById('newAccount');
+// createAccount.onclick = function() {
+//     location.assign("/newAccount");
+// }
 
 function addElement() {
     $("#addChoice").show()

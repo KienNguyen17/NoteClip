@@ -55,6 +55,20 @@ def login():
         else:
             return "<p>Bad Login</p>"
         
+@app.route("/newAccount", methods=['GET', 'POST'])
+def newAccount():
+    if request.method == 'GET':
+        return render_template("newAccount.html")
+    # TODO: REWRITE THIS FOR CREATING AN ACCOUNT
+    # if request.method == 'POST':
+        # if checkPassword(request.form["username"], request.form["password"]):
+        #     login_user(User("admin"))
+        #     # authorize()
+        #     return redirect("/new")
+        # else:
+        #     return "<p>Bad Login</p>"
+
+        
 # class Element(db.EmbeddedDocument):
 #     id = db.IntField(required=True)
 

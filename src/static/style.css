@@ -17,29 +17,13 @@ body {
   font-family: merriweather;
 }
 
-/* Header for home page */
-header {
-  display: grid;
-  
-	grid-template-columns: 12fr 1fr;
-	grid-template-rows: 1fr;  
-
-  margin: 0.5rem;
-}
-
 h1 {
   font-family: crucial;
   font-size: 4rem;
-
-  grid-column: 1;
   margin: 0;
-  padding-left: 1rem;
 }
 
-header button {
-  grid-column: 2;
-  float: center;
-
+button {
   font-family: merriweather;
   font-size: 1.5rem;
 
@@ -49,8 +33,44 @@ header button {
   padding: 0.5rem;
 }
 
-header button:hover {
+button:hover {
   background-color: rgb(193, 193, 193);
+}
+
+input {
+  margin: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Home page */
+.home header {
+  display: grid;
+  
+	grid-template-columns: 12fr 1fr;
+	grid-template-rows: 1fr;  
+
+  margin: 0.5rem;
+}
+
+.home h1 {
+  grid-column: 1;
+  padding-left: 1rem;
+}
+
+.home button {
+  grid-column: 2;
+}
+
+/* Login or create new account */
+.account {
+  text-align: center;
+  /* display: flex;
+  justify-content: center; */
+}
+
+.account button {
+  font-size: 1.25rem;
+  margin: 0.5rem;
 }
 
 
