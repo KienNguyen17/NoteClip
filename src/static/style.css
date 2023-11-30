@@ -1,3 +1,55 @@
+@font-face {
+	font-family: crucial;
+	src: url(fonts/crucial/Crucial-Medium.otf);
+} 
+
+@font-face {
+  font-family: fira-sans;
+  src: url(fonts/fira-sans/FiraSans-Regular.ttf);
+}
+
+/* body {
+  font-family: fira-sans;
+} */
+
+/* Header for home page */
+header {
+  display: grid;
+  
+	grid-template-columns: 12fr 1fr;
+	grid-template-rows: 1fr;  
+
+  margin: 0.5rem;
+}
+
+h1 {
+  font-family: crucial;
+  font-size: 4rem;
+
+  grid-column: 1;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+header a {
+  grid-column: 2;
+}
+
+header button {
+  font-family: fira-sans;
+  float: center;
+  font-size: 2rem;
+  background-color: rgb(187, 235, 252);
+  padding: 0.5rem;
+  border: 0;
+  border-radius: 0.2rem;
+}
+
+header button:hover {
+  background-color: rgb(119, 217, 253);
+}
+
+
 /* Written with help from here: https://stackoverflow.com/questions/37844735/custom-placeholder-with-contenteditable-element */
 [data-placeholder]:empty:before{
   content: attr(data-placeholder);
