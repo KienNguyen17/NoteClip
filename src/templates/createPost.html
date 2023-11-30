@@ -13,26 +13,27 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous">
         </script>
+        <link rel="shortcut icon" href="..\static\favicon.ico">
         <link rel="stylesheet" href="..\static\style.css">
     </head>
-    <body>
+    <body class="createPost">
         <header>
             <!-- Final back button will probably just be visual, no words (will need accessibility for that) -->
-            <a href="../"><button id="backButton" type="button">Go Back</button></a>
-            <button type="button" onClick="finishPost()">Finish Post</button>
+            <button id="backButton" type="button"><</button>
+            <button id="logout" type="button">Log Out</button>
         </header>
         <!-- Final button will probably just be visual, no words (will need accessibility for that) -->
         <!-- Joslenne question??? -->
         <article>
             <div id="addDiv">
-                <button id="addButton" type="button" onClick="addElement()">Add Element</button>
-                <a href="/logout"><button id="logout" type="button" style="float:right">Log Out</button></a>
+                <button id="addButton" type="button" onClick="addElement()">+</button>
                 <div id="addChoice">
                     <button type="button" onClick="addMusic()">Music</button>
                     <button type="button" onClick="addText()">Text</button>
                 </div>    
             </div>
         </article>
+        <button type="button" id="finishButton" onClick="finishPost()">Finish Post</button>
 
         <div id="finishDiv">
             <div id="finishInsides">

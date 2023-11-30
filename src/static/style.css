@@ -42,6 +42,14 @@ input {
   font-size: 1rem;
 }
 
+#logout {
+  float: right;
+}
+
+#backButton {
+  float: left;
+}
+
 /* Home page */
 .home header {
   display: grid;
@@ -81,11 +89,31 @@ input {
   justify-content: center; */
 }
 
+.account h1 {
+  padding-top: 10rem;
+}
+
 .account button {
   font-size: 1.25rem;
   margin: 0.5rem;
 }
 
+/* Create Post */
+
+.createPost header {
+  display: grid;
+  grid-template-columns: 1fr 20fr 3fr;
+}
+
+.createPost #backButton {
+  grid-column: 1;
+  font-size: 2.5rem;
+  padding: 0.2rem;
+}
+
+.createPost #logout {
+  grid-column: 3;
+}
 
 /* Written with help from here: https://stackoverflow.com/questions/37844735/custom-placeholder-with-contenteditable-element */
 [data-placeholder]:empty:before{

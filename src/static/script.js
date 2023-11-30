@@ -6,6 +6,18 @@ loginButton.onclick = function() {
     location.assign("/login");
 }
 
+var backButton = document.getElementById('backButton');
+backButton.onclick = function() {
+    location.assign("../");
+}
+
+var logoutButton = document.getElementById('logout');
+logoutButton.onclick = function() {
+    location.assign("/logout");
+}
+
+
+
 // TODO: Not working, not sure why
 // var createAccount = document.getElementById('newAccount');
 // createAccount.onclick = function() {
