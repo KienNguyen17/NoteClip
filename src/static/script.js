@@ -1,5 +1,10 @@
 let textNum = 0
 
+var loginButton = document.getElementById('loginButton');
+loginButton.onclick = function() {
+  location.assign('/login');
+}
+
 function addElement() {
     $("#addChoice").show()
 }

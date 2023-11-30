@@ -8,9 +8,14 @@
   src: url(fonts/fira-sans/FiraSans-Regular.ttf);
 }
 
-/* body {
-  font-family: fira-sans;
-} */
+@font-face {
+  font-family: merriweather;
+  src: url(fonts/merriweather/Merriweather-Regular.ttf);
+}
+
+body {
+  font-family: merriweather;
+}
 
 /* Header for home page */
 header {
@@ -31,22 +36,21 @@ h1 {
   padding-left: 1rem;
 }
 
-header a {
-  grid-column: 2;
-}
-
 header button {
-  font-family: fira-sans;
+  grid-column: 2;
   float: center;
-  font-size: 2rem;
-  background-color: rgb(187, 235, 252);
+
+  font-family: merriweather;
+  font-size: 1.5rem;
+
+  background-color: white;
+  border: 0.1rem solid rgb(0, 0, 0);
+  border-radius: 0.5rem;
   padding: 0.5rem;
-  border: 0;
-  border-radius: 0.2rem;
 }
 
 header button:hover {
-  background-color: rgb(119, 217, 253);
+  background-color: rgb(193, 193, 193);
 }
 
 
