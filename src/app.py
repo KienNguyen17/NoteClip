@@ -128,6 +128,6 @@ def logout():
 #     r = requests.post(url, headers=headers, data=data)
 #     return r.text
 
-if __name__ == "__main__":
-    # print(authorize())
-    pass
+
+
+
