@@ -50,6 +50,16 @@ input {
   float: left;
 }
 
+article {
+  padding-left: 5%;
+  padding-right: 13%;
+}
+
+p {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
 /* Home page */
 .home header {
   display: grid;
@@ -103,16 +113,33 @@ input {
 .createPost header {
   display: grid;
   grid-template-columns: 1fr 20fr 3fr;
+  padding-bottom: 1rem;
 }
 
 .createPost #backButton {
   grid-column: 1;
   font-size: 2.5rem;
   padding: 0.2rem;
+  text-align: center;
+}
+
+.createPost #addButton {
+  font-size: 2rem;
+  padding: 0.2rem;
+  text-align: center;
+  border-radius: 50%;
+  height: 3.5rem;
+  width: 3.5rem;
+  margin-bottom: .5rem;
 }
 
 .createPost #logout {
   grid-column: 3;
+}
+
+.createPost #finishButton {
+  margin-top: 1rem;
+  float: right;
 }
 
 /* Written with help from here: https://stackoverflow.com/questions/37844735/custom-placeholder-with-contenteditable-element */
