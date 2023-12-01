@@ -2,13 +2,16 @@ import requests
 from base64 import b64encode 
 from flask import Flask, render_template, make_response, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
-# from flask_mongoengine import MongoEngine
-# from mongoengine import *
-# import names
+from flask_mongoengine import MongoEngine
+from mongoengine import *
+# # import names
 
-# need to fill in password
-# password = ""
-# connect(host="mongodb+srv://noteclipadmin:" + password + "@noteclip.s8vwzbm.mongodb.net/")
+# # need to fill in password
+# # password = ""
+# # connect(host="mongodb+srv://noteclipadmin:" + password + "@noteclip.s8vwzbm.mongodb.net/")
+
+
+db = MongoEngine()
 
 app = Flask(__name__)
 
@@ -16,7 +19,17 @@ app.config.update(SECRET_KEY = "adminview")
 client_id = "b7bc1b3b25c64838b631dcd8fbda3894"
 client_secret = "3ca65cbb7c374c0da726c9cca1e9da57"
 
-# db = MongoEngine(app)
+password = "n0t3cl1p-4dm1n"
+app.config["MONGODB_SETTINGS"] = [
+    {
+        # "db": "NoteClip",
+        "host": "mongodb+srv://noteclipadmin:"+ password + "@noteclip.s8vwzbm.mongodb.net/",
+        # "port": 27017,
+        # "alias": "default",
+    }
+]
+
+db.init_app(app)
 
 # login setup
 login_manager = LoginManager()
@@ -24,17 +37,24 @@ login_manager.init_app(app)
 
 key = {"noteclipadmin":"admin"}
 
-class User(UserMixin):
+class User(UserMixin, db.Document):
+    # def __init__(self, user_id):
+    #     self.id = user_id
+    id = db.StringField(required=True)
+    username = db.StringField()
+    password = db.StringField()
+
     def __init__(self, user_id):
         self.id = user_id
-    # id = db.IntField(required=True)
-    # username = db.StringField(required=True)
-    # password = db.StringField(required=True)
 
 @login_manager.user_loader
-def load_user(user_id):
-    # return User.objects.first_or_404(id=user_id)
-    return User(user_id)
+def load_user(id: str):
+    try:
+        user = User.objects.get(id)
+        return user
+    except:
+        return 
+    # return User(user_id)
 
 # @app.route("/signup", methods=["GET", "POST"])
 # def signup():
