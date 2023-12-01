@@ -24,8 +24,14 @@ logoutButton.onclick = function() {
 //     location.assign("/newAccount");
 // }
 
-function addElement() {
-    $("#addChoice").show()
+// Coded with help from: https://stackoverflow.com/questions/178325/how-do-i-check-if-an-element-is-hidden-in-jquery
+function clickAdd() {
+    if ( $("#addChoice").css('display') == 'none') {
+        $("#addChoice").show()
+    }
+    else {
+        $("#addChoice").hide()
+    }
 }
 
 // Coded with help from: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/search

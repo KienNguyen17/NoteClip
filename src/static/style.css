@@ -142,15 +142,19 @@ p {
   float: right;
 }
 
+.createPost #addChoice {
+  display: none;
+  border: 0.2rem;
+}
+
+/* pip install flask==2.2.2 -> do in venv */
+
+
 /* Written with help from here: https://stackoverflow.com/questions/37844735/custom-placeholder-with-contenteditable-element */
 [data-placeholder]:empty:before{
   content: attr(data-placeholder);
   color: #888;
   font-style: italic;
-}
-
-#addChoice {
-  display: none;
 }
 
 /* Used to help build the finish post popup: https://www.w3schools.com/howto/howto_css_modals.asp */
