@@ -1,4 +1,5 @@
 let textNum = 0
+let musicNum = 0
 
 // Coded with help from: https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click
 var loginButton = document.getElementById('loginButton');
@@ -37,7 +38,9 @@ function clickAdd() {
 // Coded with help from: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/search
 function addMusic() {
     $("#addChoice").hide()
-    $("<search><form id=\"songSearchForm\" onsubmit=\"findSong()\"><input name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input type=\"button\" value=\"Search\" onclick=\"doSearch()\"></search>").insertBefore("#addDiv")
+    var musicId = "music" + musicNum
+    musicNum++
+    $("<div id=\"" + musicId + "\"><search><form id=\"songSearchForm\" onsubmit=\"findSong()\"><input name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"searchButton\" type=\"button\" value=\"Search\" onclick=\"doSearch()\"></search></div><br/>").insertBefore("#addDiv")
 }
 
 function addText() {
@@ -60,7 +63,8 @@ function doSearch() {
     spotifyID = "5omLfecV0S68gitZpQpMjQ"
     // only able to play 30 seconds right now.... is this what we really want? (if so yikes) https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
     exampleEmbed = "<iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/"+spotifyID+"?utm_source=generator\" width=\"100%\" height=\"352\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
-    $(exampleEmbed).insertBefore("#addDiv")
+    $(exampleEmbed).insertAfter("search")
+    $("search").remove()
 
 }
 
