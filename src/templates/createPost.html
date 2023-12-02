@@ -48,6 +48,12 @@
             </div>
         </div>
         <script src="..\static\script.js" async defer></script>
-        <script src="https://sdk.scdn.co/spotify-player.js"></script>
+        <script>
+            var tag = document.createElement('script');
+
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        </script>
     </body>
 </html>

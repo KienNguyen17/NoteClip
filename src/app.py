@@ -38,8 +38,6 @@ login_manager.init_app(app)
 key = {"noteclipadmin":"admin"}
 
 class User(UserMixin, db.Document):
-    # def __init__(self, user_id):
-    #     self.id = user_id
     id = db.StringField(required=True)
     username = db.StringField()
     password = db.StringField()
