@@ -127,20 +127,22 @@ p, .formSubmit,  label {
   margin: 0.5rem;
 }
 
-/* Create Post */
+/* Create Post and post */
 
-.createPost header {
+.createPost, .post header {
   display: grid;
   grid-template-columns: 1fr 20fr 3fr;
   padding-bottom: 1rem;
 }
 
-.createPost header .backButton {
+.createPost, .post header .backButton {
   grid-column: 1;
   font-size: 2.5rem;
   padding: 0.2rem;
   text-align: center;
 }
+
+/* Create Post */
 
 .createPost #addDiv {
   display: grid;
@@ -190,7 +192,12 @@ p, .formSubmit,  label {
   width: 100%;
 }
 
-/* pip install flask==2.2.2 -> do in venv */
+/* Post */
+
+.post header h1 {
+  grid-column: 2;
+  padding-left: 2rem;
+}
 
 
 /* Written with help from here: https://stackoverflow.com/questions/37844735/custom-placeholder-with-contenteditable-element */
