@@ -23,7 +23,7 @@ h1 {
   margin: 0;
 }
 
-button, .searchButton {
+button, .formSubmit {
   font-family: merriweather;
   font-size: 1.5rem;
 
@@ -33,20 +33,25 @@ button, .searchButton {
   padding: 0.5rem;
 }
 
-button:hover, .searchButton:hover {
+button:hover, .formSubmit:hover {
   background-color: rgb(193, 193, 193);
 }
 
-input {
+input, textarea {
   margin: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.25rem;
+  font-family: merriweather;
+}
+
+textarea {
+  margin-left: 0;
 }
 
 #logout {
   float: right;
 }
 
-#backButton {
+header .backButton {
   float: left;
 }
 
@@ -55,13 +60,9 @@ article {
   padding-right: 13%;
 }
 
-p, .searchButton {
+p, .formSubmit,  label {
   font-size: 1.25rem;
   margin: 0;
-}
-
-input {
-  font-size: 1.25rem;
 }
 
 /* Home page */
@@ -134,7 +135,7 @@ input {
   padding-bottom: 1rem;
 }
 
-.createPost #backButton {
+.createPost header .backButton {
   grid-column: 1;
   font-size: 2.5rem;
   padding: 0.2rem;

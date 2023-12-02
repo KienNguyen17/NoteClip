@@ -40,7 +40,7 @@ function addMusic() {
     $("#addChoice").hide()
     var musicId = "music" + musicNum
     musicNum++
-    $("<div id=\"" + musicId + "\"><search><form id=\"songSearchForm\" onsubmit=\"findSong()\"><input name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"searchButton\" type=\"button\" value=\"Search\" onclick=\"doSearch()\"></search></div><br/>").insertBefore("#addDiv")
+    $("<div id=\"" + musicId + "\"><search><form id=\"songSearchForm\" onsubmit=\"findSong()\"><input name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch()\"></search></div><br/>").insertBefore("#addDiv")
 }
 
 function addText() {

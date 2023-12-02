@@ -19,7 +19,7 @@
     <body class="createPost">
         <header>
             <!-- Final back button will probably just be visual, no words (will need accessibility for that) -->
-            <button id="backButton" type="button"><</button>
+            <button class="backButton" type="button"><</button>
             <button id="logout" type="button">Log Out</button>
         </header>
         <!-- Final button will probably just be visual, no words (will need accessibility for that) -->
@@ -37,13 +37,13 @@
 
         <div id="finishDiv">
             <div id="finishInsides">
-                <button type="button" onClick="closeFinishPost()">Go Back</button>
+                <button class="backButton" type="button" onClick="closeFinishPost()"><</button>
                 <form id="finishForm">
                     <label>Enter a title for your post:</label>
                     <input type="text" name="title"><br/>
                     <label>Enter a description:</label><br/>
                     <textarea name="description"></textarea><br/>
-                    <input type="submit" value="Post">
+                    <input class="formSubmit" type="submit" value="Post">
                 </form>	    
             </div>
         </div>
