@@ -68,12 +68,14 @@ def login():
     if request.method == 'GET':
         return render_template("login.html")
     if request.method == 'POST':
-        if checkPassword(request.form["username"], request.form["password"]):
-            login_user(User("admin"))
-            # authorize()
-            return redirect("/new")
-        else:
-            return "<p>Bad Login</p>"
+        login_user(User("admin"))
+        return redirect("/new")
+        # if checkPassword(request.form["username"], request.form["password"]):
+        #     login_user(User("admin"))
+        #     # authorize()
+        #     return redirect("/new")
+        # else:
+        #     return "<p>Bad Login</p>"
         
 @app.route("/newAccount", methods=['GET', 'POST'])
 def newAccount():

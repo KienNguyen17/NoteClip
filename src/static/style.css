@@ -64,8 +64,8 @@ p {
 .home header {
   display: grid;
   
-	grid-template-columns: 1fr 11fr 1fr;
-	grid-template-rows: 5rem 50rem;  
+	grid-template-columns: 1fr 10fr 1fr;
+	grid-template-rows: 10rem 50rem;  
 
   margin: 0;
 }
@@ -73,14 +73,16 @@ p {
 .home img {
   grid-column: 1;
   grid-row: span 2;
-  height: 30rem;
-  width: 7rem;
+  display: inline-block;
+  height: 15rem;
+  width: 8rem;
+  padding-left: 2rem;
 }
 
 .home h1 {
   grid-column: 2;
   grid-row: 1;
-  padding-left: 1rem;
+  padding-left: 2rem;
   margin: 0.5rem;
 
   font-size: 8rem;
@@ -90,6 +92,11 @@ p {
   grid-column: 3;
   grid-row: 1;
   margin: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
 }
 
 /* Login or create new account */
