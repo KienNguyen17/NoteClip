@@ -101,18 +101,33 @@ p {
 
 /* Login or create new account */
 .account {
+  /* Coded with help from: https://www.w3schools.com/howto/howto_css_center-vertical.asp */
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -75%);
+  transform: translate(-50%, -75%);
+
   text-align: center;
-  /* display: flex;
-  justify-content: center; */
+
+
 }
 
 .account h1 {
-  padding-top: 10rem;
+  /* Figure out how to center enter login block */
+  /* padding-top: 9rem; */
+  padding-bottom: 1rem;
+  font-size: 5rem;
 }
 
 .account button {
   font-size: 1.25rem;
   margin: 0.5rem;
+}
+
+.account input {
+  font-size: 1.25rem;
 }
 
 /* Create Post */
