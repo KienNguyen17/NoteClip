@@ -40,7 +40,7 @@ function addMusic() {
     $("#addChoice").hide()
     var musicId = "music" + musicNum
     musicNum++
-    $("<div id=\"" + musicId + "\"><search><form id=\"songSearchForm\" onsubmit=\"findSong()\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('cat')\"></search></div><br/>").insertBefore("#addDiv")
+    $("<div id=\"" + musicId + "\"><search><form id=\"songSearchForm\" onsubmit=\"findSong()\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
 }
 
 function addText() {
@@ -52,21 +52,14 @@ function addText() {
 
 // will probably be helpful https://stackoverflow.com/questions/18169933/submit-form-without-reloading-page
 async function doSearch(musicId) {
-    console.log(musicId);
-    query = $("#search-music0").val();
-    console.log(query);
-    const response = await fetch("/search/" + query);
-    const final = await response.json()
+    query = $("#search-" + musicId).val();
 
-    // put in code here to do the API request, should return a "tracks" object that contains an array of tracks
-    // temporary tracks array below
-    console.log("START");
-    console.log(final);
-    console.log("END");
+    const response = await fetch("/search/" + query);
+    const search_results = await response.json() // this returns a list of the top 5 search (as youtube id)
 
     // useful for embeds: https://developer.spotify.com/documentation/embeds/references/iframe-api
     // has a seek function to seek certain point in song!!!
-    youtubeID = final["0"];
+    youtubeID = search_results["0"];
     
     exampleEmbed = "<iframe width=\"560\" height=\"315\" id=\"player\" type=\"text/html\" width=\"640\" height=\"390\" src=\"http://www.youtube.com/embed/" + youtubeID + "?enablejsapi=1\" frameborder=\"0\"></iframe>";
     
