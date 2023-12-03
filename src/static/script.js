@@ -40,7 +40,7 @@ function addMusic() {
     $("#addChoice").hide()
     var musicId = "music" + musicNum
     musicNum++
-    $("<div id=\"" + musicId + "\"><search><form id=\"songSearchForm\" onsubmit=\"findSong()\"><input name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch()\"></search></div><br/>").insertBefore("#addDiv")
+    $("<div id=\"" + musicId + "\"><search><form id=\"songSearchForm\" onsubmit=\"findSong()\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('cat')\"></search></div><br/>").insertBefore("#addDiv")
 }
 
 function addText() {
@@ -51,20 +51,27 @@ function addText() {
 }
 
 // will probably be helpful https://stackoverflow.com/questions/18169933/submit-form-without-reloading-page
-function doSearch() {
-    alert("You submitted the search");
+async function doSearch(musicId) {
+    console.log(musicId);
+    query = $("#search-music0").val();
+    console.log(query);
+    const response = await fetch("/search/" + query);
+    const final = await response.json()
 
     // put in code here to do the API request, should return a "tracks" object that contains an array of tracks
     // temporary tracks array below
-    tracks = ["track1", "track2"];
+    console.log("START");
+    console.log(final);
+    console.log("END");
 
     // useful for embeds: https://developer.spotify.com/documentation/embeds/references/iframe-api
     // has a seek function to seek certain point in song!!!
-    youtubeID = "QwLvrnlfdNo";
-    // only able to play 30 seconds right now.... is this what we really want? (if so yikes) https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
-    // exampleEmbed = "<iframe id=\"player\" type=\"text/html\" width=\"640\" height=\"390\" src=\"http://www.youtube.com/embed/" + youtubeID + "?enablejsapi=1\" frameborder=\"0\"></iframe>";
+    youtubeID = final["0"];
     
-    exampleEmbed = "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/QwLvrnlfdNo?enablejsapi=1&origin=http://example.com\" title=\"YouTube video player\" frameborder=\"0\" referrerpolicy=\"no-referrer-when-downgrade\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+    exampleEmbed = "<iframe width=\"560\" height=\"315\" id=\"player\" type=\"text/html\" width=\"640\" height=\"390\" src=\"http://www.youtube.com/embed/" + youtubeID + "?enablejsapi=1\" frameborder=\"0\"></iframe>";
+    
+    // exampleEmbed = "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/QwLvrnlfdNo?enablejsapi=1&origin=http://example.com\" frameborder=\"0\" referrerpolicy=\"no-referrer-when-downgrade\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+
     $(exampleEmbed).insertAfter("search")
     $("search").remove()
 }

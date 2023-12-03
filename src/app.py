@@ -4,6 +4,7 @@ from flask import Flask, render_template, make_response, request, redirect, url_
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from flask_mongoengine import MongoEngine
 from mongoengine import *
+from googleapiclient.discovery import build
 # # import names
 
 # # need to fill in password
@@ -30,6 +31,10 @@ app.config["MONGODB_SETTINGS"] = [
 ]
 
 db.init_app(app)
+
+# Youtube API set up
+youtube_key = "AIzaSyAG32EmbWBvbjzyX3TO65v8gKfLs8mVE6Y"
+youtube = build('youtube', 'v3', developerKey=youtube_key)
 
 # login setup
 login_manager = LoginManager()
@@ -137,6 +142,17 @@ def logout():
     logout_user()
     return redirect("/")
 
+@app.route("/search/<query>", methods=['GET'])
+def search(query):
+    if request.method == "GET":
+        search_request = youtube.search().list(part="snippet", maxResults=5, q=query, videoEmbeddable='true', type="video")
+        result_dict = {}
+        index = 0
+        for result in search_request.execute()["items"]:
+            result_dict[index] = result["id"]["videoId"]
+            index+=1
+        return result_dict
+    
 # todo: move to javascript!!!!
 # @app.route("/authorize")
 # def authorize():
