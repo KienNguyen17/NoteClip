@@ -149,7 +149,7 @@ def search(query):
         result_dict = {}
         index = 0
         for result in search_request.execute()["items"]:
-            result_dict[index] = result["id"]["videoId"]
+            result_dict[index] = result
             index+=1
         return result_dict
     

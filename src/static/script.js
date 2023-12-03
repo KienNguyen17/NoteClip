@@ -57,11 +57,15 @@ async function doSearch(musicId) {
     const response = await fetch("/search/" + query);
     const search_results = await response.json() // this returns a list of the top 5 search (as youtube id)
 
-    // useful for embeds: https://developer.spotify.com/documentation/embeds/references/iframe-api
-    // has a seek function to seek certain point in song!!!
-    youtubeID = search_results["0"];
+    for (key of Object.keys(search_results)) {
+        // $("")
+        console.log(search_results[key]);
+    }
+
     
-    exampleEmbed = "<iframe width=\"560\" height=\"315\" id=\"player\" type=\"text/html\" width=\"640\" height=\"390\" src=\"http://www.youtube.com/embed/" + youtubeID + "?enablejsapi=1\" frameborder=\"0\"></iframe>";
+    youtubeID = search_results["0"]["id"]["videoId"];
+    
+    exampleEmbed = "<iframe width=\"560\" height=\"315\" id=\"player-" + musicId + "\" type=\"text/html\" width=\"640\" height=\"390\" src=\"http://www.youtube.com/embed/" + youtubeID + "?enablejsapi=1\" frameborder=\"0\"></iframe>";
     
     // exampleEmbed = "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/QwLvrnlfdNo?enablejsapi=1&origin=http://example.com\" frameborder=\"0\" referrerpolicy=\"no-referrer-when-downgrade\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
 
