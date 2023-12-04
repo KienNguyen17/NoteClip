@@ -126,7 +126,7 @@ def home():
 
 # Maybe we will want to pass in a post object with all info to put in Jinja?
 # ohhh how are we gonna store all these formatting things like order of elements and such....
-@app.route("/<postName>")
+@app.route("/post/<postName>")
 def viewPost(postName):
     # print(authorize())
     return render_template("post.html", postName=postName)
@@ -145,7 +145,7 @@ def logout():
 @app.route("/search/<query>", methods=['GET'])
 def search(query):
     if request.method == "GET":
-        search_request = youtube.search().list(part="snippet", maxResults=5, q=query, videoEmbeddable='true', type="video")
+        search_request = youtube.search().list(part="snippet", maxResults=5, q=query, videoEmbeddable='true', type="video", videoCategoryId="10")
         result_dict = {}
         index = 0
         for result in search_request.execute()["items"]:
