@@ -65,12 +65,29 @@ async function doSearch(musicId) {
     
     youtubeID = search_results["0"]["id"]["videoId"];
     
-    exampleEmbed = "<iframe width=\"560\" height=\"315\" id=\"player-" + musicId + "\" type=\"text/html\" width=\"640\" height=\"390\" src=\"http://www.youtube.com/embed/" + youtubeID + "?enablejsapi=1\" frameborder=\"0\"></iframe>";
-    
-    // exampleEmbed = "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/QwLvrnlfdNo?enablejsapi=1&origin=http://example.com\" frameborder=\"0\" referrerpolicy=\"no-referrer-when-downgrade\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
-
+    // exampleEmbed = "<iframe width=\"560\" height=\"315\" id=\"player-" + musicId + "\" type=\"text/html\" width=\"640\" height=\"390\" src=\"http://www.youtube.com/embed/" + youtubeID + "?enablejsapi=1\" frameborder=\"0\"></iframe>";
+    exampleEmbed = "<div id=\"player-" + musicId + "\"></div>"
     $(exampleEmbed).insertAfter("search")
     $("search").remove()
+
+    // exampleEmbed = "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/QwLvrnlfdNo?enablejsapi=1&origin=http://example.com\" frameborder=\"0\" referrerpolicy=\"no-referrer-when-downgrade\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+
+
+
+    var player;
+    player = new YT.Player('player-' + musicId, {
+        height: '390',
+        width: '640',
+        videoId: youtubeID,
+        playerVars: {
+            'start': 35
+        }
+    });
+
+    // I think the below will be the function we need to change start time dynamically (documentation: https://developers.google.com/youtube/iframe_api_reference#Playback_controls)
+    // player.seekTo(35, true)
+
+    
 }
 
 
