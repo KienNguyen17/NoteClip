@@ -129,13 +129,26 @@ p, .formSubmit,  label {
 
 /* Create Post and post */
 
-.createPost, .post header {
+.createPost header {
   display: grid;
   grid-template-columns: 1fr 20fr 3fr;
   padding-bottom: 1rem;
 }
 
-.createPost, .post header .backButton {
+.post header {
+  display: grid;
+  grid-template-columns: 1fr 20fr 3fr;
+  padding-bottom: 1rem;
+}
+
+.createPost header .backButton {
+  grid-column: 1;
+  font-size: 2.5rem;
+  padding: 0.2rem;
+  text-align: center;
+}
+
+.post header .backButton {
   grid-column: 1;
   font-size: 2.5rem;
   padding: 0.2rem;
