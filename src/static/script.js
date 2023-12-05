@@ -1,6 +1,9 @@
 let textNum = 0
 let musicNum = 0
 
+let players = []
+let lastPlayerTime = []
+
 // Coded with help from: https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click
 var loginButton = document.getElementById('loginButton');
 loginButton.onclick = function() {
@@ -39,8 +42,8 @@ function clickAdd() {
 function addMusic() {
     $("#addChoice").hide()
     var musicId = "music" + musicNum
+    $("<div id=\"" + musicId + "\"><search><form id=\"songSearchForm\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
     musicNum++
-    $("<div id=\"" + musicId + "\"><search><form id=\"songSearchForm\" onsubmit=\"findSong()\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
 }
 
 function addText() {
@@ -73,11 +76,9 @@ async function doSearch(musicId) {
     }
 }
 
-function addSong(youtubeID, musicId) {
-    // youtubeID = search_results["0"]["id"]["videoId"];
-    
-    // exampleEmbed = "<iframe width=\"560\" height=\"315\" id=\"player-" + musicId + "\" type=\"text/html\" width=\"640\" height=\"390\" src=\"http://www.youtube.com/embed/" + youtubeID + "?enablejsapi=1\" frameborder=\"0\"></iframe>";
-    exampleEmbed = "<div id=\"player-" + musicId + "\"></div>"
+function addSong(youtubeID, musicId) {    
+    idNum = musicId.substring(5)
+    exampleEmbed = "<div id=\"player-" + musicId + "\"></div><button type='button' id='button-" + musicId + "' class='commentButton' onclick='addComment(" + idNum + ")'>Add Comment</button>"
     $("#search-results").remove()
     $(exampleEmbed).insertAfter("search")
     $("search").remove()
@@ -87,14 +88,58 @@ function addSong(youtubeID, musicId) {
         height: '390',
         width: '640',
         videoId: youtubeID,
-        playerVars: {
-            'start': 35
-        }
+        // events: {
+        //     'onStateChange': onPlayerStateChange
+        // },
+        // playerVars: {
+        //     'start': 35
+        // }
     });
 
+    // player.onclick = clickPlayer;
+
+    players.push(player)
+
+    
     // I think the below will be the function we need to change start time dynamically (documentation: https://developers.google.com/youtube/iframe_api_reference#Playback_controls)
     // player.seekTo(35, true)   
 }
+
+function addComment(idNum) {
+    // not sure why but it wont let me make the finish comment button an input.... (in or out of form!!!)
+    commentForm = "<div class='commentForm'><form><label>Leave comment at current timestamp: </label><br/><textarea name='comment'></textarea></form><button class=\"formSubmit\" type=\"button\" onclick=\"finishComment('" + idNum + "')\">Finish Comment</button></div>"
+
+    $("#button-music" +idNum).hide()
+    $(commentForm).insertBefore("#button-music"+idNum)
+}
+
+function finishComment(idNum) {
+    player = players[idNum]
+    $("#button-music" +idNum).show()
+    $(".commentForm").remove()
+    // will need to get comment info and start of comment time
+}
+
+
+// function clickPlayer() {
+//     window.alert("Clicked")
+//     // player = players[playerNum]
+//     // if (player && player.getPlayerState() == 2) {
+//     //     playerTime = player.getCurrentTime()
+//     //     if (lastPlayerTime[playerNum] != playerTime) {
+//     //         window.alert(player.getCurrentTime())
+//     //     }
+//     //     lastPlayerTime[playerNum] = playerTime
+//     // }
+// }
+
+// function onPlayerStateChange(event) {
+//     // currTime = players[0].getCurrentTime()
+//     // if(event.data==2) {
+//     //     window.alert(players[0].getCurrentTime())
+//     // }
+//     // window.alert("Curr: ")
+// }
 
 function onYouTubeIframeAPIReady() {
     console.log("youtube ready")
