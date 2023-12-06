@@ -205,6 +205,12 @@ p, .formSubmit,  label {
   width: 100%;
 }
 
+.commentForm, .commentButton {
+  display: inline-block;
+  /* padding-left: 1rem; */
+  margin-left: 1rem;
+} 
+
 /* Post */
 
 .post header h1 {
