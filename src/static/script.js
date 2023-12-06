@@ -2,7 +2,7 @@ let textNum = 0
 let musicNum = 0
 
 let players = []
-let lastPlayerTime = []
+let playersTime = []
 
 // Coded with help from: https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click
 var loginButton = document.getElementById('loginButton');
@@ -99,15 +99,28 @@ function addSong(youtubeID, musicId) {
     // player.onclick = clickPlayer;
 
     players.push(player)
+    playersTime.push(player.getCurrentTime())
 
     
     // I think the below will be the function we need to change start time dynamically (documentation: https://developers.google.com/youtube/iframe_api_reference#Playback_controls)
     // player.seekTo(35, true)   
 }
 
+// doesn't work within iframe of course. 
+function clickPage(){
+    // window.alert("Clicked!")
+    for (i = 0; i < players.length; i++) {
+        if (players[i].getPlayerState() == 2) {
+            if (playersTime[i] != players[i].getCurrentTime()) {
+                window.alert("New time!")
+            } 
+        }
+    }
+}
+
 function addComment(idNum) {
     // not sure why but it wont let me make the finish comment button an input.... (in or out of form!!!)
-    commentForm = "<div class='commentForm'><form><label>Leave comment at current timestamp: </label><br/><textarea name='comment'></textarea></form><button class=\"formSubmit\" type=\"button\" onclick=\"finishComment('" + idNum + "')\">Finish Comment</button></div>"
+    commentForm = "<div class='commentForm'><form><label>Start comment at: </label><input type='text' name='startTime'><br/><label>End comment at: </label><input type='text' name='endTime'><br/><textarea name='comment'></textarea></form><button class=\"formSubmit\" type=\"button\" onclick=\"finishComment('" + idNum + "')\">Finish Comment</button></div>"
 
     $("#button-music" +idNum).hide()
     $(commentForm).insertBefore("#button-music"+idNum)

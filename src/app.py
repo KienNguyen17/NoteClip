@@ -5,6 +5,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_mongoengine import MongoEngine
 from mongoengine import *
 from googleapiclient.discovery import build
+import config
 # # import names
 
 # # need to fill in password
@@ -17,14 +18,11 @@ db = MongoEngine()
 app = Flask(__name__)
 
 app.config.update(SECRET_KEY = "adminview")
-client_id = "b7bc1b3b25c64838b631dcd8fbda3894"
-client_secret = "3ca65cbb7c374c0da726c9cca1e9da57"
 
-password = "n0t3cl1p-4dm1n"
 app.config["MONGODB_SETTINGS"] = [
     {
         # "db": "NoteClip",
-        "host": "mongodb+srv://noteclipadmin:"+ password + "@noteclip.s8vwzbm.mongodb.net/",
+        "host": config.mongoHost,
         # "port": 27017,
         # "alias": "default",
     }
@@ -33,8 +31,8 @@ app.config["MONGODB_SETTINGS"] = [
 db.init_app(app)
 
 # Youtube API set up
-youtube_key = "AIzaSyAG32EmbWBvbjzyX3TO65v8gKfLs8mVE6Y"
-youtube = build('youtube', 'v3', developerKey=youtube_key)
+
+youtube = build('youtube', 'v3', developerKey=config.youtube_key)
 
 # login setup
 login_manager = LoginManager()
