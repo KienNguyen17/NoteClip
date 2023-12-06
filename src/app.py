@@ -59,12 +59,10 @@ def load_user(id: str):
         return 
     # return User(user_id)
 
-# @app.route("/signup", methods=["GET", "POST"])
-# def signup():
-#     userInfo = request.get_json()
-#     user = User(**userInfo).save()
-
-
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    userInfo = request.get_json()
+    user = User(**userInfo).save()
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
