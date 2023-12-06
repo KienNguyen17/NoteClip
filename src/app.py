@@ -17,7 +17,7 @@ db = MongoEngine()
 
 app = Flask(__name__)
 
-app.config.update(SECRET_KEY = "adminview")
+app.config.update(SECRET_KEY = config.flask_key)
 
 app.config["MONGODB_SETTINGS"] = [
     {
