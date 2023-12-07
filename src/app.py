@@ -1,6 +1,7 @@
+from pprint import pprint
 import requests
 from base64 import b64encode 
-from flask import Flask, render_template, make_response, request, redirect, url_for
+from flask import Flask, jsonify, render_template, make_response, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from flask_mongoengine import MongoEngine
 from mongoengine import *
@@ -17,7 +18,7 @@ db = MongoEngine()
 
 app = Flask(__name__)
 
-app.config.update(SECRET_KEY = "adminview")
+app.config.update(SECRET_KEY = config.flask_key)
 
 app.config["MONGODB_SETTINGS"] = [
     {
@@ -40,35 +41,42 @@ login_manager.init_app(app)
 
 key = {"noteclipadmin":"admin"}
 
-class User(UserMixin, db.Document):
-    id = db.StringField(required=True)
-    username = db.StringField()
-    password = db.StringField()
+class User(db.Document, UserMixin):
+    # id = db.StringField(required=True, primary_key=True)
+    username = db.StringField(required=True, primary_key=True)
+    password = db.StringField(required=True)
 
-    def __init__(self, user_id):
-        self.id = user_id
+    # def __init__(self, user_id):
+    #     self.id = user_id
 
 @login_manager.user_loader
 def load_user(id: str):
     try:
-        user = User.objects.get(id)
+        user = User.objects(username=id).first()
         return user
     except:
         return 
-    # return User(user_id)
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    userInfo = request.get_json()
-    user = User(**userInfo).save()
+    if request.method == 'GET':
+        return render_template("signup.html")
+    else:
+        userInfo = request.get_json()
+        user = User(**userInfo).save()
+        print(user)
+        return redirect("/new")
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         return render_template("login.html")
     if request.method == 'POST':
-        if checkPassword(request.form["username"], request.form["password"]):
-            login_user(User("admin"))
+        username = request.form["username"]
+        password = request.form["password"]
+        attemptLogin = User.objects(username=username).first()
+        if attemptLogin != None and password == attemptLogin.password:
+            login_user(attemptLogin)
             # authorize()
             return redirect("/new")
         else:
@@ -79,6 +87,10 @@ def newAccount():
     if request.method == 'GET':
         return render_template("newAccount.html")
     # TODO: REWRITE THIS FOR CREATING AN ACCOUNT
+    if request.method == 'POST':
+        username = request.form["username"]
+        password = request.form["password"]
+        attemptLogin = User.objects(username=username).first()
     # if request.method == 'POST':
         # if checkPassword(request.form["username"], request.form["password"]):
         #     login_user(User("admin"))
@@ -109,12 +121,6 @@ def newAccount():
 #     authorId = db.ReferenceField(User, required=True)
 #     elements = db.ListField(db.ReferenceField(Element), required=True)
 #     summary = db.StringField(required=True)
-        
-def checkPassword(username, password):
-    if username in key and password == key[username]:
-        return True
-    else:
-        return False
 
 @app.route("/")
 def home():
@@ -158,6 +164,14 @@ def search(query):
 #     r = requests.post(url, headers=headers, data=data)
 #     return r.text
 
+if __name__ == "__main__":
+    testUser = {
+        "username": "Kien",
+        "password": "admin"
+    }
 
+    # User(**testUser).save()
 
-
+    print(User.objects(username="Kien").first().id)
+    # User.objects(username="Kien").first_or_404().delete()
+    # print(User.objects(username="hi").first())
