@@ -23,7 +23,12 @@ h1 {
   margin: 0;
 }
 
-button, .formSubmit {
+.backButton {
+  text-decoration: none;
+  color: rgb(0, 0, 0)
+}
+
+button, .formSubmit, .backButton {
   font-family: merriweather;
   font-size: 1.5rem;
 
@@ -33,7 +38,7 @@ button, .formSubmit {
   padding: 0.5rem;
 }
 
-button:hover, .formSubmit:hover {
+button:hover, .formSubmit:hover, .backButton:hover {
   background-color: rgb(193, 193, 193);
 }
 
