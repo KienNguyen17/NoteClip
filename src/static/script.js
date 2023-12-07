@@ -121,7 +121,7 @@ function clickPage(){
 function addComment(idNum) {
     // not sure why but it wont let me make the finish comment button an input.... (in or out of form!!!)
     // help from: https://ux.stackexchange.com/questions/112264/best-way-to-put-input-fields-that-take-minutes-and-seconds-mmss
-    commentForm = "<div class='commentForm'><form><label>Start comment at: </label><input class='timeInput' type='number' min='0' max='59' placeholder='0' name='startMinute'>:<input class='timeInput' type='number' min='0' max='59' placeholder='0' name='startSecond'><br/><label>End comment at: </label><input class='timeInput' type='number' min='0' max='59' placeholder='0' name='endMinute'>:<input class='timeInput' type='number' min='0' max='59' placeholder='0' name='endSecond'><br/><textarea name='comment'></textarea></form><button class=\"formSubmit\" type=\"button\" onclick=\"finishComment('" + idNum + "')\">Finish Comment</button></div>"
+    commentForm = "<div class='commentForm'><form id='commentForm" + idNum + "'><label>Start comment at: </label><input class='timeInput' type='number' min='0' max='59' placeholder='0' id='startMinute' name='startMinute'>:<input class='timeInput' type='number' min='0' max='59' placeholder='0' id='startSecond' name='startSecond'><br/><label>End comment at: </label><input class='timeInput' type='number' min='0' max='59' placeholder='0' id='endMinute' name='endMinute'>:<input class='timeInput' type='number' min='0' max='59' placeholder='0' id='endSecond' name='endSecond'><br/><textarea name='comment'></textarea></form><button class=\"formSubmit\" type=\"button\" onclick=\"finishComment('" + idNum + "')\">Finish Comment</button></div>"
     $("#button-music" +idNum).hide()
     $(commentForm).insertBefore("#button-music"+idNum)
 
@@ -129,19 +129,12 @@ function addComment(idNum) {
 }
 
 function changeVidTime(e) {
-    if (e.target.id == 'startMinute') {
-        window.alert("startMinute")
-        player = players[e.target.parent().parent().parent().id.substring(5)]
-        secRemaining = player.getCurrentTime() % 60
-        newTime = (e.data*60) + secRemaining
-        players[playerNum].seekTo(newTime)
-    }
-    if (e.target.id == 'startSecond') {
-        window.alert("startSecond")
-        playerNum = e.target.parent().parent().parent().id.substring(5)
-        minRemaining = player.getCurrentTime() -(player.getCurrentTime() % 60)
-        newTime = e.data*60 + minRemaining
-        players[playerNum].seekTo(newTime)
+    if (e.target.name == 'startMinute' || e.target.name == 'startSecond') {
+        playerNum = e.target.parentNode.id.substring(11)
+        player = players[playerNum]
+        newTime = ($("#startMinute").val()*60) + ($("#startSecond").val()*1)
+        window.alert('min' + $("#startMinute").val() + 'sec' + $("#startSecond").val() + 'newtime' + newTime)
+        players[playerNum].seekTo(newTime, true)
     }
 }
 
