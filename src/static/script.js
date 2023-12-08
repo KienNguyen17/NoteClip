@@ -7,8 +7,13 @@ let playersTime = []
 // Coded with help from: https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click
 var loginButton = document.getElementById('loginButton');
 loginButton.onclick = function() {
-    location.assign("/login");
+    location.assign("/login/good");
 }
+
+// var signupButton = document.getElementById('newAccount');
+// signupButton.onclick = function() {
+//     location.assign("/newAccount/good");
+// }
 
 // var backButton = document.getElementById('backButton');
 // backButton.onclick = function() {
@@ -17,6 +22,7 @@ loginButton.onclick = function() {
 
 var logoutButton = document.getElementById('logout');
 logoutButton.onclick = function() {
+    console.log("work");
     location.assign("/logout");
 }
 
