@@ -185,3 +185,20 @@ function createCommentHTML(musicComment) {
     return commentHTML
 }
 
+function submitPost(e) {
+    e.preventDefault()
+
+    window.alert("SUBMITPOST")
+
+    myFormData = new FormData(e.target)
+    articleContents = $("article").html()
+    window.alert(articleContents)
+
+    // var postInfo = {}
+    // https://api.jquery.com/jquery.post/ 
+}
+
+$(document).ready(function() {
+    window.alert("DOC READY")
+    $("#finishForm").on("submit", (e) => submitPost(e))
+})

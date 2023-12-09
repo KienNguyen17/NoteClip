@@ -71,7 +71,6 @@ def login(status):
 def newAccount(status):
     if request.method == 'GET':
         return render_template("newAccount.html", status=status)
-    # TODO: REWRITE THIS FOR CREATING AN ACCOUNT
     if request.method == 'POST':
         username = request.form["username"]
         password = request.form["password"]
@@ -83,7 +82,7 @@ def newAccount(status):
             return redirect("/login/success")
         
 # class Element(db.EmbeddedDocument):
-#     id = db.IntField(required=True)
+#     order = db.IntField(required=True, primary_key=True)
 
 # class TextElement(Element):
 #     text = db.StringField(required=True)
@@ -98,8 +97,9 @@ def newAccount(status):
 #     comments = db.ListField(db.ReferenceField(MusicComment), required=True)
 
 # class BlogPost(db.Document):
-#     id = db.IntField(required=True)
-#     title = db.StringField(required=True)
+#     # we probably actually want an id so that posts could theoretically have the same title, but i'm not thinking about how to figure that out yet
+#     # blogId = db.StringField(required=True, primary_key=True)
+#     title = db.StringField(required=True, primary_key=True)
 #     authorId = db.ReferenceField(User, required=True)
 #     elements = db.ListField(db.ReferenceField(Element), required=True)
 #     summary = db.StringField(required=True)
@@ -115,10 +115,16 @@ def viewPost(postName):
     # print(authorize())
     return render_template("post.html", postName=postName)
 
-@app.route("/new")
+@app.route("/new", methods=['GET', 'POST'])
 # @login_required
 def createPost():
-    return render_template("createPost.html")
+    if request.method == 'GET':
+        return render_template("createPost.html")
+    if request.method == 'POST':
+        title = request.form["title"]
+        summary = request.form["description"]
+        # also need to get rest of post info - maybe just save the html and remove all the editing tags upon loading?
+
 
 @app.route("/logout")
 @login_required
