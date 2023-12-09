@@ -52,16 +52,6 @@ loginButton.onclick = function() {
     location.assign("/login/good");
 }
 
-// var signupButton = document.getElementById('newAccount');
-// signupButton.onclick = function() {
-//     location.assign("/newAccount/good");
-// }
-
-// var backButton = document.getElementById('backButton');
-// backButton.onclick = function() {
-//     location.assign("../");
-// }
-
 var logoutButton = document.getElementById('logout');
 logoutButton.onclick = function() {
     console.log("work");
@@ -84,7 +74,7 @@ function clickAdd() {
 function addMusic() {
     $("#addChoice").hide()
     var musicId = "music" + musicNum
-    $("<div id=\"" + musicId + "\"><search><form id=\"songSearchForm\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
+    $("<div class='musicDiv' id=\"" + musicId + "\"><search><form id=\"songSearchForm\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
     musicNum++
 }
 
@@ -123,7 +113,7 @@ async function doSearch(musicId) {
 // Used when creating a new post, to finish adding a searched for song
 function addSong(youtubeID, musicId) {    
     idNum = musicId.substring(5)
-    exampleEmbed = "<div id=\"player-" + musicId + "\"></div><button type='button' id='button-" + musicId + "' class='commentButton' onclick='addComment(" + idNum + ")'>Add Comment</button>"
+    exampleEmbed = "<div id=\"player-" + musicId + "\"></div><div class='commentsDiv'><p class='viewComments'>View Comments></p><br/><button type='button' id='button-" + musicId + "' class='commentButton' onclick='addComment(" + idNum + ")'>Add Comment</button></div>"
     $("#search-results").remove()
     $(exampleEmbed).insertAfter("search")
     $("search").remove()
@@ -164,17 +154,13 @@ function finishComment(e, idNum) {
     e.preventDefault()
 
     myFormData = new FormData(e.target)
-    // still not getting past here...
     musicComment = musicBlocks[idNum].addComment(myFormData)
-    commentHTML = "<div class='comment' onclick='viewComment(" + musicComment.startTime + ", " + musicComment.duration + ")'><p>" + musicComment.commentText + "</p></div>"
+    commentHTML = createCommentHTML(musicComment)
     $(commentHTML).insertBefore("#button-music" +idNum)
 
     player = players[idNum]
     $("#button-music" +idNum).show()
-    // BELOW LINE IS NOT WORKIGN AND MESSING UP THE REST
-    commentInfo = $(".commentForm").serializeArray()
     $(".commentForm").remove()
-
 }
 
 function finishPost() {
@@ -186,11 +172,16 @@ function closeFinishPost() {
 }
 
 // ---------------------------------
-// BOTH CREATING AND VIEWING A POST
+// USED FOR BOTH CREATING AND VIEWING A POST
 // ---------------------------------
 
 // Need this function to make sure youtube players work, on both creating new posts and viewing posts
 function onYouTubeIframeAPIReady() {
     console.log("youtube ready")
+}
+
+function createCommentHTML(musicComment) {
+    var commentHTML = "<div class='comment' onclick='viewComment(" + musicComment.startTime + ", " + musicComment.duration + ")'><p>" + musicComment.commentText + "</p></div>"
+    return commentHTML
 }
 
