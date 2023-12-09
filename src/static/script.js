@@ -1,23 +1,3 @@
-class MusicBlock {
-    constructor(youtubeID) {
-        this.youtubeID = youtubeID
-        this.comments = []
-    }
-
-    addComment(myFormData) {
-        startTime += (myFormData.get("startMinute")*60)
-        startTime += myFormData.get("startSecond")
-        endTime += (myFormData.get("endMinute")*60)
-        endTime += myFormData.get("endSecond")
-
-        commentText += myFormData.get("comment")
-
-        musicComment = new MusicComment(startTime, endTime, commentText)
-        this.comments.push(musicComment) 
-        return musicComment
-    }
-}
-
 class MusicComment {
     constructor(startTime, endTime, commentText) {
         this.startTime = startTime;
@@ -31,6 +11,27 @@ class MusicComment {
     }
 }
 
+class MusicBlock {
+    constructor(youtubeID) {
+        this.youtubeID = youtubeID
+        this.comments = []
+    }
+
+    addComment(myFormData) {
+        var startTime = (myFormData.get("startMinute")*60)
+        startTime += myFormData.get("startSecond")
+        var endTime = (myFormData.get("endMinute")*60)
+        endTime += myFormData.get("endSecond")
+
+        
+        var commentText = myFormData.get("comment")
+
+        var musicComment = new MusicComment(startTime, endTime, commentText)
+        this.comments.push(musicComment) 
+
+        return musicComment
+    }
+}
 
 // -------------------------
 // USED FOR CREATING A POST
@@ -152,15 +153,10 @@ function finishComment(e, idNum) {
     e.preventDefault()
 
     myFormData = new FormData(e.target)
-    window.alert(myFormData)
     // still not getting past here...
     musicComment = musicBlocks[idNum].addComment(myFormData)
-    window.alert("1")
     commentHTML = "<div class='comment' onclick='viewComment(" + musicComment.startTime + ", " + musicComment.duration + ")'><p>" + musicComment.commentText + "</p></div>"
-    window.alert("2")
     $(commentHTML).insertBefore("#button-music" +idNum)
-    window.alert("3")
-
 
     player = players[idNum]
     $("#button-music" +idNum).show()
