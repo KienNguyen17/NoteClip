@@ -49,11 +49,22 @@ let musicBlocks = []
 // TODO CHANGE
 var loginButton = document.getElementById('loginButton');
 loginButton.onclick = function() {
-    location.assign("/login");
+    location.assign("/login/good");
 }
+
+// var signupButton = document.getElementById('newAccount');
+// signupButton.onclick = function() {
+//     location.assign("/newAccount/good");
+// }
+
+// var backButton = document.getElementById('backButton');
+// backButton.onclick = function() {
+//     location.assign("../");
+// }
 
 var logoutButton = document.getElementById('logout');
 logoutButton.onclick = function() {
+    console.log("work");
     location.assign("/logout");
 }
 

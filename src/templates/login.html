@@ -13,12 +13,20 @@
         <header>
             <h1>NoteClip</h1>
         </header>
+        {% if status == "success" %}
+            <p>Account created successfully! Log in now.</p>
+        {% elif status == "bad" %}
+            <p>Invalid log in credentials!</p>
+        {% endif %}
         <form method="POST">
             <input type="text" name="username" placeholder="username" /><br/>
             <input type="password" name="password" placeholder="password" /><br/>
             <button type="submit">Log In</button>
         </form>    
-        <a href="/newAccount/good"><button type="button" id="newAccount">Create a New Account</button></a>
+        {% if status != "success" %}
+            <!-- <a href="/newAccount/good"><button type="button" id="newAccount">Create a New Account</button></a> -->
+            <button type="button" id="newAccount">Create a New Account</button>
+        {% endif %}
         <script src="" async defer></script>
     </body>
 </html>

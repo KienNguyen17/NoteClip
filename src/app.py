@@ -39,15 +39,10 @@ youtube = build('youtube', 'v3', developerKey=config.youtube_key)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-key = {"noteclipadmin":"admin"}
 
 class User(db.Document, UserMixin):
-    # id = db.StringField(required=True, primary_key=True)
     username = db.StringField(required=True, primary_key=True)
     password = db.StringField(required=True)
-
-    # def __init__(self, user_id):
-    #     self.id = user_id
 
 @login_manager.user_loader
 def load_user(id: str):
@@ -57,20 +52,10 @@ def load_user(id: str):
     except:
         return 
 
-@app.route("/signup", methods=["GET", "POST"])
-def signup():
+@app.route("/login/<status>", methods=['GET', 'POST'])
+def login(status):
     if request.method == 'GET':
-        return render_template("signup.html")
-    else:
-        userInfo = request.get_json()
-        user = User(**userInfo).save()
-        print(user)
-        return redirect("/new")
-
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    if request.method == 'GET':
-        return render_template("login.html")
+        return render_template("login.html", status=status)
     if request.method == 'POST':
         username = request.form["username"]
         password = request.form["password"]
@@ -80,7 +65,7 @@ def login():
             # authorize()
             return redirect("/new")
         else:
-            return "<p>Bad Login</p>"
+            return redirect("/login/bad")
         
 @app.route("/newAccount/<status>", methods=['GET', 'POST'])
 def newAccount(status):
@@ -95,7 +80,7 @@ def newAccount(status):
             return redirect("/newAccount/bad")
         else:
             User(username=username, password=password).save()
-            return redirect("/newAccount/success")
+            return redirect("/login/success")
         
 # class Element(db.EmbeddedDocument):
 #     id = db.IntField(required=True)
@@ -162,13 +147,14 @@ def search(query):
 #     return r.text
 
 if __name__ == "__main__":
-    testUser = {
-        "username": "Kien",
-        "password": "admin"
-    }
+    pass
+    # testUser = {
+    #     "username": "Kien",
+    #     "password": "admin"
+    # }
 
     # User(**testUser).save()
 
-    print(User.objects(username="Kien").first().id)
+    # print(User.objects(username="Kien").first().id)
     # User.objects(username="Kien").first_or_404().delete()
     # print(User.objects(username="hi").first())
