@@ -188,17 +188,34 @@ function createCommentHTML(musicComment) {
 function submitPost(e) {
     e.preventDefault()
 
-    window.alert("SUBMITPOST")
 
     myFormData = new FormData(e.target)
+    // *Will* include entire HTML of article! We will need to figure out how to get rid of contenteditable on p tags though....
     articleContents = $("article").html()
-    window.alert(articleContents)
 
-    // var postInfo = {}
-    // https://api.jquery.com/jquery.post/ 
+    var postInfo = {"title": myFormData.get("title"), "summary": myFormData.get("description"), "htmlContent": articleContents}
+
+    // Coded with help from: https://stackoverflow.com/questions/29987323/how-do-i-send-data-from-js-to-python-with-flask  
+    $.post("/new/finish", postInfo, function() {
+        console.log("success")
+    })
 }
 
-$(document).ready(function() {
-    window.alert("DOC READY")
-    $("#finishForm").on("submit", (e) => submitPost(e))
-})
+function initCreatePost() {
+    // make sure they are restarted on new load
+    textNum = 0
+    musicNum = 0
+
+    players = []
+    playersTime = []
+
+    musicBlocks = []
+
+    $("#finishForm").on("submit", (e) => submitPost(e));
+}
+
+// Wasn't working... not sure why
+// $(document).ready(function() {
+//     window.alert("DOC READY");
+//     $("#finishForm").on("submit", (e) => submitPost(e));
+// });

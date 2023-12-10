@@ -115,15 +115,19 @@ def viewPost(postName):
     # print(authorize())
     return render_template("post.html", postName=postName)
 
-@app.route("/new", methods=['GET', 'POST'])
+@app.route("/new")
 # @login_required
 def createPost():
-    if request.method == 'GET':
-        return render_template("createPost.html")
-    if request.method == 'POST':
-        title = request.form["title"]
-        summary = request.form["description"]
-        # also need to get rest of post info - maybe just save the html and remove all the editing tags upon loading?
+    return render_template("createPost.html")
+
+@app.route("/new/finish", methods=['POST'])
+def finishPost():
+    title = request.form["title"]
+    summary = request.form["summary"]
+    htmlContent = request.form["htmlContent"]
+    print("title: " + title + "\nsummary: " + summary + "\nhtmlContent: " + htmlContent)
+    # not redirecting rn
+    return redirect("../")
 
 
 @app.route("/logout")
