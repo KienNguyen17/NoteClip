@@ -81,13 +81,14 @@ def newAccount(status):
             User(username=username, password=password).save()
             return redirect("/login/success")
         
-# class Element(db.EmbeddedDocument):
+# class Element(db.Document):
 #     order = db.IntField(required=True, primary_key=True)
+#     meta = {'allow_inheritance': True}
 
 # class TextElement(Element):
 #     text = db.StringField(required=True)
 
-# class MusicComment(db.EmbeddedDocument):
+# class MusicComment(db.Document):
 #     start = db.IntField(required=True)
 #     end = db.IntField(required=True)
 #     text = db.StringField(required=True)
@@ -96,13 +97,13 @@ def newAccount(status):
 #     uri = db.StringField(required=True)
 #     comments = db.ListField(db.ReferenceField(MusicComment), required=True)
 
-# class BlogPost(db.Document):
-#     # we probably actually want an id so that posts could theoretically have the same title, but i'm not thinking about how to figure that out yet
-#     # blogId = db.StringField(required=True, primary_key=True)
-#     title = db.StringField(required=True, primary_key=True)
-#     authorId = db.ReferenceField(User, required=True)
-#     elements = db.ListField(db.ReferenceField(Element), required=True)
-#     summary = db.StringField(required=True)
+class BlogPost(db.Document):
+    # we probably actually want an id so that posts could theoretically have the same title, but i'm not thinking about how to figure that out yet
+    # blogId = db.StringField(required=True, primary_key=True)
+    title = db.StringField(required=True, primary_key=True)
+    authorId = db.ReferenceField(User, required=True)
+    summary = db.StringField(required=True)
+    htmlContent = db.StringField(required=True)
 
 @app.route("/")
 def home():
@@ -125,7 +126,9 @@ def finishPost():
     title = request.form["title"]
     summary = request.form["summary"]
     htmlContent = request.form["htmlContent"]
+    authorId = "IDKYET"
     print("title: " + title + "\nsummary: " + summary + "\nhtmlContent: " + htmlContent)
+    BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent).save()
     # not redirecting rn
     return redirect("../")
 
