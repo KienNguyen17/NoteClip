@@ -65,7 +65,7 @@ def login(status):
             # authorize()
             # this is how to get the current user's name
             # print(current_user.username)
-            return redirect("/feed")
+            return redirect("/")
         else:
             return redirect("/login/bad")
         
@@ -109,7 +109,10 @@ class BlogPost(db.Document):
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    if not current_user.is_authenticated:
+        return render_template("index.html", login=False)
+    else:
+        return render_template("index.html", login=True)
 
 @app.route("/feed")
 def feed():
@@ -167,6 +170,7 @@ def search(query):
 
 if __name__ == "__main__":
     pass
+    
     # testUser = {
     #     "username": "Kien",
     #     "password": "admin"

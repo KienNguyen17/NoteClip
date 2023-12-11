@@ -73,6 +73,11 @@ applyFunction(logoutButton, () => {
     location.assign("/logout");
 })
 
+var backButton = document.getElementById('backButton');
+applyFunction(backButton, () => {
+    location.assign("../");
+})
+
 // Coded with help from: https://stackoverflow.com/questions/178325/how-do-i-check-if-an-element-is-hidden-in-jquery
 // Used when creating a new post, when a user clicks the add button
 function clickAdd() {

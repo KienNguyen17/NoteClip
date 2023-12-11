@@ -22,8 +22,15 @@
             <img src="..\static\images\NoteClipLight.png" alt="a graphic representing a treble clef surrounding a pen" />
             <h1>NoteClip</h1>
             <h2>Recent Posts</h2>
-            <button id="loginButton" type="button">Log In</button>
-            <!-- <button type="button" onClick="getAccessKey()">Authorize</button> -->
+            {% if login %}
+                <div id="twoButton">
+                    <button id="newPostButton" type="button">Add Post</button>
+                    <button id="logout" type="button">Log Out</button>
+                </div>
+            {% else %}
+                <button id="loginButton" type="button">Log In</button>
+            {% endif %}
+            
         </header>
         <!-- Have some Jinja in here asking if there are posts in database, 
             then if there are greater than some amount (10?) (probably only want to load so many at once) (big questions here),
