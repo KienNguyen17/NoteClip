@@ -101,6 +101,15 @@ p, .formSubmit,  label {
   font-size: 8rem;
 }
 
+.home h2 {
+  grid-column: 2;
+  grid-row: 2;
+  padding-left: 2rem;
+  margin: 0.5rem;
+
+  font-size: 2.5rem;
+}
+
 .home button {
   grid-column: 3;
   grid-row: 1;
@@ -233,8 +242,11 @@ search, #search-results {
 }
 
 .addVideoButton {
-  float: "right";
-  display: inline;
+  grid-column: 3;
+}
+
+.result-item {
+  grid-column: 1 / span 2;
 }
 
 iframe {

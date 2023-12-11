@@ -47,16 +47,31 @@ let musicBlocks = []
 
 // Coded with help from: https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-clickTODO 
 // TODO CHANGE
-var loginButton = document.getElementById('loginButton');
-loginButton.onclick = function() {
-    location.assign("/login/good");
+function applyFunction(clickedButton, callback) {
+    if (clickedButton != null) {
+        clickedButton.onclick = callback;
+    }
 }
 
+var loginButton = document.getElementById('loginButton');
+applyFunction(loginButton, () => {
+    location.assign("/login/good");
+})
+
+var newPostButton = document.getElementById('newPostButton');
+applyFunction(newPostButton, () => {
+    location.assign("/new");
+})
+
+var newAccountButton = document.getElementById('newAccount');
+applyFunction(newAccountButton, () => {
+    location.assign("/newAccount/good");
+})
+
 var logoutButton = document.getElementById('logout');
-logoutButton.onclick = function() {
-    console.log("work");
+applyFunction(logoutButton, () => {
     location.assign("/logout");
-}
+})
 
 // Coded with help from: https://stackoverflow.com/questions/178325/how-do-i-check-if-an-element-is-hidden-in-jquery
 // Used when creating a new post, when a user clicks the add button

@@ -15,24 +15,15 @@
         <link rel="stylesheet" href="..\static\style.css">
     </head>
     <body class="home">
-        
 
         <header>
             <!-- Put it as png cause it kept having weird excess space as an svg (maybe its a problem of how i saved the svg) -->
             <img src="..\static\images\NoteClipLight.png" alt="a graphic representing a treble clef surrounding a pen" />
             <h1>NoteClip</h1>
             <h2>Recent Posts</h2>
-            <button id="loginButton" type="button">Log In</button>
-            <!-- <button type="button" onClick="getAccessKey()">Authorize</button> -->
+            <button id="newPostButton" type="button">Add Post</button>
         </header>
-        <!-- Have some Jinja in here asking if there are posts in database, 
-            then if there are greater than some amount (10?) (probably only want to load so many at once) (big questions here),
-            then display most recent max or less posts -->
-        <!--
-            The code to display the posts would be in the script.js file, so app.py would access 
-            the database and send the data in a json(?) format, which the script would fetch. I wonder 
-            If Jinja can just handle the json file then (or maybe as a list?)
-        -->
+    
         <script src="..\static\script.js" async defer></script>
     </body>
 </html>

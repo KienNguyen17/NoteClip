@@ -2,7 +2,7 @@ from pprint import pprint
 import requests
 from base64 import b64encode 
 from flask import Flask, jsonify, render_template, make_response, request, redirect, url_for
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask_login import LoginManager, UserMixin, current_user, login_user, login_required, logout_user
 from flask_mongoengine import MongoEngine
 from mongoengine import *
 from googleapiclient.discovery import build
@@ -63,7 +63,9 @@ def login(status):
         if attemptLogin != None and password == attemptLogin.password:
             login_user(attemptLogin)
             # authorize()
-            return redirect("/new")
+            # this is how to get the current user's name
+            # print(current_user.username)
+            return redirect("/feed")
         else:
             return redirect("/login/bad")
         
@@ -109,6 +111,10 @@ class BlogPost(db.Document):
 def home():
     return render_template("index.html")
 
+@app.route("/feed")
+def feed():
+    return render_template("feed.html")
+
 # Maybe we will want to pass in a post object with all info to put in Jinja?
 # ohhh how are we gonna store all these formatting things like order of elements and such....
 @app.route("/post/<postName>")
@@ -117,7 +123,7 @@ def viewPost(postName):
     return render_template("post.html", postName=postName)
 
 @app.route("/new")
-# @login_required
+@login_required
 def createPost():
     return render_template("createPost.html")
 
