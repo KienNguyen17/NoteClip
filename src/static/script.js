@@ -220,6 +220,8 @@ function submitPost(e) {
     $.post("/new/finish", postInfo, function() {
         console.log("success")
     })
+
+    location.assign("/post/" + myFormData.get("title"));
 }
 
 function initCreatePost() {

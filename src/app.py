@@ -142,7 +142,7 @@ def finishPost():
     print("title: " + title + "\nsummary: " + summary + "\nhtmlContent: " + htmlContent)
     BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent).save()
     # not redirecting rn
-    return redirect("../")
+    return 
 
 
 @app.route("/logout")
