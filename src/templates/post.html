@@ -7,12 +7,11 @@
         <meta name="description" content=""> 
         <!-- TODO: Are these the settings we want -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- TODO: Do we want jquery
         <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous">
-        </script> -->
+        </script>
         <link rel="shortcut icon" href="..\static\favicon.ico">
         <link rel="stylesheet" href="..\static\style.css">
     </head>
@@ -20,7 +19,11 @@
         <header>
             <!-- Final back button will probably just be visual, no words (will need accessibility for that) -->
             <button class="backButton" type="button"></button>     
-            <h1>{{ postName }}</h1>
+            <h1>{{ title }}</h1>
+            <h2> {{ author }} </h2>
+            <!-- Help from: https://stackoverflow.com/questions/3206344/passing-html-to-template-using-flask-jinja2 -->
+            <article>{{ article|safe }}</article>
         </header>
+        <script type="text/javascript" src="..\static\script.js" async defer></script>
     </body>
 </html>
