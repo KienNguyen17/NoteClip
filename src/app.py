@@ -124,7 +124,7 @@ def viewPost(title):
         return redirect("/")
     else:
         author = findPost.authorId.username
-        
+
         # print(authorize())
         return render_template("post.html", title=title, author=author, article=findPost.htmlContent)
 
@@ -172,7 +172,8 @@ def search(query):
 #     return r.text
 
 if __name__ == "__main__":
-    pass
+    BlogPost.objects(title="Fox").first().delete()
+    # pass
     # testUser = {
     #     "username": "Kien",
     #     "password": "admin"

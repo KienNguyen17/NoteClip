@@ -205,7 +205,13 @@ function submitPost(e) {
 
 
     myFormData = new FormData(e.target)
-    // *Will* include entire HTML of article! We will need to figure out how to get rid of contenteditable on p tags though....
+
+    // Removes post edit functionality before saving HTML
+    $(".commentButton").remove()
+    $("#addDiv").remove()
+    $("#finishButton").remove()
+    $("p").attr("contenteditable", "False") 
+
     articleContents = $("article").html()
 
     var postInfo = {"title": myFormData.get("title"), "summary": myFormData.get("description"), "htmlContent": articleContents}
