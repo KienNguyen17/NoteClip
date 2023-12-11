@@ -20,7 +20,10 @@
         <header>
             <!-- Final back button will probably just be visual, no words (will need accessibility for that) -->
             <button class="backButton" type="button"></button>     
-            <h1>{{ postName }}</h1>
+            <h1>{{ title }}</h1>
+            <h2> {{ author }} </h2>
+            <!-- Help from: https://stackoverflow.com/questions/3206344/passing-html-to-template-using-flask-jinja2 -->
+            {{ article|safe }}
         </header>
     </body>
 </html>

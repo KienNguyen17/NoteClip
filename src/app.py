@@ -117,10 +117,16 @@ def feed():
 
 # Maybe we will want to pass in a post object with all info to put in Jinja?
 # ohhh how are we gonna store all these formatting things like order of elements and such....
-@app.route("/post/<postName>")
-def viewPost(postName):
-    # print(authorize())
-    return render_template("post.html", postName=postName)
+@app.route("/post/<title>")
+def viewPost(title):
+    findPost = BlogPost.objects(title=title).first()
+    if findPost == None:
+        return redirect("/")
+    else:
+        author = findPost.authorId.username
+        
+        # print(authorize())
+        return render_template("post.html", title=title, author=author, article=findPost.htmlContent)
 
 @app.route("/new")
 @login_required
@@ -132,7 +138,7 @@ def finishPost():
     title = request.form["title"]
     summary = request.form["summary"]
     htmlContent = request.form["htmlContent"]
-    authorId = "IDKYET"
+    authorId = current_user
     print("title: " + title + "\nsummary: " + summary + "\nhtmlContent: " + htmlContent)
     BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent).save()
     # not redirecting rn
