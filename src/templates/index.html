@@ -15,7 +15,6 @@
         <link rel="stylesheet" href="..\static\style.css">
     </head>
     <body class="home">
-        
 
         <header>
             <!-- Put it as png cause it kept having weird excess space as an svg (maybe its a problem of how i saved the svg) -->
@@ -32,14 +31,17 @@
             {% endif %}
             
         </header>
-        <!-- Have some Jinja in here asking if there are posts in database, 
-            then if there are greater than some amount (10?) (probably only want to load so many at once) (big questions here),
-            then display most recent max or less posts -->
-        <!--
-            The code to display the posts would be in the script.js file, so app.py would access 
-            the database and send the data in a json(?) format, which the script would fetch. I wonder 
-            If Jinja can just handle the json file then (or maybe as a list?)
-        -->
+        <div id="blog-posts">
+            {% for post in posts %}
+                <a href="/post/{{post.title}}">
+                <p>{{post.title}}</p>
+                <p>by {{post.authorId.username}}</p>
+                <p>{{post.summary}}</p>
+                </a>
+                </br>
+            {% endfor %}
+        </div>
+        <a href="/feed">See all post</a>
         <script src="..\static\script.js" async defer></script>
     </body>
 </html>
