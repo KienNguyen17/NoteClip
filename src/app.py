@@ -109,14 +109,11 @@ class BlogPost(db.Document):
 
 @app.route("/")
 def home():
+    posts = BlogPost.objects()
     if not current_user.is_authenticated:
-        return render_template("index.html", login=False)
+        return render_template("index.html", login=False, posts=posts)
     else:
-        return render_template("index.html", login=True)
-
-@app.route("/feed")
-def feed():
-    return render_template("feed.html")
+        return render_template("index.html", login=True, posts=posts)
 
 # Maybe we will want to pass in a post object with all info to put in Jinja?
 # ohhh how are we gonna store all these formatting things like order of elements and such....
@@ -175,7 +172,7 @@ def search(query):
 #     return r.text
 
 if __name__ == "__main__":
-    # BlogPost.objects(title="Fox").first().delete()
+    # BlogPost.objects(title="test").first().delete()
     pass
     # testUser = {
     #     "username": "Kien",
@@ -187,3 +184,15 @@ if __name__ == "__main__":
     # print(User.objects(username="Kien").first().id)
     # User.objects(username="Kien").first_or_404().delete()
     # print(User.objects(username="hi").first())
+
+    # testPost = {
+    #     "title": "test",
+    #     "authorId": "Kien",
+    #     "summary": "test",
+    #     "htmlContent":"test"
+    # }
+
+    # BlogPost(**testPost).save()
+
+    # for obj in BlogPost.objects():
+    #     print(obj.title)
