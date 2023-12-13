@@ -1,15 +1,17 @@
 class MusicComment {
-    constructor(startTime, endTime, commentText) {
+    constructor(startTime, endTime, commentText, playerId) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.duration = endTime - startTime;
         this.commentText = commentText
+        this.playerId = playerId
     }
 }
 
 class MusicBlock {
-    constructor(youtubeID) {
+    constructor(youtubeID, playerId) {
         this.youtubeID = youtubeID
+        this.playerId = playerId
         this.comments = []
     }
 
@@ -22,7 +24,7 @@ class MusicBlock {
         
         var commentText = myFormData.get("comment")
 
-        var musicComment = new MusicComment(startTime, endTime, commentText)
+        var musicComment = new MusicComment(startTime, endTime, commentText, this.playerId)
         this.comments.push(musicComment) 
 
         return musicComment
@@ -141,7 +143,7 @@ function addSong(youtubeID, musicId) {
         videoId: youtubeID,
     });
 
-    musicBlocks.push(new MusicBlock(youtubeID))
+    musicBlocks.push(new MusicBlock(youtubeID, musicId.substring(5)))
     players.push(player)
     playersTime.push(player.getCurrentTime())
 }
@@ -199,12 +201,15 @@ function onYouTubeIframeAPIReady() {
 }
 
 function createCommentHTML(musicComment) {
-    var commentHTML = "<div class='comment' onclick='clickComment(" + musicComment.startTime + ", " + musicComment.duration + ")'><p>" + musicComment.commentText + "</p></div>"
+    var commentHTML = "<div class='comment' onclick='clickComment(" + musicComment.startTime + ", " + musicComment.duration + ", " + musicComment.playerId + ")'><p>" + musicComment.commentText + "</p></div>"
     return commentHTML
 }
 
-function clickComment(start, duration) {
-    console.log("Hello")
+function clickComment(start, duration, playerId) {
+    player = YT.get("player-music"+playerId)
+    player.seekTo(start, true)
+
+    // TODO: Either implement or get rid of end comment
 }
 
 function viewComments(e) {
