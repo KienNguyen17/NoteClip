@@ -109,7 +109,7 @@ class BlogPost(db.Document):
 
 @app.route("/")
 def home():
-    posts = BlogPost.objects()
+    posts = BlogPost.objects()[:10]
     if not current_user.is_authenticated:
         return render_template("index.html", login=False, posts=posts)
     else:
@@ -128,6 +128,11 @@ def viewPost(title):
         # print(authorize())
         return render_template("post.html", title=title, author=author, article=findPost.htmlContent)
 
+@app.route("/feed")
+def feed():
+    posts = BlogPost.objects()
+    return render_template("feed.html", posts=posts)
+
 @app.route("/new")
 @login_required
 def createPost():
@@ -142,7 +147,7 @@ def finishPost():
     print("title: " + title + "\nsummary: " + summary + "\nhtmlContent: " + htmlContent)
     BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent).save()
     # not redirecting rn
-    return 
+    return render_template("/post/" + title) 
 
 
 @app.route("/logout")
@@ -194,5 +199,5 @@ if __name__ == "__main__":
 
     # BlogPost(**testPost).save()
 
-    # for obj in BlogPost.objects():
+    # for obj in BlogPost.objects()[:20]:
     #     print(obj.title)
