@@ -39,6 +39,7 @@ class MusicBlock {
 
 let textNum = 0
 let musicNum = 0
+let thumbnailURL = ""
 
 let players = []
 let playersTime = []
@@ -123,12 +124,18 @@ async function doSearch(musicId) {
 
     for (key of Object.keys(search_results)) {
         let item = search_results[key];
-        $("<div class='result-item'><p class='search-title'>" + item["snippet"]["title"] + "</p>" + "<p class='search-description'>" + item["snippet"]["description"] + "</p></br></div><button id=\"result-" + key + "\" class='addVideoButton' type='button'>Add</button>").appendTo("#search-results");
+        $("<img id=\"image-" + key + "\" class='thumbnail' width='50' height='50'><div class='result-item'><p class='search-title'>" + item["snippet"]["title"] + "</p>" + "<p class='search-description'>" + item["snippet"]["description"] + "</p></br></div><button id=\"result-" + key + "\" class='addVideoButton' type='button'>Add</button>").appendTo("#search-results");
         $(("#result-" + key)).on("click", () => {
+            if (musicNum == 1){
+                thumbnailURL = item["snippet"]["thumbnails"]["default"]["url"];
+            }
             addSong(item["id"]["videoId"], musicId)
+            
         })
+        $(("#image-" + key)).attr("src", item["snippet"]["thumbnails"]["default"]["url"])
     }
 }
+
 
 // Used when creating a new post, to finish adding a searched for song
 function addSong(youtubeID, musicId) {    
@@ -219,7 +226,7 @@ function submitPost(e) {
 
     articleContents = $("article").html()
 
-    var postInfo = {"title": myFormData.get("title"), "summary": myFormData.get("description"), "htmlContent": articleContents}
+    var postInfo = {"title": myFormData.get("title"), "summary": myFormData.get("description"), "htmlContent": articleContents, "thumbnailURL": thumbnailURL}
 
     // Coded with help from: https://stackoverflow.com/questions/29987323/how-do-i-send-data-from-js-to-python-with-flask  
     $.post("/new/finish", postInfo, function() {

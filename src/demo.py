@@ -1,4 +1,5 @@
-youtube_key = "AIzaSyAG32EmbWBvbjzyX3TO65v8gKfLs8mVE6Y"
+import config
+youtube_key = config.youtube_key
 
 from googleapiclient.discovery import build
 from pprint import pprint
@@ -10,5 +11,5 @@ request = youtube.search().list(part="snippet", maxResults=5, q=query, videoEmbe
 
 response = request.execute()
 
-pprint([thing["snippet"] for thing in response["items"]])
+pprint([thing for thing in response["items"]])
 # print(response["items"]["id"]["videoId"])

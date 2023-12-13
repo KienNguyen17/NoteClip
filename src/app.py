@@ -106,6 +106,7 @@ class BlogPost(db.Document):
     authorId = db.ReferenceField(User, required=True)
     summary = db.StringField(required=True)
     htmlContent = db.StringField(required=True)
+    thumbnailURL = db.StringField(default="../static/images/NoteClipLight.png")
 
 @app.route("/")
 def home():
@@ -143,9 +144,10 @@ def finishPost():
     title = request.form["title"]
     summary = request.form["summary"]
     htmlContent = request.form["htmlContent"]
+    thumbnailURL = request.form["thumbnailURL"]
     authorId = current_user
     print("title: " + title + "\nsummary: " + summary + "\nhtmlContent: " + htmlContent)
-    BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent).save()
+    BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent, thumbnailURL=thumbnailURL).save()
     # not redirecting rn
     return render_template("/post/" + title) 
 
@@ -177,7 +179,7 @@ def search(query):
 #     return r.text
 
 if __name__ == "__main__":
-    # BlogPost.objects(title="test").first().delete()
+    # BlogPost.objects(title="hamlet").first().delete()
     pass
     # testUser = {
     #     "username": "Kien",

@@ -34,6 +34,7 @@
         <div id="blog-posts">
             {% for post in posts %}
                 <a href="/post/{{post.title}}">
+                <img src="{{post.thumbnailURL}}" height="60" width="60">
                 <p>{{post.title}}</p>
                 <p>by {{post.authorId.username}}</p>
                 <p>{{post.summary}}</p>
