@@ -1,32 +1,30 @@
 class MusicComment {
-    constructor(startTime, endTime, commentText) {
+    constructor(startTime, endTime, commentText, playerId) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.duration = endTime - startTime;
         this.commentText = commentText
-    }
-
-    addToPage() {
-
+        this.playerId = playerId
     }
 }
 
 class MusicBlock {
-    constructor(youtubeID) {
+    constructor(youtubeID, playerId) {
         this.youtubeID = youtubeID
+        this.playerId = playerId
         this.comments = []
     }
 
     addComment(myFormData) {
         var startTime = (myFormData.get("startMinute")*60)
-        startTime += myFormData.get("startSecond")
+        startTime += Number(myFormData.get("startSecond"))
         var endTime = (myFormData.get("endMinute")*60)
-        endTime += myFormData.get("endSecond")
+        endTime += Number(myFormData.get("endSecond"))
 
         
         var commentText = myFormData.get("comment")
 
-        var musicComment = new MusicComment(startTime, endTime, commentText)
+        var musicComment = new MusicComment(startTime, endTime, commentText, this.playerId)
         this.comments.push(musicComment) 
 
         return musicComment
@@ -47,7 +45,6 @@ let playersTime = []
 let musicBlocks = []
 
 // Coded with help from: https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-clickTODO 
-// TODO CHANGE
 function applyFunction(clickedButton, callback) {
     if (clickedButton != null) {
         clickedButton.onclick = callback;
@@ -140,10 +137,11 @@ async function doSearch(musicId) {
 // Used when creating a new post, to finish adding a searched for song
 function addSong(youtubeID, musicId) {    
     idNum = musicId.substring(5)
-    exampleEmbed = "<div id=\"player-" + musicId + "\"></div><div class='commentsDiv'><p class='viewComments'>View Comments></p><br/><button type='button' id='button-" + musicId + "' class='commentButton' onclick='addComment(" + idNum + ")'>Add Comment</button></div>"
+    exampleEmbed = "<div id=\"player-" + musicId + "\"></div><div class='commentsDiv'><img id='viewComments-" + musicId + "' src='..\\static\\images\\triangle.png' alt='a simple arrow'><p>View Comments</p><br/><div id='comments-"+musicId+"' class='comments-music'></div><button type='button' id='button-" + musicId + "' class='commentButton' onclick='addComment(" + idNum + ")'>Add Comment</button></div>"
     $("#search-results").remove()
     $(exampleEmbed).insertAfter("search")
     $("search").remove()
+    $("#viewComments-" + musicId).on("click", (e) => viewComments(e))
 
     var player;
     player = new YT.Player('player-' + musicId, {
@@ -152,7 +150,7 @@ function addSong(youtubeID, musicId) {
         videoId: youtubeID,
     });
 
-    musicBlocks.push(new MusicBlock(youtubeID))
+    musicBlocks.push(new MusicBlock(youtubeID, musicId.substring(5)))
     players.push(player)
     playersTime.push(player.getCurrentTime())
 }
@@ -183,12 +181,14 @@ function finishComment(e, idNum) {
     myFormData = new FormData(e.target)
     musicComment = musicBlocks[idNum].addComment(myFormData)
     commentHTML = createCommentHTML(musicComment)
-    $(commentHTML).insertBefore("#button-music" +idNum)
+    $("#comments-music"+idNum).append(commentHTML)
+    // $(commentHTML).insertBefore("#button-music" +idNum)
 
     player = players[idNum]
     $("#button-music" +idNum).show()
     $(".commentForm").remove()
 }
+
 
 function finishPost() {
     $("#finishDiv").show()
@@ -208,8 +208,26 @@ function onYouTubeIframeAPIReady() {
 }
 
 function createCommentHTML(musicComment) {
-    var commentHTML = "<div class='comment' onclick='viewComment(" + musicComment.startTime + ", " + musicComment.duration + ")'><p>" + musicComment.commentText + "</p></div>"
+    var commentHTML = "<div class='comment' onclick='clickComment(" + musicComment.startTime + ", " + musicComment.duration + ", " + musicComment.playerId + ")'><p>" + musicComment.commentText + "</p></div>"
     return commentHTML
+}
+
+function clickComment(start, duration, playerId) {
+    player = YT.get("player-music"+playerId)
+    player.seekTo(start, true)
+
+    // TODO: Either implement or get rid of end comment
+}
+
+function viewComments(e) {
+    idNum = e.target.id.substring(18)
+    if ($("#comments-music"+idNum).css("display") == "none") {
+        $("#comments-music"+idNum).show()
+    }
+    else {
+        $("#comments-music"+idNum).hide()
+    }
+        
 }
 
 function submitPost(e) {
@@ -224,6 +242,7 @@ function submitPost(e) {
     $("#finishButton").remove()
     $("p").attr("contenteditable", "False") 
 
+    // This is probably not a very secure way to do it, but we are on a time limit here
     articleContents = $("article").html()
 
     var postInfo = {"title": myFormData.get("title"), "summary": myFormData.get("description"), "htmlContent": articleContents, "thumbnailURL": thumbnailURL}

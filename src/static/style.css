@@ -70,6 +70,10 @@ p, .formSubmit,  label {
   margin: 0;
 }
 
+.comments-music {
+  display: none;
+}
+
 /* ---------- */
 /* Home page */
 /* -------- */
@@ -250,7 +254,7 @@ p, .formSubmit,  label {
 .musicDiv {
   display: grid;
 
-  grid-template-columns: 640px 2rem 1fr;
+  grid-template-columns: 640px 20rem 1fr;
 }
 
 search {
