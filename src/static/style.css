@@ -191,6 +191,10 @@ h2 {
 /* Create Post and Post */
 /* ------------------- */
 
+#logout {
+  grid-column: 3;
+}
+
 .createPost header {
   display: grid;
   grid-template-columns: 1fr 20fr 3fr;
@@ -376,8 +380,5 @@ iframe {
 }
 
 /* TODO: MAKE LOGOUT A GENERAL THING */
-.createPost #logout {
-  grid-column: 3;
-}
 
 
