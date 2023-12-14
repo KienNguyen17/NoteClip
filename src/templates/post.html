@@ -15,15 +15,23 @@
         <link rel="shortcut icon" href="..\static\favicon.ico">
         <link rel="stylesheet" href="..\static\style.css">
     </head>
-    <body class="post">
+    <body class="post" onload="initViewPost()">
         <header>
             <!-- Final back button will probably just be visual, no words (will need accessibility for that) -->
-            <button class="backButton" type="button"></button>     
+            <button id="backButton" type="button"><</button>     
             <h1>{{ title }}</h1>
             <h2> {{ author }} </h2>
-            <!-- Help from: https://stackoverflow.com/questions/3206344/passing-html-to-template-using-flask-jinja2 -->
-            <article>{{ article|safe }}</article>
         </header>
+        <!-- Help from: https://stackoverflow.com/questions/3206344/passing-html-to-template-using-flask-jinja2 -->
+        <article>{{ article|safe }}</article>
+        
         <script type="text/javascript" src="..\static\script.js" async defer></script>
+        <script>
+            var tag = document.createElement('script');
+
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        </script>
     </body>
 </html>

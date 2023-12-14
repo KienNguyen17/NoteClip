@@ -44,6 +44,19 @@ let playersTime = []
 
 let musicBlocks = []
 
+function initCreatePost() {
+    // make sure they are restarted on new load
+    textNum = 0
+    musicNum = 0
+
+    players = []
+    playersTime = []
+
+    musicBlocks = []
+
+    $("#finishForm").on("submit", (e) => submitPost(e));
+}
+
 // Coded with help from: https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-clickTODO 
 function applyFunction(clickedButton, callback) {
     if (clickedButton != null) {
@@ -169,7 +182,7 @@ function addComment(idNum) {
 function changeVidTime(e) {
     if (e.target.name == 'startMinute' || e.target.name == 'startSecond') {
         playerNum = e.target.parentNode.id.substring(11)
-        player = players[playerNum]
+        // player = players[playerNum]
         newTime = ($("#startMinute").val()*60) + ($("#startSecond").val()*1)
         players[playerNum].seekTo(newTime, true)
     }
@@ -198,38 +211,6 @@ function closeFinishPost() {
     $("#finishDiv").hide()
 }
 
-// ---------------------------------
-// USED FOR BOTH CREATING AND VIEWING A POST
-// ---------------------------------
-
-// Need this function to make sure youtube players work, on both creating new posts and viewing posts
-function onYouTubeIframeAPIReady() {
-    console.log("youtube ready")
-}
-
-function createCommentHTML(musicComment) {
-    var commentHTML = "<div class='comment' onclick='clickComment(" + musicComment.startTime + ", " + musicComment.duration + ", " + musicComment.playerId + ")'><p>" + musicComment.commentText + "</p></div>"
-    return commentHTML
-}
-
-function clickComment(start, duration, playerId) {
-    player = YT.get("player-music"+playerId)
-    player.seekTo(start, true)
-
-    // TODO: Either implement or get rid of end comment
-}
-
-function viewComments(e) {
-    idNum = e.target.id.substring(18)
-    if ($("#comments-music"+idNum).css("display") == "none") {
-        $("#comments-music"+idNum).show()
-    }
-    else {
-        $("#comments-music"+idNum).hide()
-    }
-        
-}
-
 function submitPost(e) {
     e.preventDefault()
 
@@ -253,18 +234,159 @@ function submitPost(e) {
     })
 }
 
-function initCreatePost() {
-    // make sure they are restarted on new load
-    textNum = 0
-    musicNum = 0
+// ---------------------------------
+// USED FOR BOTH CREATING AND VIEWING A POST
+// ---------------------------------
 
-    players = []
-    playersTime = []
-
-    musicBlocks = []
-
-    $("#finishForm").on("submit", (e) => submitPost(e));
+// Need this function to make sure youtube players work, on both creating new posts and viewing posts
+function onYouTubeIframeAPIReady() {
+    console.log("youtube ready")
 }
+
+function createCommentHTML(musicComment) {
+    var commentHTML = "<div class='comment' onclick='clickComment(" + musicComment.startTime + ", " + musicComment.duration + ", " + musicComment.playerId + ")'><p>" + musicComment.commentText + "</p></div>"
+    return commentHTML
+}
+
+function clickComment(start, duration, playerId) {
+    //  help from: https://stackoverflow.com/questions/19603618/how-do-i-get-the-reference-to-an-existing-youtube-player
+    // player = new YT.Player('player-music'+playerId)
+    // window.alert(start)
+    // window.alert(player)
+    // player.seekTo(start, true)
+
+
+    callPlayer('player-music'+playerId, "seekTo", [start, true])
+    // TODO: Either implement or get rid of end comment
+}
+
+// Found function at this URL: https://stackoverflow.com/questions/7443578/youtube-iframe-api-how-do-i-control-an-iframe-player-thats-already-in-the-html
+/**
+ * @author       Rob W <gwnRob@gmail.com>
+ * @website      https://stackoverflow.com/a/7513356/938089
+ * @version      20190409
+ * @description  Executes function on a framed YouTube video (see website link)
+ *               For a full list of possible functions, see:
+ *               https://developers.google.com/youtube/js_api_reference
+ * @param String frame_id The id of (the div containing) the frame
+ * @param String func     Desired function to call, eg. "playVideo"
+ *        (Function)      Function to call when the player is ready.
+ * @param Array  args     (optional) List of arguments to pass to function func*/
+function callPlayer(frame_id, func, args) {
+    if (window.jQuery && frame_id instanceof jQuery) frame_id = frame_id.get(0).id;
+    var iframe = document.getElementById(frame_id);
+    if (iframe && iframe.tagName.toUpperCase() != 'IFRAME') {
+        iframe = iframe.getElementsByTagName('iframe')[0];
+    }
+
+    // When the player is not ready yet, add the event to a queue
+    // Each frame_id is associated with an own queue.
+    // Each queue has three possible states:
+    //  undefined = uninitialised / array = queue / .ready=true = ready
+    if (!callPlayer.queue) callPlayer.queue = {};
+    var queue = callPlayer.queue[frame_id],
+        domReady = document.readyState == 'complete';
+
+    if (domReady && !iframe) {
+        // DOM is ready and iframe does not exist. Log a message
+        window.console && console.log('callPlayer: Frame not found; id=' + frame_id);
+        if (queue) clearInterval(queue.poller);
+    } else if (func === 'listening') {
+        // Sending the "listener" message to the frame, to request status updates
+        if (iframe && iframe.contentWindow) {
+            func = '{"event":"listening","id":' + JSON.stringify(''+frame_id) + '}';
+            iframe.contentWindow.postMessage(func, '*');
+        }
+    } else if ((!queue || !queue.ready) && (
+               !domReady ||
+               iframe && !iframe.contentWindow ||
+               typeof func === 'function')) {
+        if (!queue) queue = callPlayer.queue[frame_id] = [];
+        queue.push([func, args]);
+        if (!('poller' in queue)) {
+            // keep polling until the document and frame is ready
+            queue.poller = setInterval(function() {
+                callPlayer(frame_id, 'listening');
+            }, 250);
+            // Add a global "message" event listener, to catch status updates:
+            messageEvent(1, function runOnceReady(e) {
+                if (!iframe) {
+                    iframe = document.getElementById(frame_id);
+                    if (!iframe) return;
+                    if (iframe.tagName.toUpperCase() != 'IFRAME') {
+                        iframe = iframe.getElementsByTagName('iframe')[0];
+                        if (!iframe) return;
+                    }
+                }
+                if (e.source === iframe.contentWindow) {
+                    // Assume that the player is ready if we receive a
+                    // message from the iframe
+                    clearInterval(queue.poller);
+                    queue.ready = true;
+                    messageEvent(0, runOnceReady);
+                    // .. and release the queue:
+                    while (tmp = queue.shift()) {
+                        callPlayer(frame_id, tmp[0], tmp[1]);
+                    }
+                }
+            }, false);
+        }
+    } else if (iframe && iframe.contentWindow) {
+        // When a function is supplied, just call it (like "onYouTubePlayerReady")
+        if (func.call) return func();
+        // Frame exists, send message
+        iframe.contentWindow.postMessage(JSON.stringify({
+            "event": "command",
+            "func": func,
+            "args": args || [],
+            "id": frame_id
+        }), "*");
+    }
+    /* IE8 does not support addEventListener... */
+    function messageEvent(add, listener) {
+        var w3 = add ? window.addEventListener : window.removeEventListener;
+        w3 ?
+            w3('message', listener, !1)
+        :
+            (add ? window.attachEvent : window.detachEvent)('onmessage', listener);
+    }
+}
+
+
+function viewComments(e) {
+    idNum = e.target.id.substring(18)
+    if ($("#comments-music"+idNum).css("display") == "none") {
+        $("#comments-music"+idNum).show()
+        $("#viewComments-music"+idNum).css("-webkit-transform", "rotate(270deg)")
+        $("#viewComments-music"+idNum).css("-moz-transform", "rotate(270deg)")
+        $("#viewComments-music"+idNum).css("-o-transform", "rotate(270deg)")
+        $("#viewComments-music"+idNum).css("-ms-transform", "rotate(270deg)")
+        $("#viewComments-music"+idNum).css("transform", "rotate(270deg)")
+    }
+    else {
+        $("#comments-music"+idNum).hide()
+        $("#viewComments-music"+idNum).css("-webkit-transform", "rotate(180deg)")
+        $("#viewComments-music"+idNum).css("-moz-transform", "rotate(180deg)")
+        $("#viewComments-music"+idNum).css("-o-transform", "rotate(180deg)")
+        $("#viewComments-music"+idNum).css("-ms-transform", "rotate(180deg)")
+        $("#viewComments-music"+idNum).css("transform", "rotate(180deg)")
+    }
+        
+}
+
+// ------------------------
+// USED FOR VIEWING A POST
+// ------------------------
+function initViewPost() {
+    var i = 0
+    var viewTag = document.getElementById("viewComments-music0");
+    while (viewTag != null) {
+        $("#viewComments-music" + i).on("click", (e) => viewComments(e))
+        i++
+        viewTag = document.getElementById("viewComments-music" + i);
+    }
+}
+
 
 // Wasn't working... not sure why
 // $(document).ready(function() {

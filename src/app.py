@@ -179,7 +179,8 @@ def search(query):
 #     return r.text
 
 if __name__ == "__main__":
-    # BlogPost.objects(title="hamlet").first().delete()
+
+    # BlogPost.objects(title="More cats").first().delete()
     pass
     # testUser = {
     #     "username": "Kien",
