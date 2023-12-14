@@ -134,7 +134,7 @@ async function doSearch(musicId) {
 
     for (key of Object.keys(search_results)) {
         let item = search_results[key];
-        $("<img id=\"image-" + key + "\" class='thumbnail' width='50' height='50'><div class='result-item'><p class='search-title'>" + item["snippet"]["title"] + "</p>" + "<p class='search-description'>" + item["snippet"]["description"] + "</p></br></div><button id=\"result-" + key + "\" class='addVideoButton' type='button'>Add</button>").appendTo("#search-results");
+        $("<img id=\"image-" + key + "\" class='thumbnail'><p class='search-title'>" + item["snippet"]["title"] + "</p>" + "<button id=\"result-" + key + "\" class='addVideoButton' type='button'>Add</button>").appendTo("#search-results");
         $(("#result-" + key)).on("click", () => {
             if (musicNum == 1){
                 thumbnailURL = item["snippet"]["thumbnails"]["default"]["url"];
@@ -150,7 +150,8 @@ async function doSearch(musicId) {
 // Used when creating a new post, to finish adding a searched for song
 function addSong(youtubeID, musicId) {    
     idNum = musicId.substring(5)
-    exampleEmbed = "<div id=\"player-" + musicId + "\"></div><div class='commentsDiv'><img id='viewComments-" + musicId + "' src='..\\static\\images\\triangle.png' alt='a simple arrow'><p>View Comments</p><br/><div id='comments-"+musicId+"' class='comments-music'></div><button type='button' id='button-" + musicId + "' class='commentButton' onclick='addComment(" + idNum + ")'>Add Comment</button></div>"
+    // Help from: https://stackoverflow.com/questions/8488005/how-to-put-a-jpg-or-png-image-into-a-button-in-html
+    exampleEmbed = "<div id=\"player-" + musicId + "\"></div><div class='commentsDiv'><img id='viewComments-" + musicId + "' src='..\\static\\images\\triangle.png' alt='a simple arrow'><p>View Comments</p><br/><div id='comments-"+musicId+"' class='comments-music'></div><input type='image' src='..\\static\\images\\addComment.png' alt='Add Comment' id='button-" + musicId + "' class='commentButton' onclick='addComment(" + idNum + ")'></button></div>"
     $("#search-results").remove()
     $(exampleEmbed).insertAfter("search")
     $("search").remove()
@@ -163,6 +164,8 @@ function addSong(youtubeID, musicId) {
         videoId: youtubeID,
     });
 
+    window.alert("Yay")
+
     musicBlocks.push(new MusicBlock(youtubeID, musicId.substring(5)))
     players.push(player)
     playersTime.push(player.getCurrentTime())
@@ -171,12 +174,13 @@ function addSong(youtubeID, musicId) {
 function addComment(idNum) {
     // not sure why but it wont let me make the finish comment button an input.... (in or out of form!!!)
     // help from: https://ux.stackexchange.com/questions/112264/best-way-to-put-input-fields-that-take-minutes-and-seconds-mmss
-    commentForm = "<div class='commentForm'><form id='commentForm" + idNum + "'><label>Start comment at: </label><input class='timeInput' type='number' min='0' max='59' placeholder='0' id='startMinute' name='startMinute'>:<input class='timeInput' type='number' min='0' max='59' placeholder='0' id='startSecond' name='startSecond'><br/><label>End comment at: </label><input class='timeInput' type='number' min='0' max='59' placeholder='0' id='endMinute' name='endMinute'>:<input class='timeInput' type='number' min='0' max='59' placeholder='0' id='endSecond' name='endSecond'><br/><textarea name='comment'></textarea><input type='submit' value='Finish Comment' class='formSubmit'></form></div>"
+    commentForm = "<form class='commentForm' id='commentForm" + idNum + "'><label>Start comment at: </label><input class='timeInputMin' type='number' min='0' max='59' placeholder='0' id='startMinute' name='startMinute'><p class='timeDiv'>:</p><input class='timeInputSec' type='number' min='0' max='59' placeholder='0' id='startSecond' name='startSecond'><br/><label>End comment at: </label><input class='timeInputMin' type='number' min='0' max='59' placeholder='0' id='endMinute' name='endMinute'><p class='timeDiv'>:</p><input class='timeInputSec' type='number' min='0' max='59' placeholder='0' id='endSecond' name='endSecond'><br/><textarea name='comment'></textarea><input type='submit' value='Finish Comment' class='formSubmit'></form>"
     $("#button-music" +idNum).hide()
     $(commentForm).insertBefore("#button-music"+idNum)
     $("#commentForm" + idNum).on("submit", (e) => finishComment(e, idNum))
 
-    $(".timeInput").on("input", (e) => changeVidTime(e))
+    $(".timeInputMin").on("input", (e) => changeVidTime(e))
+    $(".timeInputSec").on("input", (e) => changeVidTime(e))
 }
 
 function changeVidTime(e) {

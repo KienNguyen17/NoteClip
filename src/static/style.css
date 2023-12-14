@@ -28,7 +28,7 @@ h1 {
   color: rgb(0, 0, 0)
 }
 
-button, .formSubmit, .backButton {
+button, .formSubmit, .backButton, .commentButton {
   font-family: merriweather;
   font-size: 1.5rem;
 
@@ -38,7 +38,7 @@ button, .formSubmit, .backButton {
   padding: 0.5rem;
 }
 
-button:hover, .formSubmit:hover, .backButton:hover {
+button:hover, .formSubmit:hover, .backButton:hover, .commentButton:hover {
   background-color: rgb(193, 193, 193);
 }
 
@@ -322,16 +322,25 @@ search {
   grid-column: span 3;
   padding: 0.5rem;
   display: grid;
-  grid-template-columns: 1fr 5fr 1fr;
+  grid-template-columns: 11rem 7fr 1fr;
+}
+
+.thumbnail {
+  width: 9.8rem;
+  height: 6rem;
+  padding-bottom: 0.5rem;
 }
 
 .addVideoButton {
   grid-column: 3;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   /* grid-row: span 2; */
 }
 
-.result-item {
+.search-title {
   grid-column: 2;
+  padding-top: 2rem;
 }
 
 .thumbnail {
@@ -342,10 +351,56 @@ iframe {
   grid-column: 1;
 }
 
-.commentForm, .commentsDiv {
+.commentsDiv {
   grid-column: 2;
   margin-left: 1rem;
 } 
+
+.commentButton {
+  width: 3.2rem;
+  height: 3rem;
+
+  border: 0.3rem solid rgb(0, 0, 0);
+
+  margin: 0;
+  margin-top: 1rem;
+}
+
+/* Comment form */
+
+.commentForm {
+  margin-top: 1rem;
+  
+  display: grid;
+  grid-template-columns: 12rem 4rem 1rem 4rem 
+}
+
+.commentForm label {
+  grid-column: 1;
+}
+
+.timeInputMin {
+  margin: 0;
+  width: 3rem;
+
+  grid-column: 2;
+}
+
+.timeInputSec {
+  margin: 0;
+  width: 3rem;
+
+  grid-column: 4;
+}
+
+.timeDiv {
+  padding-left: 0 !important;
+  grid-column: 3;
+}
+
+textarea {
+  grid-column: span 4;
+}
 
 /* Finish Post */
 
