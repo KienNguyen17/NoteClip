@@ -243,7 +243,7 @@ function submitPost(e) {
 
     // Coded with help from: https://stackoverflow.com/questions/29987323/how-do-i-send-data-from-js-to-python-with-flask  
     $.post("/new/finish", postInfo, function() {
-        console.log("success")
+        location.href = "/post/" + myFormData.get("title");
     })
 }
 
