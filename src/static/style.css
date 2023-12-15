@@ -66,7 +66,7 @@ article {
   padding-top: 2rem;
 }
 
-p, .formSubmit,  label {
+p, .formSubmit,  label, .timestampButton {
   font-size: 1.25rem;
   margin: 0;
 }
@@ -322,8 +322,7 @@ search {
 #search-results {
   grid-column: span 3;
   padding: 0.5rem;
-  display: grid;
-  grid-template-columns: 11rem 7fr 1fr;
+  
 }
 
 .thumbnail {
@@ -337,6 +336,12 @@ search {
   margin-top: 1rem;
   margin-bottom: 1rem;
   /* grid-row: span 2; */
+}
+
+.search-choice {
+  display: grid;
+  grid-template-columns: 11rem 7fr 1fr;
+  /* border: 0.1rem solid rgb(0, 0, 0) */
 }
 
 .search-title {
@@ -373,34 +378,43 @@ iframe {
   margin-top: 1rem;
   
   display: grid;
-  grid-template-columns: 12rem 4rem 1rem 4rem 
+  grid-template-columns: 12rem 4rem 1rem 4rem 15rem
 }
 
 .commentForm label {
   grid-column: 1;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.timeInputMin {
+.timeInputMin, .timeInputSec {
   margin: 0;
   width: 3rem;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
 
+.timeInputMIn {
   grid-column: 2;
 }
 
 .timeInputSec {
-  margin: 0;
-  width: 3rem;
-
   grid-column: 4;
+}
+
+.timestampButton {
+  grid-column: 5;
 }
 
 .timeDiv {
   padding-left: 0 !important;
   grid-column: 3;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 textarea {
-  grid-column: span 4;
+  grid-column: span 5;
 }
 
 /* Finish Post */

@@ -134,7 +134,7 @@ async function doSearch(musicId) {
 
     for (key of Object.keys(search_results)) {
         let item = search_results[key];
-        $("<img id=\"image-" + key + "\" class='thumbnail'><p class='search-title'>" + item["snippet"]["title"] + "</p>" + "<button id=\"result-" + key + "\" class='addVideoButton' type='button'>Add</button>").appendTo("#search-results");
+        $("<div class='search-choice'><img id=\"image-" + key + "\" class='thumbnail'><p class='search-title'>" + item["snippet"]["title"] + "</p>" + "<button id=\"result-" + key + "\" class='addVideoButton' type='button'>Add</button></div>").appendTo("#search-results");
         $(("#result-" + key)).on("click", () => {
             if (musicNum == 1){
                 thumbnailURL = item["snippet"]["thumbnails"]["default"]["url"];
@@ -164,8 +164,6 @@ function addSong(youtubeID, musicId) {
         videoId: youtubeID,
     });
 
-    window.alert("Yay")
-
     musicBlocks.push(new MusicBlock(youtubeID, musicId.substring(5)))
     players.push(player)
     playersTime.push(player.getCurrentTime())
@@ -174,20 +172,31 @@ function addSong(youtubeID, musicId) {
 function addComment(idNum) {
     // not sure why but it wont let me make the finish comment button an input.... (in or out of form!!!)
     // help from: https://ux.stackexchange.com/questions/112264/best-way-to-put-input-fields-that-take-minutes-and-seconds-mmss
-    commentForm = "<form class='commentForm' id='commentForm" + idNum + "'><label>Start comment at: </label><input class='timeInputMin' type='number' min='0' max='59' placeholder='0' id='startMinute' name='startMinute'><p class='timeDiv'>:</p><input class='timeInputSec' type='number' min='0' max='59' placeholder='0' id='startSecond' name='startSecond'><br/><textarea name='comment'></textarea><input type='submit' value='Finish Comment' class='formSubmit'></form>"
+    commentForm = "<form class='commentForm' id='commentForm" + idNum + "'><label>Start comment at: </label><input class='timeInputMin' type='number' min='0' max='59' placeholder='0' id='startMinute" + idNum + "' name='startMinute'><p class='timeDiv'>:</p><input class='timeInputSec' type='number' min='0' max='59' placeholder='0' id='startSecond" + idNum + "' name='startSecond'><button type='button' class='timestampButton'>Current timestamp</button><br/><textarea placeholder='Write a comment...' name='comment'></textarea><input type='submit' value='Finish Comment' class='formSubmit'></form>"
     $("#button-music" +idNum).hide()
     $(commentForm).insertBefore("#button-music"+idNum)
     $("#commentForm" + idNum).on("submit", (e) => finishComment(e, idNum))
 
-    $(".timeInputMin").on("input", (e) => changeVidTime(e))
-    $(".timeInputSec").on("input", (e) => changeVidTime(e))
+    $(".timeInputMin").on("input", (e) => changeVidTime(e, idNum))
+    $(".timeInputSec").on("input", (e) => changeVidTime(e, idNum))
+
+    $(".timestampButton").on("click", (e) => setTimestamp(e, idNum))
 }
 
-function changeVidTime(e) {
+function setTimestamp(e, idNum) {
+    player = players[idNum]
+    newTime = player.getCurrentTime()
+    newSec = newTime % 60
+    newMin = (newTime - newSec) / 60
+    $("#startMinute" + idNum).val(newMin)
+    $("#startSecond" + idNum).val(Math.floor(newSec))
+}
+
+function changeVidTime(e, idNum) {
     if (e.target.name == 'startMinute' || e.target.name == 'startSecond') {
         playerNum = e.target.parentNode.id.substring(11)
         // player = players[playerNum]
-        newTime = ($("#startMinute").val()*60) + ($("#startSecond").val()*1)
+        newTime = ($("#startMinute" + idNum).val()*60) + ($("#startSecond" + idNum).val()*1)
         players[playerNum].seekTo(newTime, true)
     }
 }
