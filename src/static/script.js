@@ -1,8 +1,8 @@
 class MusicComment {
-    constructor(startTime, endTime, commentText, playerId) {
+    constructor(startTime, commentText, playerId) {
         this.startTime = startTime;
-        this.endTime = endTime;
-        this.duration = endTime - startTime;
+        // this.endTime = endTime;
+        // this.duration = endTime - startTime;
         this.commentText = commentText
         this.playerId = playerId
     }
@@ -18,13 +18,13 @@ class MusicBlock {
     addComment(myFormData) {
         var startTime = (myFormData.get("startMinute")*60)
         startTime += Number(myFormData.get("startSecond"))
-        var endTime = (myFormData.get("endMinute")*60)
-        endTime += Number(myFormData.get("endSecond"))
+        // var endTime = (myFormData.get("endMinute")*60)
+        // endTime += Number(myFormData.get("endSecond"))
 
         
         var commentText = myFormData.get("comment")
 
-        var musicComment = new MusicComment(startTime, endTime, commentText, this.playerId)
+        var musicComment = new MusicComment(startTime, commentText, this.playerId)
         this.comments.push(musicComment) 
 
         return musicComment
@@ -174,7 +174,7 @@ function addSong(youtubeID, musicId) {
 function addComment(idNum) {
     // not sure why but it wont let me make the finish comment button an input.... (in or out of form!!!)
     // help from: https://ux.stackexchange.com/questions/112264/best-way-to-put-input-fields-that-take-minutes-and-seconds-mmss
-    commentForm = "<form class='commentForm' id='commentForm" + idNum + "'><label>Start comment at: </label><input class='timeInputMin' type='number' min='0' max='59' placeholder='0' id='startMinute' name='startMinute'><p class='timeDiv'>:</p><input class='timeInputSec' type='number' min='0' max='59' placeholder='0' id='startSecond' name='startSecond'><br/><label>End comment at: </label><input class='timeInputMin' type='number' min='0' max='59' placeholder='0' id='endMinute' name='endMinute'><p class='timeDiv'>:</p><input class='timeInputSec' type='number' min='0' max='59' placeholder='0' id='endSecond' name='endSecond'><br/><textarea name='comment'></textarea><input type='submit' value='Finish Comment' class='formSubmit'></form>"
+    commentForm = "<form class='commentForm' id='commentForm" + idNum + "'><label>Start comment at: </label><input class='timeInputMin' type='number' min='0' max='59' placeholder='0' id='startMinute' name='startMinute'><p class='timeDiv'>:</p><input class='timeInputSec' type='number' min='0' max='59' placeholder='0' id='startSecond' name='startSecond'><br/><textarea name='comment'></textarea><input type='submit' value='Finish Comment' class='formSubmit'></form>"
     $("#button-music" +idNum).hide()
     $(commentForm).insertBefore("#button-music"+idNum)
     $("#commentForm" + idNum).on("submit", (e) => finishComment(e, idNum))
