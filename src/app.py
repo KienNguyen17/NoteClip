@@ -92,7 +92,6 @@ def newAccount(status):
 
 # class MusicComment(db.Document):
 #     start = db.IntField(required=True)
-#     end = db.IntField(required=True)
 #     text = db.StringField(required=True)
 
 # class MusicElement(Element):
