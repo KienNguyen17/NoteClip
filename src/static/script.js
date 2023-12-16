@@ -234,7 +234,11 @@ function submitPost(e) {
     $(".commentButton").remove()
     $("#addDiv").remove()
     $("#finishButton").remove()
+    $("search").remove()
+    $("#search-results").remove()
+    $(".commentForm").remove()
     $("p").attr("contenteditable", "False") 
+    
 
     // This is probably not a very secure way to do it, but we are on a time limit here
     articleContents = $("article").html()
