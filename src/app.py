@@ -1,13 +1,9 @@
-from pprint import pprint
-import requests
-from base64 import b64encode 
-from flask import Flask, jsonify, render_template, make_response, request, redirect, url_for
+from flask import Flask, render_template, make_response, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, current_user, login_user, login_required, logout_user
 from flask_mongoengine import MongoEngine
 from mongoengine import *
 from googleapiclient.discovery import build
 import config
-# # import names
 
 # # need to fill in password
 # # password = ""
@@ -42,11 +38,14 @@ login_manager.init_app(app)
 
 
 class User(db.Document, UserMixin):
+    '''Create a User instance with a unique username and a password that is authorized 
+    to log in and saved in the database'''
     username = db.StringField(required=True, primary_key=True)
     password = db.StringField(required=True)
 
 @login_manager.user_loader
 def load_user(id: str):
+    '''query users in the database by username'''
     try:
         user = User.objects(username=id).first()
         return user
@@ -63,9 +62,6 @@ def login(status):
         attemptLogin = User.objects(username=username).first()
         if attemptLogin != None and password == attemptLogin.password:
             login_user(attemptLogin)
-            # authorize()
-            # this is how to get the current user's name
-            # print(current_user.username)
             return redirect("/")
         else:
             return redirect("/login/bad")
@@ -100,13 +96,14 @@ def newAccount(status):
 #     comments = db.ListField(db.ReferenceField(MusicComment), required=True)
 
 class BlogPost(db.Document):
+    '''create an entry representing a blog post that can be saved to the database'''
     # we probably actually want an id so that posts could theoretically have the same title, but i'm not thinking about how to figure that out yet
     # blogId = db.StringField(required=True, primary_key=True)
     title = db.StringField(required=True, primary_key=True)
     authorId = db.ReferenceField(User, required=True)
     summary = db.StringField(required=True)
     htmlContent = db.StringField(required=True)
-    thumbnailURL = db.StringField(default="../static/images/NoteClipLight.png")
+    thumbnailURL = db.StringField(required=True)
 
 @app.route("/")
 def home():
@@ -126,19 +123,7 @@ def viewPost(title):
         return redirect("/")
     else:
         author = findPost.authorId.username
-
-        # print(authorize())
         return render_template("post.html", title=title, author=author, article=findPost.htmlContent)
-
-@app.route("/feed", methods=['GET'])
-def feed():
-    if request.method == 'GET':
-        posts = BlogPost.objects()
-        posts.reverse()
-        postDict = {}
-        for post in posts:
-            postDict[post.title] = post
-        return postDict
 
 @app.route("/new")
 @login_required
@@ -156,7 +141,6 @@ def finishPost():
     BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent, thumbnailURL=thumbnailURL).save()
     return redirect("/post/" + title) 
 
-
 @app.route("/logout")
 @login_required
 def logout():
@@ -173,19 +157,10 @@ def search(query):
             result_dict[index] = result
             index+=1
         return result_dict
-    
-# todo: move to javascript!!!!
-# @app.route("/authorize")
-# def authorize():
-#     url = 'https://accounts.spotify.com/api/token'
-#     headers = {"Authorization": "Basic " + b64encode((client_id + ":" + client_secret).encode("ascii")).decode("ascii")}
-#     data = {"grant_type":"client_credentials"}
-#     r = requests.post(url, headers=headers, data=data)
-#     return r.text
 
 if __name__ == "__main__":
 
-    # BlogPost.objects(title="More cats").first().delete()
+    # BlogPost.objects(title="Blank Space").first().delete()
     pass
     # testUser = {
     #     "username": "Kien",

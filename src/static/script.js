@@ -117,8 +117,7 @@ function addText() {
     $("<p id=\"" + textId + "\" contenteditable data-placeholder=\"Start Typing...\"></p><br/>").insertBefore("#addDiv")
 }
 
-/** Used when searching for a song, performs the search and brings up a list of results
-will probably be helpful https://stackoverflow.com/questions/18169933/submit-form-without-reloading-page */
+/** Used when searching for a song, performs the search and brings up a list of results */
 async function doSearch(musicId) {
     query = $("#search-" + musicId).val();
 
@@ -414,12 +413,19 @@ function initViewPost() {
 // ------------------------
 // USED FOR LOADING ALL POSTS
 // ------------------------
+
+/**
+ * Called when user clicks "see all post", make all posts visible
+ */
 function loadAllPosts() {
     $(".hidden").css("display", "block");
     $("#allPostsButton").css("display", "none");
     $("#lessPostsButton").css("display", "block");   
 }
 
+/**
+ * Called when user clicks "see less", hide posts except for the top 6 results
+ */
 function removePosts() {
     $(".hidden").css("display", "none");
     $("#allPostsButton").css("display", "block");
