@@ -121,13 +121,7 @@ p, .formSubmit,  label, .timestampButton {
   margin: 0.5rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-
-  margin-top: 2.5rem;
   margin-bottom: 2.5rem;
-}
-
-.home #blog-posts {
-  margin: 0.5rem 12.5rem;
 }
 
 .home #twoButton {
@@ -143,9 +137,19 @@ p, .formSubmit,  label, .timestampButton {
   grid-column: 2;
 }
 
-#all-feed, #lessPostsButton {
+/* feed display */
+.home #blog-posts {
+  margin: 0.5rem 12.5rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.home .hidden, #lessPostsButton {
   display: none;
 }
+
+
 /* ---------------------------- */
 /* Login or create new account */
 /* -------------------------- */

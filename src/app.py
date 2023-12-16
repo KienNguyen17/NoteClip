@@ -207,5 +207,5 @@ if __name__ == "__main__":
 
     # BlogPost(**testPost).save()
 
-    # for obj in BlogPost.objects()[:20]:
-    #     print(obj.title)
+    # for obj in BlogPost.objects():
+    #     obj.delete()

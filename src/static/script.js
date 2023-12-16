@@ -137,12 +137,12 @@ async function doSearch(musicId) {
         $("<div class='search-choice'><img id=\"image-" + key + "\" class='thumbnail'><p class='search-title'>" + item["snippet"]["title"] + "</p>" + "<button id=\"result-" + key + "\" class='addVideoButton' type='button'>Add</button></div>").appendTo("#search-results");
         $(("#result-" + key)).on("click", () => {
             if (musicNum == 1){
-                thumbnailURL = item["snippet"]["thumbnails"]["default"]["url"];
+                thumbnailURL = item["snippet"]["thumbnails"]["high"]["url"];
             }
             addSong(item["id"]["videoId"], musicId);
             
         })
-        $(("#image-" + key)).attr("src", item["snippet"]["thumbnails"]["default"]["url"]);
+        $(("#image-" + key)).attr("src", item["snippet"]["thumbnails"]["high"]["url"]);
         $(("#image-" + key)).attr("alt", "thumbnail of " + item["snippet"]["title"] + " video");
     }
 }
@@ -413,13 +413,13 @@ function initViewPost() {
 // USED FOR LOADING ALL POSTS
 // ------------------------
 function loadAllPosts() {
-    $("#all-feed").css("display", "block");
+    $(".hidden").css("display", "block");
     $("#allPostsButton").css("display", "none");
     $("#lessPostsButton").css("display", "block");   
 }
 
 function removePosts() {
-    $("#all-feed").css("display", "none");
+    $(".hidden").css("display", "none");
     $("#allPostsButton").css("display", "block");
     $("#lessPostsButton").css("display", "none");    
 }

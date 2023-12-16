@@ -32,26 +32,28 @@
             
         </header>
         <div id="blog-posts">
-            {% for post in posts[:10] %}
-                <a href="/post/{{post.title}}">
-                <img src="{{post.thumbnailURL}}" alt="thumbnail for {{post.title}} post" height="60" width="60">
-                <p>{{post.title}}</p>
-                <p>by {{post.authorId.username}}</p>
-                <p>{{post.summary}}</p>
-                </a>
-                </br>
+            {% for post in posts[:2] %}
+                <div class="post-item">
+                    <a href="/post/{{post.title}}"> 
+                    <img src="{{post.thumbnailURL}}" alt="thumbnail for {{post.title}} post" height="19rem" width="12rem">
+                    <p>{{post.title}}</p>
+                    <p>by {{post.authorId.username}}</p>
+                    <p>{{post.summary}}</p>
+                    </a>
+                    </br>
+                </div>
             {% endfor %}
-            <div id="all-feed">
-                {% for post in posts[10:] %}
+            {% for post in posts[2:] %}
+            <div class="post-item hidden">
                 <a href="/post/{{post.title}}">
-                <img src="{{post.thumbnailURL}}" alt="thumbnail for {{post.title}} post" height="60" width="60">
+                <img src="{{post.thumbnailURL}}" alt="thumbnail for {{post.title}} post" height="19rem" width="12rem">
                 <p>{{post.title}}</p>
                 <p>by {{post.authorId.username}}</p>
                 <p>{{post.summary}}</p>
                 </a>
                 </br>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
         <button id="allPostsButton" type="button" onclick="loadAllPosts()">See All Posts</button>
         <button id="lessPostsButton" type="button" onclick="removePosts()">See Less</button>
