@@ -51,6 +51,8 @@ function initCreatePost() {
     players = []
     musicBlocks = []
 
+    thumbnailURL = ""
+
     $("#finishForm").on("submit", (e) => submitPost(e));
 }
 
@@ -137,10 +139,11 @@ async function doSearch(musicId) {
             if (musicNum == 1){
                 thumbnailURL = item["snippet"]["thumbnails"]["default"]["url"];
             }
-            addSong(item["id"]["videoId"], musicId)
+            addSong(item["id"]["videoId"], musicId);
             
         })
-        $(("#image-" + key)).attr("src", item["snippet"]["thumbnails"]["default"]["url"])
+        $(("#image-" + key)).attr("src", item["snippet"]["thumbnails"]["default"]["url"]);
+        $(("#image-" + key)).attr("alt", "thumbnail of " + item["snippet"]["title"] + " video");
     }
 }
 
@@ -406,3 +409,25 @@ function initViewPost() {
         viewTag = document.getElementById("viewComments-music" + i);
     }
 }
+
+
+// ------------------------
+// USED FOR LOADING ALL POSTS
+// ------------------------
+function loadAllPosts() {
+    $("#all-feed").css("display", "block");
+    $("#allPostsButton").css("display", "none");
+    $("#lessPostsButton").css("display", "block");   
+}
+
+function removePosts() {
+    $("#all-feed").css("display", "none");
+    $("#allPostsButton").css("display", "block");
+    $("#lessPostsButton").css("display", "none");    
+}
+
+// Wasn't working... not sure why
+// $(document).ready(function() {
+//     window.alert("DOC READY");
+//     $("#finishForm").on("submit", (e) => submitPost(e));
+// });
