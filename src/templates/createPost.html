@@ -12,20 +12,20 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous">
         </script>
-        <link rel="shortcut icon" href="..\static\favicon.ico">
-        <link rel="stylesheet" href="..\static\style.css">
+        <link rel="shortcut icon" href="../static/favicon.ico">
+        <link rel="stylesheet" href="../static/style.css">
     </head>
     <body class="createPost" onload="initCreatePost()">
         <header>
             <!-- TODO: Need to add accessibility for faux buttons -->
-            <button id="backButton" type="button"><</button>
+            <button id="backButton" type="button">&lt;</button>
             <button id="logout" type="button">Log Out</button>
         </header>
         <article>
             <div id="addDiv">
                 <button id="addButton" type="button" onClick="clickAdd()">+</button>
                 <div id="addChoice">
-                    <button id="addMusic" type="button" onClick="addMusic()">Music</button><br/>
+                    <button id="addMusic" type="button" onClick="addMusic()">Music</button><br>
                     <button id="addText" type="button" onClick="addText()">Text</button>
                 </div>    
             </div>
@@ -34,17 +34,17 @@
        
         <div id="finishDiv">
             <div id="finishInsides">
-                <button class="backButton" type="button" onClick="closeFinishPost()"><</button>
+                <button class="backButton" type="button" onClick="closeFinishPost()">&lt;</button>
                 <form id="finishForm">
                     <label>Enter a title for your post:</label>
-                    <input type="text" name="title"><br/>
-                    <label>Enter a description:</label><br/>
-                    <textarea name="description"></textarea><br/>
+                    <input type="text" name="title"><br>
+                    <label>Enter a description:</label><br>
+                    <textarea name="description"></textarea><br>
                     <input class="formSubmit" type="submit" value="Post">
                 </form>	    
             </div>
         </div>
-        <script type="text/javascript" src="..\static\script.js" async defer></script>
+        <script src="../static/script.js" async defer></script>
         <script>
             var tag = document.createElement('script');
 

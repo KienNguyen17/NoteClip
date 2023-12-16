@@ -11,13 +11,13 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous">
         </script>
-        <link rel="shortcut icon" href="..\static\favicon.ico">
-        <link rel="stylesheet" href="..\static\style.css">
+        <link rel="shortcut icon" href="../static/favicon.ico">
+        <link rel="stylesheet" href="../static/style.css">
     </head>
     <body class="post" onload="initViewPost()">
         <header>
             <!-- TODO: Add ARIA(?) -->
-            <button id="backButton" type="button"><</button>     
+            <button id="backButton" type="button">&lt;</button>     
             <h1>{{ title }}</h1>
             <button id="logout" type="button">Log Out</button>
             <h2> Written by {{ author }} </h2>
@@ -25,7 +25,7 @@
         <!-- Help from: https://stackoverflow.com/questions/3206344/passing-html-to-template-using-flask-jinja2 -->
         <article>{{ article|safe }}</article>
         
-        <script type="text/javascript" src="..\static\script.js" async defer></script>
+        <script src="../static/script.js" async defer></script>
         <script>
             var tag = document.createElement('script');
 

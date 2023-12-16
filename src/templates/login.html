@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Login Page</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="..\static\style.css">
-        <link rel="shortcut icon" href="..\static\favicon.ico">
+        <link rel="stylesheet" href="../static/style.css">
+        <link rel="shortcut icon" href="../static/favicon.ico">
     </head>
     <body class="account">
         <header>
@@ -19,14 +19,13 @@
             <p>Invalid log in credentials!</p>
         {% endif %}
         <form method="POST">
-            <input type="text" name="username" placeholder="username" /><br/>
-            <input type="password" name="password" placeholder="password" /><br/>
+            <input type="text" name="username" placeholder="username"><br>
+            <input type="password" name="password" placeholder="password"><br>
             <button type="submit">Log In</button>
         </form>    
         {% if status != "success" %}
             <button type="button" id="newAccount">Create a New Account</button>
         {% endif %}
-        <script src="" async defer></script>
-        <script type="text/javascript" src="..\static\script.js" async defer></script>
+        <script src="../static/script.js" async defer></script>
     </body>
 </html>
