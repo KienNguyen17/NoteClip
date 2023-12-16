@@ -262,7 +262,9 @@ function onYouTubeIframeAPIReady() {
     console.log("youtube ready")
 }
 
-/** Generates the HTML for a comment, given a MusicComment object */
+/** Generates the HTML for a comment, given a MusicComment object 
+ * TODO: Move to just creating a post section if we don't fix the database
+*/
 function createCommentHTML(musicComment) {
     var commentHTML = "<div class='comment' onclick='clickComment(" + musicComment.startTime + ", " + musicComment.duration + ", " + musicComment.playerId + ")'><p>" + musicComment.commentText + "</p></div>"
     return commentHTML

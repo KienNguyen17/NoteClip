@@ -5,7 +5,6 @@
         <title>{{ postName }}</title>
         <!-- TODO: Write description -->
         <meta name="description" content=""> 
-        <!-- TODO: Are these the settings we want -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script
             src="https://code.jquery.com/jquery-3.3.1.js"
@@ -17,7 +16,7 @@
     </head>
     <body class="post" onload="initViewPost()">
         <header>
-            <!-- Final back button will probably just be visual, no words (will need accessibility for that) -->
+            <!-- TODO: Add ARIA(?) -->
             <button id="backButton" type="button"><</button>     
             <h1>{{ title }}</h1>
             <button id="logout" type="button">Log Out</button>
