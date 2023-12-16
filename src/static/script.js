@@ -1,13 +1,13 @@
+/** A comment on a music video */
 class MusicComment {
     constructor(startTime, commentText, playerId) {
         this.startTime = startTime;
-        // this.endTime = endTime;
-        // this.duration = endTime - startTime;
         this.commentText = commentText
         this.playerId = playerId
     }
 }
 
+/** A single music video in a post */
 class MusicBlock {
     constructor(youtubeID, playerId) {
         this.youtubeID = youtubeID
@@ -40,18 +40,15 @@ let musicNum = 0
 let thumbnailURL = ""
 
 let players = []
-let playersTime = []
-
 let musicBlocks = []
 
+/** Called when a createPost.html page is finished loading, initializes variables and prepares finish button */
 function initCreatePost() {
-    // make sure they are restarted on new load
+    // Used to track ids
     textNum = 0
     musicNum = 0
 
     players = []
-    playersTime = []
-
     musicBlocks = []
 
     thumbnailURL = ""
@@ -59,7 +56,8 @@ function initCreatePost() {
     $("#finishForm").on("submit", (e) => submitPost(e));
 }
 
-// Coded with help from: https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-clickTODO 
+/** Used for routing buttons on different pages
+ * Coded with help from: https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click */
 function applyFunction(clickedButton, callback) {
     if (clickedButton != null) {
         clickedButton.onclick = callback;
@@ -91,8 +89,8 @@ applyFunction(backButton, () => {
     location.assign("../");
 })
 
-// Coded with help from: https://stackoverflow.com/questions/178325/how-do-i-check-if-an-element-is-hidden-in-jquery
-// Used when creating a new post, when a user clicks the add button
+/** Used when a user clicks the add button, hides or shows the block choices as appropriate
+ * Coded with help from: https://stackoverflow.com/questions/178325/how-do-i-check-if-an-element-is-hidden-in-jquery */
 function clickAdd() {
     if ( $("#addChoice").css('display') == 'none') {
         $("#addChoice").show()
@@ -102,8 +100,8 @@ function clickAdd() {
     }
 }
 
-// Coded with help from: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/search
-// Used when creating a new post, when a user chooses to add a music block
+/** Used when adding a music block, brings up a search bar
+ * Coded with help from: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/search */
 function addMusic() {
     $("#addChoice").hide()
     var musicId = "music" + musicNum
@@ -111,7 +109,7 @@ function addMusic() {
     musicNum++
 }
 
-// Used when creating a new post, when a user chooses to add a text block
+/** Adds an editable text block */
 function addText() {
     $("#addChoice").hide()
     var textId = "text" + textNum
@@ -119,8 +117,8 @@ function addText() {
     $("<p id=\"" + textId + "\" contenteditable data-placeholder=\"Start Typing...\"></p><br/>").insertBefore("#addDiv")
 }
 
-// will probably be helpful https://stackoverflow.com/questions/18169933/submit-form-without-reloading-page
-// Used when creating a new post, when a user searches for a song
+/** Used when searching for a song, performs the search and brings up a list of results
+will probably be helpful https://stackoverflow.com/questions/18169933/submit-form-without-reloading-page */
 async function doSearch(musicId) {
     query = $("#search-" + musicId).val();
 
@@ -149,7 +147,8 @@ async function doSearch(musicId) {
     }
 }
 
-// Used when creating a new post, to finish adding a searched for song
+
+/** Used when a song is chosen, to finish adding a searched for song */
 function addSong(youtubeID, musicId) {    
     idNum = musicId.substring(5)
     // Help from: https://stackoverflow.com/questions/8488005/how-to-put-a-jpg-or-png-image-into-a-button-in-html
@@ -159,6 +158,7 @@ function addSong(youtubeID, musicId) {
     $("search").remove()
     $("#viewComments-" + musicId).on("click", (e) => viewComments(e))
 
+    // Players must be referenced to interact with music video
     var player;
     player = new YT.Player('player-' + musicId, {
         height: '390',
@@ -168,24 +168,24 @@ function addSong(youtubeID, musicId) {
 
     musicBlocks.push(new MusicBlock(youtubeID, musicId.substring(5)))
     players.push(player)
-    playersTime.push(player.getCurrentTime())
 }
 
+/** Used when clicking the add comment button, brings up an add comment form */
 function addComment(idNum) {
-    // not sure why but it wont let me make the finish comment button an input.... (in or out of form!!!)
     // help from: https://ux.stackexchange.com/questions/112264/best-way-to-put-input-fields-that-take-minutes-and-seconds-mmss
     commentForm = "<form class='commentForm' id='commentForm" + idNum + "'><label>Start comment at: </label><input class='timeInputMin' type='number' min='0' max='59' placeholder='0' id='startMinute" + idNum + "' name='startMinute'><p class='timeDiv'>:</p><input class='timeInputSec' type='number' min='0' max='59' placeholder='0' id='startSecond" + idNum + "' name='startSecond'><button type='button' class='timestampButton'>Current timestamp</button><br/><textarea placeholder='Write a comment...' name='comment'></textarea><input type='submit' value='Finish Comment' class='formSubmit'></form>"
     $("#button-music" +idNum).hide()
     $(commentForm).insertBefore("#button-music"+idNum)
-    $("#commentForm" + idNum).on("submit", (e) => finishComment(e, idNum))
-
+    
     $(".timeInputMin").on("input", (e) => changeVidTime(e, idNum))
     $(".timeInputSec").on("input", (e) => changeVidTime(e, idNum))
+    $(".timestampButton").on("click", (e) => setTimestamp(idNum))
 
-    $(".timestampButton").on("click", (e) => setTimestamp(e, idNum))
+    $("#commentForm" + idNum).on("submit", (e) => finishComment(e, idNum))
 }
 
-function setTimestamp(e, idNum) {
+/** Used when clicking the Current Timestamp button, sets the time of the comment to the video's current time */
+function setTimestamp(idNum) {
     player = players[idNum]
     newTime = player.getCurrentTime()
     newSec = newTime % 60
@@ -194,15 +194,13 @@ function setTimestamp(e, idNum) {
     $("#startSecond" + idNum).val(Math.floor(newSec))
 }
 
+/** Used when entering time in an add comment, automatically moves to timestamp in video */
 function changeVidTime(e, idNum) {
-    if (e.target.name == 'startMinute' || e.target.name == 'startSecond') {
-        playerNum = e.target.parentNode.id.substring(11)
-        // player = players[playerNum]
-        newTime = ($("#startMinute" + idNum).val()*60) + ($("#startSecond" + idNum).val()*1)
-        players[playerNum].seekTo(newTime, true)
-    }
+    newTime = ($("#startMinute" + idNum).val()*60) + ($("#startSecond" + idNum).val()*1)
+    players[idNum].seekTo(newTime, true)
 }
 
+/** Used when finishing a comment, creates a new comment object and adds to the page */
 function finishComment(e, idNum) {
     e.preventDefault()
 
@@ -210,22 +208,23 @@ function finishComment(e, idNum) {
     musicComment = musicBlocks[idNum].addComment(myFormData)
     commentHTML = createCommentHTML(musicComment)
     $("#comments-music"+idNum).append(commentHTML)
-    // $(commentHTML).insertBefore("#button-music" +idNum)
 
     player = players[idNum]
     $("#button-music" +idNum).show()
     $(".commentForm").remove()
 }
 
-
+/** Opens the finish post menu */
 function finishPost() {
     $("#finishDiv").show()
 }
 
+/** Closes the finish post menu */
 function closeFinishPost() {
     $("#finishDiv").hide()
 }
 
+/** Used when finishing a post, sends a POST request to send the post to the database and redirects to the new page */
 function submitPost(e) {
     e.preventDefault()
 
@@ -236,9 +235,14 @@ function submitPost(e) {
     $(".commentButton").remove()
     $("#addDiv").remove()
     $("#finishButton").remove()
+    $("search").remove()
+    $("#search-results").remove()
+    $(".commentForm").remove()
     $("p").attr("contenteditable", "False") 
 
-    // This is probably not a very secure way to do it, but we are on a time limit here
+    /* Due to timing concerns this is how it's being done for now, but I recognize it is a major security concern.
+    The better way to do this would be to save info about each block into a post object in the database, then load that
+    all into new HTML when viewing a post */
     articleContents = $("article").html()
 
     var postInfo = {"title": myFormData.get("title"), "summary": myFormData.get("description"), "htmlContent": articleContents, "thumbnailURL": thumbnailURL}
@@ -258,21 +262,17 @@ function onYouTubeIframeAPIReady() {
     console.log("youtube ready")
 }
 
+/** Generates the HTML for a comment, given a MusicComment object */
 function createCommentHTML(musicComment) {
     var commentHTML = "<div class='comment' onclick='clickComment(" + musicComment.startTime + ", " + musicComment.duration + ", " + musicComment.playerId + ")'><p>" + musicComment.commentText + "</p></div>"
     return commentHTML
 }
 
+/** Jumps to point in video when a comment is clicked on 
+ * TODO: Once fix database to not just save HTML, remove duration
+*/
 function clickComment(start, duration, playerId) {
-    //  help from: https://stackoverflow.com/questions/19603618/how-do-i-get-the-reference-to-an-existing-youtube-player
-    // player = new YT.Player('player-music'+playerId)
-    // window.alert(start)
-    // window.alert(player)
-    // player.seekTo(start, true)
-
-
     callPlayer('player-music'+playerId, "seekTo", [start, true])
-    // TODO: Either implement or get rid of end comment
 }
 
 // Found function at this URL: https://stackoverflow.com/questions/7443578/youtube-iframe-api-how-do-i-control-an-iframe-player-thats-already-in-the-html
@@ -367,11 +367,13 @@ function callPlayer(frame_id, func, args) {
     }
 }
 
-
+/** Used when opening the View Comments dropdown, shows comments and rotates dropdown arrow */
 function viewComments(e) {
     idNum = e.target.id.substring(18)
     if ($("#comments-music"+idNum).css("display") == "none") {
         $("#comments-music"+idNum).show()
+        
+        // rotate arrow
         $("#viewComments-music"+idNum).css("-webkit-transform", "rotate(270deg)")
         $("#viewComments-music"+idNum).css("-moz-transform", "rotate(270deg)")
         $("#viewComments-music"+idNum).css("-o-transform", "rotate(270deg)")
@@ -380,6 +382,8 @@ function viewComments(e) {
     }
     else {
         $("#comments-music"+idNum).hide()
+
+        // rotate arrow
         $("#viewComments-music"+idNum).css("-webkit-transform", "rotate(180deg)")
         $("#viewComments-music"+idNum).css("-moz-transform", "rotate(180deg)")
         $("#viewComments-music"+idNum).css("-o-transform", "rotate(180deg)")
@@ -392,6 +396,8 @@ function viewComments(e) {
 // ------------------------
 // USED FOR VIEWING A POST
 // ------------------------
+
+/** Called when a post.html page is finished loading, prepares view comment tags to be viewable */
 function initViewPost() {
     var i = 0
     var viewTag = document.getElementById("viewComments-music0");
