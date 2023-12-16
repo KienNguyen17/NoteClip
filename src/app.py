@@ -13,7 +13,7 @@ import config
 # # password = ""
 # # connect(host="mongodb+srv://noteclipadmin:" + password + "@noteclip.s8vwzbm.mongodb.net/")
 
-
+# database setup with help from https://stackabuse.com/guide-to-flask-mongoengine-in-python/
 db = MongoEngine()
 
 app = Flask(__name__)
@@ -35,6 +35,7 @@ db.init_app(app)
 
 youtube = build('youtube', 'v3', developerKey=config.youtube_key)
 
+# with help from https://medium.com/@dmitryrastorguev/basic-user-authentication-login-for-flask-using-mongoengine-and-wtforms-922e64ef87fe
 # login setup
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -110,7 +111,8 @@ class BlogPost(db.Document):
 
 @app.route("/")
 def home():
-    posts = BlogPost.objects()[:10]
+    posts = BlogPost.objects()
+    posts = list(reversed(posts))
     if not current_user.is_authenticated:
         return render_template("index.html", login=False, posts=posts)
     else:
@@ -129,10 +131,15 @@ def viewPost(title):
         # print(authorize())
         return render_template("post.html", title=title, author=author, article=findPost.htmlContent)
 
-@app.route("/feed")
+@app.route("/feed", methods=['GET'])
 def feed():
-    posts = BlogPost.objects()
-    return render_template("feed.html", posts=posts)
+    if request.method == 'GET':
+        posts = BlogPost.objects()
+        posts.reverse()
+        postDict = {}
+        for post in posts:
+            postDict[post.title] = post
+        return postDict
 
 @app.route("/new")
 @login_required
@@ -148,7 +155,6 @@ def finishPost():
     authorId = current_user
     print("title: " + title + "\nsummary: " + summary + "\nhtmlContent: " + htmlContent)
     BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent, thumbnailURL=thumbnailURL).save()
-        
     return redirect("/post/" + title) 
 
 

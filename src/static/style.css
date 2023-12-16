@@ -142,6 +142,10 @@ p, .formSubmit,  label, .timestampButton {
 #twoButton > #logout {
   grid-column: 2;
 }
+
+#all-feed, #lessPostsButton {
+  display: none;
+}
 /* ---------------------------- */
 /* Login or create new account */
 /* -------------------------- */
@@ -448,6 +452,8 @@ textarea {
   border: 1px solid #888;
   width: 80%;
 }
+
+
 
 /* TODO: MAKE LOGOUT A GENERAL THING */
 
