@@ -512,9 +512,7 @@ function initViewPost() {
         createPlayer(i, uri)
 
         i++
-        window.alert("i" + i)
         viewTag = document.getElementById("viewComments-music" + i);
-        window.alert("viewtag: " + viewTag)
     }    
 }
 
