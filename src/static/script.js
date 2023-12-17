@@ -101,7 +101,13 @@ function addMusic() {
     $("#addChoice").hide()
     // var musicId = "music" + musicNum
     var musicId = "block-" + blockNum
-    $("<div class='musicDiv' id=\"" + musicId + "\"><search><form id=\"songSearchForm\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
+    $("<div class='musicDiv' id=\"" + musicId + "\"><search><form id=\"songSearchForm\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input id='search-button' class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
+    // got help from https://www.tutorialrepublic.com/faq/how-to-detect-enter-key-press-on-keyboard-using-jquery.php
+    $("search").on("keypress", (e) => {
+        if (e.which == 13) {
+            $("#search-button").click();
+        }
+    })
     musicNum++
     blockNum++
 }
@@ -118,28 +124,40 @@ function addText() {
 async function doSearch(musicId) {
     query = $("#search-" + musicId).val();
 
-    let previousSearch = $("#search-results");
+    let previousSearch = $(".results");
+    let previousError = $(".loading");
     if (previousSearch.length) {
         previousSearch.remove();
     }
-    
-    const response = await fetch("/search/" + query);
-    const search_results = await response.json() // this returns a list of the top 5 search (as youtube id)
+    if (previousError.length) {
+        previousError.remove();
+    }
 
-    $("<div id='search-results'></div>").insertAfter("search");
-
-    for (key of Object.keys(search_results)) {
-        let item = search_results[key];
-        $("<div class='search-choice'><img id=\"image-" + key + "\" class='thumbnail'><p class='search-title'>" + item["snippet"]["title"] + "</p>" + "<button id=\"result-" + key + "\" class='addVideoButton' type='button'>Add</button></div>").appendTo("#search-results");
-        $(("#result-" + key)).on("click", () => {
-            if (musicNum == 1){
-                thumbnailURL = item["snippet"]["thumbnails"]["high"]["url"];
+    try {
+        $("<p class='loading'>Searching...</p>").insertAfter("search");
+        const response = await fetch("/search/" + query);
+        $(".loading").remove();
+        const search_results = await response.json() // this returns a list of the top 5 search (as youtube id)
+        
+        if (Object.keys(search_results).length === 0) {
+            $("<p class='loading'>No Search Results</p>").insertAfter("search");
+        } else {
+            $("<div id='search-results' class='results'></div>").insertAfter("search");
+            for (key of Object.keys(search_results)) {
+                let item = search_results[key];
+                $("<div class='search-choice'><img id=\"image-" + key + "\" class='thumbnail'><p class='search-title'>" + item["snippet"]["title"] + "</p>" + "<button id=\"result-" + key + "\" class='addVideoButton' type='button'>Add</button></div>").appendTo("#search-results");
+                $(("#result-" + key)).on("click", () => {
+                    if (musicNum == 1){
+                        thumbnailURL = item["snippet"]["thumbnails"]["high"]["url"];
+                    }
+                    addSong(item["id"]["videoId"], musicId);
+                })
+                $(("#image-" + key)).attr("src", item["snippet"]["thumbnails"]["high"]["url"]);
+                $(("#image-" + key)).attr("alt", "thumbnail of " + item["snippet"]["title"] + " video");
             }
-            addSong(item["id"]["videoId"], musicId);
-            
-        })
-        $(("#image-" + key)).attr("src", item["snippet"]["thumbnails"]["high"]["url"]);
-        $(("#image-" + key)).attr("alt", "thumbnail of " + item["snippet"]["title"] + " video");
+        }
+    } catch {
+        $("<p class='loading'>No Search Results</p>").insertAfter("search");
     }
 }
 
@@ -150,7 +168,7 @@ function addSong(youtubeID, blockId) {
     musicId = "music" + idNum
     // Help from: https://stackoverflow.com/questions/8488005/how-to-put-a-jpg-or-png-image-into-a-button-in-html
     exampleEmbed = "<div id=\"player-" + musicId + "\"></div><div class='commentsDiv'><img id='viewComments-" + musicId + "' src='../static/images/triangle.png' alt='a simple arrow'><p>View Comments</p><br/><div id='comments-"+musicId+"' class='comments-music'></div><input type='image' src='../static/images/addComment.png' alt='Add Comment' id='button-" + musicId + "' class='commentButton' onclick='addComment(" + idNum + ")'></button></div>"
-    $("#search-results").remove()
+    $(".results").remove()
     $(exampleEmbed).insertAfter("search")
     $("search").remove()
     $("#viewComments-" + musicId).on("click", (e) => viewComments(idNum))

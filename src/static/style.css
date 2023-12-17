@@ -394,6 +394,10 @@ search {
   padding-right: 1rem;
 }
 
+.loading {
+  margin-left: 0.75rem;
+}
+
 /* Video Chosen */
 
 iframe {
