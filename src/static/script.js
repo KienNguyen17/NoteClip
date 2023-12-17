@@ -110,8 +110,6 @@ function addMusic() {
         }
     })
 
-    $("#delete-"+blockNum).height($("#block-"+blockNum).height())
-
     musicNum++
     blockNum++
 }
@@ -200,8 +198,8 @@ async function doSearch(musicId) {
         $("<p class='loading'>No Search Results</p>").insertAfter("search");
     }
 
-    blockNum = musicId.substring(6)
-    $("#delete-"+blockNum).height($("#block-"+blockNum).height())
+    idNum = musicId.substring(6)
+    $("#delete-"+idNum).height($("#block-"+idNum).height())
 }
 
 
@@ -324,7 +322,7 @@ function submitPost(e) {
 
     // Coded with help from: https://stackoverflow.com/questions/29987323/how-do-i-send-data-from-js-to-python-with-flask  
     $.post("/new/finish", postInfo, function() {
-        // location.href = "/post/" + myFormData.get("title");
+        location.href = "/post/" + myFormData.get("title");
     })
 }
 
