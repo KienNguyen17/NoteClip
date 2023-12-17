@@ -14,7 +14,7 @@
         <link rel="shortcut icon" href="../static/favicon.ico">
         <link rel="stylesheet" href="../static/style.css">
     </head>
-    <body class="post" onload="initViewPost()">
+    <body class="post" onload="initViewPost() ">
         <header>
             <!-- TODO: Add ARIA(?) -->
             <button id="backButton" type="button">&lt;</button>     
@@ -24,7 +24,32 @@
             <div class="horizontal_line"></div>
         </header>
         <!-- Help from: https://stackoverflow.com/questions/3206344/passing-html-to-template-using-flask-jinja2 -->
-        <article>{{ article|safe }}</article>
+        <article>
+            {% set musicNum = 0 %}
+            {% for block in blocks -%}
+                {% if block.type == "text" %}
+                    <p>{{ block.text }}</p><br>
+                {% else %}
+                    <div class="musicDiv">
+                        <div id="player-music{{ musicNum }}">{{ block.uri }}</div>
+                        <div class='commentsDiv'>
+                            <img id="viewComments-music{{ musicNum }}" src='../static/images/triangle.png' alt='a simple arrow'>
+                            <p>View Comments</p>
+                            <br/>
+                            <div id="comments-music{{ musicNum }}" class='comments-music'>
+                                {% for comment in block.comments -%}
+                                    <div class="comment" onclick="clickComment('{{ comment.start }}', '{{ musicNum }}')">
+                                        <p>{{ comment.text }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    {% set musicNum = musicNum + 1 %}
+                {% endif %}
+            {% endfor %}
+        </article>
         
         <script src="../static/script.js" async defer></script>
         <script>

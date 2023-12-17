@@ -18,12 +18,8 @@ class MusicBlock {
     addComment(myFormData) {
         var startTime = (myFormData.get("startMinute")*60)
         startTime += Number(myFormData.get("startSecond"))
-        // var endTime = (myFormData.get("endMinute")*60)
-        // endTime += Number(myFormData.get("endSecond"))
 
-        
         var commentText = myFormData.get("comment")
-
         var musicComment = new MusicComment(startTime, commentText, this.playerId)
         this.comments.push(musicComment) 
 
@@ -35,21 +31,20 @@ class MusicBlock {
 // USED FOR CREATING A POST
 // -------------------------
 
-let textNum = 0
 let musicNum = 0
+let blockNum = 0
 let thumbnailURL = ""
 
 let players = []
-let musicBlocks = []
+let blocks = []
 
 /** Called when a createPost.html page is finished loading, initializes variables and prepares finish button */
 function initCreatePost() {
-    // Used to track ids
-    textNum = 0
     musicNum = 0
+    blockNum = 0
 
     players = []
-    musicBlocks = []
+    blocks = []
 
     thumbnailURL = ""
 
@@ -104,16 +99,18 @@ function clickAdd() {
  * Coded with help from: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/search */
 function addMusic() {
     $("#addChoice").hide()
-    var musicId = "music" + musicNum
+    // var musicId = "music" + musicNum
+    var musicId = "block-" + blockNum
     $("<div class='musicDiv' id=\"" + musicId + "\"><search><form id=\"songSearchForm\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
     musicNum++
+    blockNum++
 }
 
 /** Adds an editable text block */
 function addText() {
     $("#addChoice").hide()
-    var textId = "text" + textNum
-    textNum++
+    var textId = "block-" + blockNum
+    blockNum++
     $("<p id=\"" + textId + "\" contenteditable data-placeholder=\"Start Typing...\"></p><br/>").insertBefore("#addDiv")
 }
 
@@ -148,25 +145,37 @@ async function doSearch(musicId) {
 
 
 /** Used when a song is chosen, to finish adding a searched for song */
-function addSong(youtubeID, musicId) {    
-    idNum = musicId.substring(5)
+function addSong(youtubeID, blockId) {    
+    idNum = blockId.substring(6)
+    musicId = "music" + idNum
     // Help from: https://stackoverflow.com/questions/8488005/how-to-put-a-jpg-or-png-image-into-a-button-in-html
     exampleEmbed = "<div id=\"player-" + musicId + "\"></div><div class='commentsDiv'><img id='viewComments-" + musicId + "' src='../static/images/triangle.png' alt='a simple arrow'><p>View Comments</p><br/><div id='comments-"+musicId+"' class='comments-music'></div><input type='image' src='../static/images/addComment.png' alt='Add Comment' id='button-" + musicId + "' class='commentButton' onclick='addComment(" + idNum + ")'></button></div>"
     $("#search-results").remove()
     $(exampleEmbed).insertAfter("search")
     $("search").remove()
-    $("#viewComments-" + musicId).on("click", (e) => viewComments(e))
+    $("#viewComments-" + musicId).on("click", (e) => viewComments(idNum))
 
     // Players must be referenced to interact with music video
+    var player = createPlayer(idNum, youtubeID);
+    // player = new YT.Player('player-' + musicId, {
+    //     height: '390',
+    //     width: '640',
+    //     videoId: youtubeID,
+    // });
+
+    blocks[idNum] = new MusicBlock(youtubeID, idNum)
+    players[idNum] = player
+}
+
+function createPlayer(idNum, uri) {
     var player;
-    player = new YT.Player('player-' + musicId, {
+    player = new YT.Player("player-music" + idNum, {
         height: '390',
         width: '640',
-        videoId: youtubeID,
+        videoId: uri,
     });
 
-    musicBlocks.push(new MusicBlock(youtubeID, musicId.substring(5)))
-    players.push(player)
+    return player
 }
 
 /** Used when clicking the add comment button, brings up an add comment form */
@@ -204,7 +213,7 @@ function finishComment(e, idNum) {
     e.preventDefault()
 
     myFormData = new FormData(e.target)
-    musicComment = musicBlocks[idNum].addComment(myFormData)
+    musicComment = blocks[idNum].addComment(myFormData)
     commentHTML = createCommentHTML(musicComment)
     $("#comments-music"+idNum).append(commentHTML)
 
@@ -244,12 +253,47 @@ function submitPost(e) {
     all into new HTML when viewing a post */
     articleContents = $("article").html()
 
-    var postInfo = {"title": myFormData.get("title"), "summary": myFormData.get("description"), "htmlContent": articleContents, "thumbnailURL": thumbnailURL}
+    // var postInfo = {"title": myFormData.get("title"), "summary": myFormData.get("description"), "htmlContent": articleContents, "thumbnailURL": thumbnailURL}
+
+    var postInfo = {
+        "title": myFormData.get("title"),
+        "summary": myFormData.get("description"),
+        "thumbnailURL": thumbnailURL,
+        "blockNum": blockNum
+    }
+
+    addToPostInfo(postInfo)
 
     // Coded with help from: https://stackoverflow.com/questions/29987323/how-do-i-send-data-from-js-to-python-with-flask  
     $.post("/new/finish", postInfo, function() {
-        location.href = "/post/" + myFormData.get("title");
+        // location.href = "/post/" + myFormData.get("title");
     })
+}
+
+// NEW HERE
+function addToPostInfo(postInfo) {
+    var i = 0
+    while (i < blockNum) {
+        if ($("#block-" + i).hasClass("musicDiv")) {
+            postInfo["block-" + i] = "music"
+            postInfo["uri-" + i] = blocks[i].youtubeID
+            comments = blocks[i].comments
+            postInfo["commentCount-" + i] = comments.length
+
+            var j = 0
+            while (j < comments.length) {
+                postInfo["comment-" + j + "-start-" + i] = comments[j].startTime
+                postInfo["comment-" + j + "-text-" + i] = comments[j].commentText
+                j++
+            }
+        }
+        // Text Block
+        else {
+            postInfo["block-" + i] = "text"
+            postInfo["text-" + i] = $("#block-" + i).text()
+        }
+        i++
+    }
 }
 
 // ---------------------------------
@@ -265,14 +309,14 @@ function onYouTubeIframeAPIReady() {
  * TODO: Move to just creating a post section if we don't fix the database
 */
 function createCommentHTML(musicComment) {
-    var commentHTML = "<div class='comment' onclick='clickComment(" + musicComment.startTime + ", " + musicComment.duration + ", " + musicComment.playerId + ")'><p>" + musicComment.commentText + "</p></div>"
+    var commentHTML = "<div class='comment' onclick='clickComment(" + musicComment.startTime + ", " + musicComment.playerId + ")'><p>" + musicComment.commentText + "</p></div>"
     return commentHTML
 }
 
 /** Jumps to point in video when a comment is clicked on 
  * TODO: Once fix database to not just save HTML, remove duration
 */
-function clickComment(start, duration, playerId) {
+function clickComment(start, playerId) {
     callPlayer('player-music'+playerId, "seekTo", [start, true])
 }
 
@@ -369,8 +413,8 @@ function callPlayer(frame_id, func, args) {
 }
 
 /** Used when opening the View Comments dropdown, shows comments and rotates dropdown arrow */
-function viewComments(e) {
-    idNum = e.target.id.substring(18)
+function viewComments(idNum) {
+    // idNum = e.target.id.substring(18)
     if ($("#comments-music"+idNum).css("display") == "none") {
         $("#comments-music"+idNum).show()
         
@@ -403,10 +447,14 @@ function initViewPost() {
     var i = 0
     var viewTag = document.getElementById("viewComments-music0");
     while (viewTag != null) {
-        $("#viewComments-music" + i).on("click", (e) => viewComments(e))
+        $("#viewComments-music" + i).on("click", (e) => viewComments(i-1))
+
+        uri = $("#player-music"+i).text()
+        createPlayer(i, uri)
+
         i++
         viewTag = document.getElementById("viewComments-music" + i);
-    }
+    }    
 }
 
 
@@ -431,9 +479,3 @@ function removePosts() {
     $("#allPostsButton").css("display", "block");
     $("#lessPostsButton").css("display", "none");    
 }
-
-// Wasn't working... not sure why
-// $(document).ready(function() {
-//     window.alert("DOC READY");
-//     $("#finishForm").on("submit", (e) => submitPost(e));
-// });

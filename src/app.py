@@ -80,20 +80,20 @@ def newAccount(status):
             User(username=username, password=password).save()
             return redirect("/login/success")
         
-# class Element(db.Document):
-#     order = db.IntField(required=True, primary_key=True)
-#     meta = {'allow_inheritance': True}
+class Element(db.Document):
+    type = db.StringField(required=True)
+    meta = {'allow_inheritance': True}
 
-# class TextElement(Element):
-#     text = db.StringField(required=True)
+class TextElement(Element):
+    text = db.StringField(required=True)
 
-# class MusicComment(db.Document):
-#     start = db.IntField(required=True)
-#     text = db.StringField(required=True)
+class MusicComment(db.Document):
+    start = db.IntField(required=True)
+    text = db.StringField(required=True)
 
-# class MusicElement(Element):
-#     uri = db.StringField(required=True)
-#     comments = db.ListField(db.ReferenceField(MusicComment), required=True)
+class MusicElement(Element):
+    uri = db.StringField(required=True)
+    comments = db.ListField(db.ReferenceField(MusicComment), required=True)
 
 class BlogPost(db.Document):
     '''create an entry representing a blog post that can be saved to the database'''
@@ -102,8 +102,9 @@ class BlogPost(db.Document):
     title = db.StringField(required=True, primary_key=True)
     authorId = db.ReferenceField(User, required=True)
     summary = db.StringField(required=True)
-    htmlContent = db.StringField(required=True)
     thumbnailURL = db.StringField(required=True)
+    htmlContent = db.StringField()
+    blocks = db.ListField(db.ReferenceField(Element))
 
 @app.route("/")
 def home():
@@ -123,7 +124,8 @@ def viewPost(title):
         return redirect("/")
     else:
         author = findPost.authorId.username
-        return render_template("post.html", title=title, author=author, article=findPost.htmlContent)
+        blocks = findPost.blocks
+        return render_template("post.html", title=title, author=author, blocks=blocks)
 
 @app.route("/new")
 @login_required
@@ -134,12 +136,41 @@ def createPost():
 def finishPost():
     title = request.form["title"]
     summary = request.form["summary"]
-    htmlContent = request.form["htmlContent"]
-    thumbnailURL = request.form["thumbnailURL"]
     authorId = current_user
-    print("title: " + title + "\nsummary: " + summary + "\nhtmlContent: " + htmlContent)
-    BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent, thumbnailURL=thumbnailURL).save()
-    return redirect("/post/" + title) 
+    # htmlContent = request.form["htmlContent"]
+    thumbnailURL = request.form["thumbnailURL"]
+    print("title: " + title + "\nsummary: " + summary + "\nthumbnailURL: " + thumbnailURL)
+    # BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent, thumbnailURL=thumbnailURL).save()
+
+    blockNum = request.form["blockNum"]
+    blocks = []
+    i = 0
+    while (i < int(blockNum)):
+        if (request.form["block-" + str(i)] == "music"):
+            uri = request.form["uri-" + str(i)]
+            print("uri: " + uri)
+            
+            commentNum = request.form["commentCount-" + str(i)]
+            comments = []
+            j = 0
+            while (j < int(commentNum)):
+                start = request.form["comment-" + str(j) + "-start-" + str(i)]
+                text = request.form["comment-" + str(j) + "-text-" + str(i)]
+                print("cStart: " + start + " cText: " + text)
+                newComment = MusicComment(start=start,text=text).save()
+                comments.append(newComment)
+                j += 1
+            newElement = MusicElement(type="music",uri=uri,comments=comments).save()
+            blocks.append(newElement)
+        else:
+            text = request.form["text-" + str(i)]
+            newElement = TextElement(type="text",text=text).save()
+            blocks.append(newElement)
+            print("text: " + text)
+        i += 1
+
+    BlogPost(title=title, authorId=authorId, summary=summary, thumbnailURL=thumbnailURL, blocks=blocks).save()
+    return redirect("/post/" + title)   
 
 @app.route("/logout")
 @login_required
