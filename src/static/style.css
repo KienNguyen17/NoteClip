@@ -33,7 +33,7 @@ button, .formSubmit, .backButton, .commentButton {
   padding: 0.5rem;
 }
 
-button:hover, .formSubmit:hover, .backButton:hover, .commentButton:hover {
+button:hover, .formSubmit:hover, .backButton:hover, .commentButton:hover, .commentsDiv img:hover {
   background-color: rgb(193, 193, 193);
 }
 
@@ -236,6 +236,11 @@ h2 {
   line-height: 80%;
 }
 
+.post article {
+  padding-left: 6.5%;
+  padding-right: 13%;
+  padding-top: 2rem;
+}
 
 /* --------------------- */
 /* Create Post and Post */
@@ -244,12 +249,6 @@ h2 {
 
 #logout {
   grid-column: 3;
-}
-
-article {
-  padding-left: 6.5%;
-  padding-right: 13%;
-  padding-top: 2rem;
 }
 
 /* Comments stuff */
@@ -299,10 +298,25 @@ article {
 /* Create Post */
 /* ---------- */
 
+.createPost {
+  display: grid;
+  grid-template-columns: 1fr 20fr 3fr;
+}
+
 .createPost header {
+  grid-column: span 3;
+
   display: grid;
   grid-template-columns: 1fr 20fr 3fr;
   padding-bottom: 1rem;
+}
+
+.createPost article {
+  grid-column: 2;
+}
+
+#deleteButtons { 
+  grid-column: 3;
 }
 
 /* Adding block */
@@ -358,6 +372,10 @@ article {
 [contenteditable="true"]:focus{
   border:none;
   outline:none;
+}
+
+.deleteButton {
+  font-size: 1.25rem;
 }
 
 /* Music block */

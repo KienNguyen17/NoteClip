@@ -137,10 +137,8 @@ def finishPost():
     title = request.form["title"]
     summary = request.form["summary"]
     authorId = current_user
-    # htmlContent = request.form["htmlContent"]
     thumbnailURL = request.form["thumbnailURL"]
     print("title: " + title + "\nsummary: " + summary + "\nthumbnailURL: " + thumbnailURL)
-    # BlogPost(title=title, authorId=authorId, summary=summary, htmlContent=htmlContent, thumbnailURL=thumbnailURL).save()
 
     blockNum = request.form["blockNum"]
     blocks = []

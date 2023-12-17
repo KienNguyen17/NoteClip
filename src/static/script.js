@@ -99,25 +99,51 @@ function clickAdd() {
  * Coded with help from: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/search */
 function addMusic() {
     $("#addChoice").hide()
-    // var musicId = "music" + musicNum
     var musicId = "block-" + blockNum
     $("<div class='musicDiv' id=\"" + musicId + "\"><search><form id=\"songSearchForm\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input id='search-button' class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
+    $("#deleteButtons").append("<div><button id='delete-" + blockNum + "' class='deleteButton' type='button' onClick='deleteBlock(" + blockNum + ", true)'>Delete Block</button></div><br>")
+
     // got help from https://www.tutorialrepublic.com/faq/how-to-detect-enter-key-press-on-keyboard-using-jquery.php
     $("search").on("keypress", (e) => {
         if (e.which == 13) {
             $("#search-button").click();
         }
     })
+
     musicNum++
     blockNum++
+}
+
+function deleteBlock(idNum, isMusic) {
+    if (isMusic) {
+        blocks[idNum] = null
+        players[idNum] = null    
+    }
+    $("#block-"+idNum).remove()
+    $("#delete-"+idNum).remove()
+
+    for (i = idNum + 1; i < blockNum; i++) {
+        if ($("#block-"+i).hasClass("musicDiv")) {
+            blocks[i-1] = blocks[i]
+            blocks[i] = null
+            players[i-1] = players[i]
+            players[i] = null
+        }
+        newNum = i - 1
+        document.getElementById("block-"+i).id = "block-" + newNum
+    }
+
+    blockNum--
 }
 
 /** Adds an editable text block */
 function addText() {
     $("#addChoice").hide()
     var textId = "block-" + blockNum
-    blockNum++
     $("<p id=\"" + textId + "\" contenteditable='true' data-placeholder=\"Start Typing...\"></p><br/>").insertBefore("#addDiv")
+    $("#deleteButtons").append("<button id='delete-" + blockNum + "' class='deleteButton' type='button' onClick='deleteBlock(" + blockNum + ", false)'>Delete Block</button><br>")
+
+    blockNum++
 }
 
 /** Used when searching for a song, performs the search and brings up a list of results */
@@ -175,11 +201,6 @@ function addSong(youtubeID, blockId) {
 
     // Players must be referenced to interact with music video
     var player = createPlayer(idNum, youtubeID);
-    // player = new YT.Player('player-' + musicId, {
-    //     height: '390',
-    //     width: '640',
-    //     videoId: youtubeID,
-    // });
 
     blocks[idNum] = new MusicBlock(youtubeID, idNum)
     players[idNum] = player
