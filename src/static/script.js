@@ -101,7 +101,7 @@ function addMusic() {
     $("#addChoice").hide()
     var musicId = "block-" + blockNum
     $("<div class='musicDiv' id=\"" + musicId + "\"><search><form id=\"songSearchForm\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input id='search-button' class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
-    $("#deleteButtons").append("<div><button id='delete-" + blockNum + "' class='deleteButton' type='button' onClick='deleteBlock(" + blockNum + ", true)'>Delete Block</button></div><br>")
+    $("#deleteButtons").append("<div id='delete-" + blockNum + "' class='deleteDiv'><button class='deleteButton' type='button' onClick='deleteBlock(" + blockNum + ", true)'>Delete Block</button></div><br>")
 
     // got help from https://www.tutorialrepublic.com/faq/how-to-detect-enter-key-press-on-keyboard-using-jquery.php
     $("search").on("keypress", (e) => {
@@ -109,6 +109,8 @@ function addMusic() {
             $("#search-button").click();
         }
     })
+
+    $("#delete-"+blockNum).height($("#block-"+blockNum).height())
 
     musicNum++
     blockNum++
@@ -120,6 +122,8 @@ function deleteBlock(idNum, isMusic) {
         players[idNum] = null    
     }
     $("#block-"+idNum).remove()
+    // Help from: https://stackoverflow.com/questions/5848762/finding-an-element-after-a-specific-element-using-jquery
+    $("#delete-"+idNum).nextAll('.start:first').remove()
     $("#delete-"+idNum).remove()
 
     for (i = idNum + 1; i < blockNum; i++) {
@@ -141,9 +145,19 @@ function addText() {
     $("#addChoice").hide()
     var textId = "block-" + blockNum
     $("<p id=\"" + textId + "\" contenteditable='true' data-placeholder=\"Start Typing...\"></p><br/>").insertBefore("#addDiv")
-    $("#deleteButtons").append("<button id='delete-" + blockNum + "' class='deleteButton' type='button' onClick='deleteBlock(" + blockNum + ", false)'>Delete Block</button><br>")
+    $("#deleteButtons").append("<div id='delete-" + blockNum + "' class='deleteDiv'><button class='deleteButton' type='button' onClick='deleteBlock(" + blockNum + ", false)'>Delete Block</button></div><br>")
+
+    // Help from: https://stackoverflow.com/questions/1391278/contenteditable-change-events
+    $("#"+textId).on("input", (e) => changeDeleteHeight(e));
+
+    $("#delete-"+blockNum).height($("#block-"+blockNum).height())
 
     blockNum++
+}
+
+function changeDeleteHeight(e) {
+    idNum = e.target.id.substring(6)
+    $("#delete-"+idNum).height($("#block-"+idNum).height())
 }
 
 /** Used when searching for a song, performs the search and brings up a list of results */
@@ -185,6 +199,9 @@ async function doSearch(musicId) {
     } catch {
         $("<p class='loading'>No Search Results</p>").insertAfter("search");
     }
+
+    blockNum = musicId.substring(6)
+    $("#delete-"+blockNum).height($("#block-"+blockNum).height())
 }
 
 
@@ -204,6 +221,8 @@ function addSong(youtubeID, blockId) {
 
     blocks[idNum] = new MusicBlock(youtubeID, idNum)
     players[idNum] = player
+    
+    $("#delete-"+idNum).height($("#block-"+idNum).height())
 }
 
 function createPlayer(idNum, uri) {
@@ -453,7 +472,6 @@ function callPlayer(frame_id, func, args) {
 
 /** Used when opening the View Comments dropdown, shows comments and rotates dropdown arrow */
 function viewComments(idNum) {
-    // idNum = e.target.id.substring(18)
     if ($("#comments-music"+idNum).css("display") == "none") {
         $("#comments-music"+idNum).show()
         
@@ -463,6 +481,10 @@ function viewComments(idNum) {
         $("#viewComments-music"+idNum).css("-o-transform", "rotate(270deg)")
         $("#viewComments-music"+idNum).css("-ms-transform", "rotate(270deg)")
         $("#viewComments-music"+idNum).css("transform", "rotate(270deg)")
+
+        if ($(body).hasClass("createPost")) {
+            $("#delete-"+idNum).height($("#block-"+idNum).height())
+        }
     }
     else {
         $("#comments-music"+idNum).hide()
