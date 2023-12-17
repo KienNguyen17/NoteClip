@@ -117,7 +117,7 @@ function addText() {
     $("#addChoice").hide()
     var textId = "block-" + blockNum
     blockNum++
-    $("<p id=\"" + textId + "\" contenteditable data-placeholder=\"Start Typing...\"></p><br/>").insertBefore("#addDiv")
+    $("<p id=\"" + textId + "\" contenteditable='true' data-placeholder=\"Start Typing...\"></p><br/>").insertBefore("#addDiv")
 }
 
 /** Used when searching for a song, performs the search and brings up a list of results */

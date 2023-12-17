@@ -192,7 +192,7 @@ def search(query):
 if __name__ == "__main__":
 
     # BlogPost.objects(title="Blank Space").first().delete()
-    pass
+    # pass
     # testUser = {
     #     "username": "Kien",
     #     "password": "admin"
@@ -213,5 +213,5 @@ if __name__ == "__main__":
 
     # BlogPost(**testPost).save()
 
-    # for obj in BlogPost.objects():
-    #     obj.delete()
+    for obj in BlogPost.objects():
+        obj.delete()

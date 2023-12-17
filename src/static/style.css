@@ -353,6 +353,13 @@ article {
   font-style: italic;
 }
 
+/* Help from: https://blog.frankmtaylor.com/2012/01/23/html5-contenteditable-and-css/ */
+[contenteditable="true"]:active,
+[contenteditable="true"]:focus{
+  border:none;
+  outline:none;
+}
+
 /* Music block */
 
 .musicDiv {
