@@ -3,6 +3,11 @@
 A music-blogging website - currently a work in progress.
 
 ## Installation
+After cloning the repo, change directory into src
+```
+cd src
+```
+
 Activate the virtual environment .venv
 ```
 .venv\Scripts\activate
