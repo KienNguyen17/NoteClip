@@ -25,20 +25,21 @@
         </header>
         <!-- Help from: https://stackoverflow.com/questions/3206344/passing-html-to-template-using-flask-jinja2 -->
         <article>
-            {% set musicNum = 0 %}
+            <!-- Help from: https://stackoverflow.com/questions/76235390/trying-to-increment-counter-in-jinja2 -->
+            {% set ns = namespace(musicNum=0) %}
             {% for block in blocks -%}
                 {% if block.type == "text" %}
                     <p>{{ block.text }}</p><br>
                 {% else %}
                     <div class="musicDiv">
-                        <div id="player-music{{ musicNum }}">{{ block.uri }}</div>
+                        <div id="player-music{{ ns.musicNum }}">{{ block.uri }}</div>
                         <div class='commentsDiv'>
-                            <img id="viewComments-music{{ musicNum }}" src='../static/images/triangle.png' alt='a simple arrow'>
+                            <img id="viewComments-music{{ ns.musicNum }}" src='../static/images/triangle.png' alt='a simple arrow'>
                             <p>View Comments</p>
                             <br/>
-                            <div id="comments-music{{ musicNum }}" class='comments-music'>
+                            <div id="comments-music{{ ns.musicNum }}" class='comments-music'>
                                 {% for comment in block.comments -%}
-                                    <div class="comment" onclick="clickComment('{{ comment.start }}', '{{ musicNum }}')">
+                                    <div class="comment" onclick="clickComment('{{ comment.start }}', '{{ ns.musicNum }}')">
                                         <p>{{ comment.text }}</p>
                                     </div>
                                 {% endfor %}
@@ -46,7 +47,7 @@
                         </div>
                     </div>
                     <br>
-                    {% set musicNum = musicNum + 1 %}
+                    {% set ns.musicNum = ns.musicNum + 1 %}
                 {% endif %}
             {% endfor %}
         </article>
