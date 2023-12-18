@@ -34,9 +34,11 @@
                 <div class="post-item">
                     <a href="/post/{{post.title}}"> 
                         <img src="{{post.thumbnailURL}}" alt="thumbnail for {{post.title}} post" height="auto" width="100%">
-                        <p class="title">{{post.title}}</p>
-                        <p class="author">by {{post.authorId.username}}</p>
-                        <p class="summary">{{post.summary}}</p>
+                        <div class="post-text">
+                            <p class="title">{{post.title}}</p>
+                            <p class="author">by {{post.authorId.username}}</p>
+                            <p class="summary">{{post.summary}}</p>
+                        </div>
                     </a>
                 </div>
             {% endfor %}
@@ -44,9 +46,11 @@
                 <div class="post-item hidden">
                     <a href="/post/{{post.title}}">
                         <img src="{{post.thumbnailURL}}" alt="thumbnail for {{post.title}} post" height="auto" width="100%">
-                        <p class="title">{{post.title}}</p>
-                        <p class="author">by {{post.authorId.username}}</p>
-                        <p class="summary">{{post.summary}}</p>
+                        <div class="post-text">
+                            <p class="title">{{post.title}}</p>
+                            <p class="author">by {{post.authorId.username}}</p>
+                            <p class="summary">{{post.summary}}</p>
+                        </div>
                     </a>
                 </div>
             {% endfor %}
