@@ -18,9 +18,10 @@ Install the required packages in requirements.txt by running the following line 
 pip install -r requirements.txt
 ```
 
-You will also need to have a config.py file inside of the src folder with the appopriate keys.  
+You will also need to have a config.py file inside of the src folder with the appropriate keys.  
 
 ## Running the app
+If you haven't already, change directory into src and activate the virtual environment.
 Run the flask app
 ```
 flask run
