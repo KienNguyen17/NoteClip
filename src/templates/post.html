@@ -34,7 +34,7 @@
                     <div class="musicDiv">
                         <div id="player-music{{ ns.musicNum }}">{{ block.uri }}</div>
                         <div class='commentsDiv'>
-                            <img id="viewComments-music{{ ns.musicNum }}" src='../static/images/triangle.png' alt='a simple arrow'>
+                            <img id="viewComments-music{{ ns.musicNum }}" onclick="viewComments('{{ ns.musicNum }}')" src='../static/images/triangle.png' alt='a simple arrow'>
                             <p>View Comments</p>
                             <br/>
                             <div id="comments-music{{ ns.musicNum }}" class='comments-music'>

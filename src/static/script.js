@@ -526,18 +526,17 @@ function viewComments(idNum) {
 // ------------------------
 
 /** 
- * Called when a post.html page is finished loading, prepares videos and comments 
+ * Called when a post.html page is finished loading, prepares videos 
  */
 function initViewPost() {
     var i = 0
     var viewTag = document.getElementById("viewComments-music0");
     while (viewTag != null) {
-        $("#viewComments-music" + i).on("click", (e) => viewComments(i-1))
-
         uri = $("#player-music"+i).text()
         createPlayer(i, uri)
 
         i++
+        // Since each music video should have a view tag, this tracks how many are left
         viewTag = document.getElementById("viewComments-music" + i);
     }    
 }

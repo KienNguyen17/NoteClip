@@ -5,10 +5,6 @@ from mongoengine import *
 from googleapiclient.discovery import build
 import config
 
-# # need to fill in password
-# # password = ""
-# # connect(host="mongodb+srv://noteclipadmin:" + password + "@noteclip.s8vwzbm.mongodb.net/")
-
 # database setup with help from https://stackabuse.com/guide-to-flask-mongoengine-in-python/
 db = MongoEngine()
 
@@ -18,10 +14,7 @@ app.config.update(SECRET_KEY = config.flask_key)
 
 app.config["MONGODB_SETTINGS"] = [
     {
-        # "db": "NoteClip",
         "host": config.mongoHost,
-        # "port": 27017,
-        # "alias": "default",
     }
 ]
 
@@ -105,7 +98,6 @@ class BlogPost(db.Document):
     authorId = db.ReferenceField(User, required=True)
     summary = db.StringField(required=True)
     thumbnailURL = db.StringField(required=True)
-    htmlContent = db.StringField()
     blocks = db.ListField(db.ReferenceField(Element))
 
 @app.route("/")
@@ -140,33 +132,32 @@ def finishPost():
     summary = request.form["summary"]
     authorId = current_user
     thumbnailURL = request.form["thumbnailURL"]
-    print("title: " + title + "\nsummary: " + summary + "\nthumbnailURL: " + thumbnailURL)
 
+    # Iterate through blocks and create appropriate sub-objects to be added to post object
     blockNum = request.form["blockNum"]
     blocks = []
     i = 0
     while (i < int(blockNum)):
         if (request.form["block-" + str(i)] == "music"):
             uri = request.form["uri-" + str(i)]
-            print("uri: " + uri)
-            
+
+            # Iterate through comments and create appropriate sub-objects to be added to music block object
             commentNum = request.form["commentCount-" + str(i)]
             comments = []
             j = 0
             while (j < int(commentNum)):
                 start = request.form["comment-" + str(j) + "-start-" + str(i)]
                 text = request.form["comment-" + str(j) + "-text-" + str(i)]
-                print("cStart: " + start + " cText: " + text)
                 newComment = MusicComment(start=start,text=text).save()
                 comments.append(newComment)
                 j += 1
+                
             newElement = MusicElement(type="music",uri=uri,comments=comments).save()
             blocks.append(newElement)
         else:
             text = request.form["text-" + str(i)]
             newElement = TextElement(type="text",text=text).save()
             blocks.append(newElement)
-            print("text: " + text)
         i += 1
 
     BlogPost(title=title, authorId=authorId, summary=summary, thumbnailURL=thumbnailURL, blocks=blocks).save()
@@ -192,7 +183,7 @@ def search(query):
 if __name__ == "__main__":
 
     # BlogPost.objects(title="Blank Space").first().delete()
-    # pass
+    pass
     # testUser = {
     #     "username": "Kien",
     #     "password": "admin"
@@ -213,5 +204,5 @@ if __name__ == "__main__":
 
     # BlogPost(**testPost).save()
 
-    for obj in BlogPost.objects():
-        obj.delete()
+    # for obj in BlogPost.objects():
+    #     obj.delete()
