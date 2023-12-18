@@ -2,9 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>{{ postName }}</title>
-        <!-- TODO: Write description -->
-        <meta name="description" content=""> 
+        <title>{{ title }}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script
             src="https://code.jquery.com/jquery-3.3.1.js"
@@ -16,7 +14,6 @@
     </head>
     <body class="post" onload="initViewPost() ">
         <header>
-            <!-- TODO: Add ARIA(?) -->
             <button id="backButton" type="button">&lt;</button>     
             <h1>{{ title }}</h1>
             <button id="logout" type="button">Log Out</button>
