@@ -1,4 +1,4 @@
-from flask import Flask, render_template, make_response, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 from flask_login import LoginManager, UserMixin, current_user, login_user, login_required, logout_user
 from flask_mongoengine import MongoEngine
 from mongoengine import *
@@ -188,6 +188,3 @@ def search(query):
             result_dict[index] = result
             index+=1
         return result_dict
-
-if __name__ == "__main__":
-    pass

@@ -115,7 +115,7 @@ function addMusic() {
     $("<div class='musicDiv' id=\"" + musicId + "\"><search><form id=\"songSearchForm\"><input id=\"search-" + musicId + "\" name=\"songSearch\" type=\"search\" placeholder=\"Search...\"</form><input id='search-button' class=\"formSubmit\" type=\"button\" value=\"Search\" onclick=\"doSearch('" + musicId + "')\"></search></div><br/>").insertBefore("#addDiv")
     $("#deleteButtons").append("<div id='delete-" + blockNum + "' class='deleteDiv'><button class='deleteButton' type='button' onClick='deleteBlock(" + blockNum + ", true)'>Delete Block</button></div><br>")
 
-    // got help from https://www.tutorialrepublic.com/faq/how-to-detect-enter-key-press-on-keyboard-using-jquery.php
+    // Help from https://www.tutorialrepublic.com/faq/how-to-detect-enter-key-press-on-keyboard-using-jquery.php
     $("search").on("keypress", (e) => {
         if (e.which == 13) {
             $("#search-button").click();
