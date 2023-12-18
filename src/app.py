@@ -80,6 +80,7 @@ def newAccount(status):
             User(username=username, password=password).save()
             return redirect("/login/success")
         
+# Abstract class for a music or text block
 class Element(db.Document):
     type = db.StringField(required=True)
     meta = {'allow_inheritance': True}
@@ -93,12 +94,13 @@ class MusicComment(db.Document):
 
 class MusicElement(Element):
     uri = db.StringField(required=True)
-    comments = db.ListField(db.ReferenceField(MusicComment), required=True)
+    comments = db.ListField(db.ReferenceField(MusicComment))
 
 class BlogPost(db.Document):
     '''create an entry representing a blog post that can be saved to the database'''
     # we probably actually want an id so that posts could theoretically have the same title, but i'm not thinking about how to figure that out yet
-    # blogId = db.StringField(required=True, primary_key=True)
+    # currently will overwrite existing post if it has the same title! kinda a round about way to update a post (someone elses include)
+    # reminds me of that old tumblr thing. lmao
     title = db.StringField(required=True, primary_key=True)
     authorId = db.ReferenceField(User, required=True)
     summary = db.StringField(required=True)
