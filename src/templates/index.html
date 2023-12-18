@@ -13,9 +13,7 @@
         <link rel="stylesheet" href="../static/style.css">
     </head>
     <body class="home">
-
         <header>
-            <!-- Put it as png cause it kept having weird excess space as an svg (maybe its a problem of how i saved the svg) -->
             <img src="../static/images/NoteClipLight.png" alt="a graphic representing a treble clef surrounding a pen">
             <h1>NoteClip</h1>
             <h2>Recent Posts</h2>
@@ -25,7 +23,6 @@
             {% else %}
                 <button id="loginButton" type="button">Log In</button>
             {% endif %}
-            
         </header>
         <div id="blog-posts">
             {% for post in posts[:6] %}

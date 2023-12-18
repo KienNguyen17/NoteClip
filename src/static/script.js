@@ -1,4 +1,10 @@
-/** A comment on a music video */
+// -------------------------
+// USED FOR CREATING A POST
+// -------------------------
+
+/** 
+ * A comment on a music video 
+ */
 class MusicComment {
     constructor(startTime, commentText, playerId) {
         this.startTime = startTime;
@@ -7,10 +13,12 @@ class MusicComment {
     }
 }
 
-/** A single music video in a post */
+/** 
+ * A single music video in a post 
+ */
 class MusicBlock {
-    constructor(youtubeID, playerId) {
-        this.youtubeID = youtubeID
+    constructor(youtubeId, playerId) {
+        this.youtubeId = youtubeId
         this.playerId = playerId
         this.comments = []
     }
@@ -26,10 +34,6 @@ class MusicBlock {
         return musicComment
     }
 }
-
-// -------------------------
-// USED FOR CREATING A POST
-// -------------------------
 
 let musicNum = 0
 let blockNum = 0
@@ -141,6 +145,8 @@ function addText() {
 
 /**
  * Used when clicking a delete button, removes appropriate block and updates all other blocks' ids accordingly
+ * @param idNum     The id number of the block
+ * @param isMusic   Boolean whether it is a music block
  */
 function deleteBlock(idNum, isMusic) {
     if (isMusic) {
@@ -168,6 +174,7 @@ function deleteBlock(idNum, isMusic) {
 
 /**
  * Used to dynamically change the height of the div containing a delete button so subsequent divs are at the same height as their blocks
+ * @param e The event calling the function
  */
 function changeDeleteHeight(e) {
     idNum = e.target.id.substring(6)
@@ -176,6 +183,7 @@ function changeDeleteHeight(e) {
 
 /** 
  * Used when searching for a song, performs the search and brings up a list of results 
+ * @param musicId The id string of the music block
  */
 async function doSearch(musicId) {
     query = $("#search-" + musicId).val();
@@ -223,8 +231,10 @@ async function doSearch(musicId) {
 
 /** 
  * Used when a song is chosen, to finish adding a searched for song 
+ * @param youtubeId The YouTube URI of the song chosen
+ * @param blockId   The id string of the music block
  */
-function addSong(youtubeID, blockId) {    
+function addSong(youtubeId, blockId) {    
     idNum = blockId.substring(6)
     musicId = "music" + idNum
     // Help from: https://stackoverflow.com/questions/8488005/how-to-put-a-jpg-or-png-image-into-a-button-in-html
@@ -234,9 +244,9 @@ function addSong(youtubeID, blockId) {
     $("search").remove()
 
     // Players must be referenced to interact with music video
-    var player = createPlayer(idNum, youtubeID);
+    var player = createPlayer(idNum, youtubeId);
 
-    blocks[idNum] = new MusicBlock(youtubeID, idNum)
+    blocks[idNum] = new MusicBlock(youtubeId, idNum)
     players[idNum] = player
     
     $("#delete-"+idNum).height($("#block-"+idNum).height())
@@ -244,6 +254,7 @@ function addSong(youtubeID, blockId) {
 
 /** 
  * Used when clicking the add comment button, brings up an add comment form 
+ * @param idNum The id number of the music block
  */
 function addComment(idNum) {
     // help from: https://ux.stackexchange.com/questions/112264/best-way-to-put-input-fields-that-take-minutes-and-seconds-mmss
@@ -261,7 +272,8 @@ function addComment(idNum) {
 }
 
 /** 
- * Generates the HTML for a comment, given a MusicComment object 
+ * Generates the HTML for a comment 
+ * @param musicComment a MusicComment object
  */
 function createCommentHTML(musicComment) {
     var commentHTML = "<div class='comment' onclick='clickComment(" + musicComment.startTime + ", " + musicComment.playerId + ")'><p>" + musicComment.commentText + "</p></div>"
@@ -270,6 +282,7 @@ function createCommentHTML(musicComment) {
 
 /** 
  * Used when clicking the Current Timestamp button, sets the time of the comment to the video's current time 
+ * @param idNum The id number of the music block
  */
 function setTimestamp(idNum) {
     player = players[idNum]
@@ -282,6 +295,7 @@ function setTimestamp(idNum) {
 
 /** 
  * Used when entering time in an add comment, automatically moves to timestamp in video 
+ * @param idNum The id number of the music block
  */
 function changeVidTime(idNum) {
     newTime = ($("#startMinute" + idNum).val()*60) + ($("#startSecond" + idNum).val()*1)
@@ -290,6 +304,8 @@ function changeVidTime(idNum) {
 
 /** 
  * Used when finishing a comment, creates a new comment object and adds to the page 
+ * @param e The event that called the function
+ * @param idNum The id number of the music block
  */
 function finishComment(e, idNum) {
     e.preventDefault()
@@ -322,6 +338,7 @@ function closeFinishPost() {
 
 /** 
  * Used when finishing a post, sends a POST request to send the post to the database and redirects to the new page 
+ * @param e The event that called the function
  */
 function submitPost(e) {
     e.preventDefault()
@@ -345,13 +362,14 @@ function submitPost(e) {
 
 /**
  * Used to populate Plain Object for POST request, formats all data that needs to be stored in the database 
+ * @param postInfo A plain object containing the initial post info
  */
 function addToPostInfo(postInfo) {
     var i = 0
     while (i < blockNum) {
         if ($("#block-" + i).hasClass("musicDiv")) {
             postInfo["block-" + i] = "music"
-            postInfo["uri-" + i] = blocks[i].youtubeID
+            postInfo["uri-" + i] = blocks[i].youtubeId
             comments = blocks[i].comments
             postInfo["commentCount-" + i] = comments.length
 
@@ -382,6 +400,8 @@ function onYouTubeIframeAPIReady() {
 
 /**
  * Creates a player object for a given div and YouTube video
+ * @param idNum The id number of the music block
+ * @param uri   The YouTube uri of the song chosen
  */
 function createPlayer(idNum, uri) {
     var player;
@@ -396,6 +416,8 @@ function createPlayer(idNum, uri) {
 
 /** 
  * Jumps to point in video when a comment is clicked on 
+ * @param start    The start time of the comment in seconds
+ * @param playerId The id string of the player element
  */
 function clickComment(start, playerId) {
     callPlayer('player-music'+playerId, "seekTo", [start, true])
@@ -495,6 +517,7 @@ function callPlayer(frame_id, func, args) {
 
 /** 
  * Used when opening the View Comments dropdown, shows comments and rotates dropdown arrow 
+ * @param idNum The id number of the music block
  */
 function viewComments(idNum) {
     if ($("#comments-music"+idNum).css("display") == "none") {

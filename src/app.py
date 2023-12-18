@@ -47,6 +47,7 @@ def load_user(id: str):
 
 @app.route("/login/<status>", methods=['GET', 'POST'])
 def login(status):
+    '''Route to login page, and log in users'''
     if request.method == 'GET':
         return render_template("login.html", status=status)
     if request.method == 'POST':
@@ -61,6 +62,7 @@ def login(status):
         
 @app.route("/newAccount/<status>", methods=['GET', 'POST'])
 def newAccount(status):
+    '''Route to account creation page, and create new account'''
     if request.method == 'GET':
         return render_template("newAccount.html", status=status)
     if request.method == 'POST':
@@ -73,27 +75,27 @@ def newAccount(status):
             User(username=username, password=password).save()
             return redirect("/login/success")
         
-# Abstract class for a music or text block
 class Element(db.Document):
+    '''Abstract class for a music or text block'''
     type = db.StringField(required=True)
     meta = {'allow_inheritance': True}
 
 class TextElement(Element):
+    '''Create one text block in a post'''
     text = db.StringField(required=True)
 
 class MusicComment(db.Document):
+    '''Create one comment on a music block'''
     start = db.IntField(required=True)
     text = db.StringField(required=True)
 
 class MusicElement(Element):
+    '''Create one music block for a post'''
     uri = db.StringField(required=True)
     comments = db.ListField(db.ReferenceField(MusicComment))
 
 class BlogPost(db.Document):
-    '''create an entry representing a blog post that can be saved to the database'''
-    # we probably actually want an id so that posts could theoretically have the same title, but i'm not thinking about how to figure that out yet
-    # currently will overwrite existing post if it has the same title! kinda a round about way to update a post (someone elses include)
-    # reminds me of that old tumblr thing. lmao
+    '''Create an entry representing a blog post that can be saved to the database'''
     title = db.StringField(required=True, primary_key=True)
     authorId = db.ReferenceField(User, required=True)
     summary = db.StringField(required=True)
@@ -102,6 +104,7 @@ class BlogPost(db.Document):
 
 @app.route("/")
 def home():
+    '''Routes to the home page and retrieves recent posts'''
     posts = BlogPost.objects()
     posts = list(reversed(posts))
     if not current_user.is_authenticated:
@@ -109,10 +112,9 @@ def home():
     else:
         return render_template("index.html", login=True, posts=posts)
 
-# Maybe we will want to pass in a post object with all info to put in Jinja?
-# ohhh how are we gonna store all these formatting things like order of elements and such....
 @app.route("/post/<title>")
 def viewPost(title):
+    '''Routes to a post, or redirects to the home page if post not found'''
     findPost = BlogPost.objects(title=title).first()
     if findPost == None:
         return redirect("/")
@@ -124,24 +126,27 @@ def viewPost(title):
 @app.route("/new")
 @login_required
 def createPost():
+    '''Routes to post creation page'''
     return render_template("createPost.html")
 
 @app.route("/new/finish", methods=['POST'])
 def finishPost():
+    '''Recieves information on a new post and saves it to the database'''
     title = request.form["title"]
     summary = request.form["summary"]
     authorId = current_user
     thumbnailURL = request.form["thumbnailURL"]
 
-    # Iterate through blocks and create appropriate sub-objects to be added to post object
+    # Iterate through blocks and create text and music blocks to be added to post object
     blockNum = request.form["blockNum"]
     blocks = []
     i = 0
     while (i < int(blockNum)):
+        # Music block
         if (request.form["block-" + str(i)] == "music"):
             uri = request.form["uri-" + str(i)]
 
-            # Iterate through comments and create appropriate sub-objects to be added to music block object
+            # Iterate through comments and create comments to be added to music block object
             commentNum = request.form["commentCount-" + str(i)]
             comments = []
             j = 0
@@ -154,6 +159,7 @@ def finishPost():
                 
             newElement = MusicElement(type="music",uri=uri,comments=comments).save()
             blocks.append(newElement)
+        # Text block
         else:
             text = request.form["text-" + str(i)]
             newElement = TextElement(type="text",text=text).save()
@@ -161,16 +167,19 @@ def finishPost():
         i += 1
 
     BlogPost(title=title, authorId=authorId, summary=summary, thumbnailURL=thumbnailURL, blocks=blocks).save()
+    # This won't work since this is a POST and not a GET request, but errors are thrown if we just leave it as return
     return redirect("/post/" + title)   
 
 @app.route("/logout")
 @login_required
 def logout():
+    '''Logs out user and redirects them to home page'''
     logout_user()
     return redirect("/")
 
 @app.route("/search/<query>", methods=['GET'])
 def search(query):
+    '''Performs a search using the YouTube API and returns the results'''
     if request.method == "GET":
         search_request = youtube.search().list(part="snippet", maxResults=5, q=query, videoEmbeddable='true', type="video", videoCategoryId="10")
         result_dict = {}
@@ -181,28 +190,4 @@ def search(query):
         return result_dict
 
 if __name__ == "__main__":
-
-    BlogPost.objects(title="No thumbnail test").first().update()
-    # pass
-    # testUser = {
-    #     "username": "Kien",
-    #     "password": "admin"
-    # }
-
-    # User(**testUser).save()
-
-    # print(User.objects(username="Kien").first().id)
-    # User.objects(username="Kien").first_or_404().delete()
-    # print(User.objects(username="hi").first())
-
-    # testPost = {
-    #     "title": "test",
-    #     "authorId": "Kien",
-    #     "summary": "test",
-    #     "htmlContent":"test"
-    # }
-
-    # BlogPost(**testPost).save()
-
-    # for obj in BlogPost.objects():
-    #     obj.delete()
+    pass
