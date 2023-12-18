@@ -179,30 +179,3 @@ def search(query):
             result_dict[index] = result
             index+=1
         return result_dict
-
-if __name__ == "__main__":
-
-    BlogPost.objects(title="No thumbnail test").first().update()
-    # pass
-    # testUser = {
-    #     "username": "Kien",
-    #     "password": "admin"
-    # }
-
-    # User(**testUser).save()
-
-    # print(User.objects(username="Kien").first().id)
-    # User.objects(username="Kien").first_or_404().delete()
-    # print(User.objects(username="hi").first())
-
-    # testPost = {
-    #     "title": "test",
-    #     "authorId": "Kien",
-    #     "summary": "test",
-    #     "htmlContent":"test"
-    # }
-
-    # BlogPost(**testPost).save()
-
-    # for obj in BlogPost.objects():
-    #     obj.delete()
