@@ -182,8 +182,8 @@ def search(query):
 
 if __name__ == "__main__":
 
-    # BlogPost.objects(title="Blank Space").first().delete()
-    pass
+    BlogPost.objects(title="No thumbnail test").first().update()
+    # pass
     # testUser = {
     #     "username": "Kien",
     #     "password": "admin"
