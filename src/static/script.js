@@ -33,7 +33,7 @@ class MusicBlock {
 
 let musicNum = 0
 let blockNum = 0
-let thumbnailURL = ""
+let thumbnailURL = "../static/images/blank_thumbnail.png"
 
 let players = []
 let blocks = []
@@ -48,7 +48,7 @@ function initCreatePost() {
     players = []
     blocks = []
 
-    thumbnailURL = ""
+    thumbnailURL = "../static/images/blank_thumbnail.png"
 
     $("#finishForm").on("submit", (e) => submitPost(e));
 }
