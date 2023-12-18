@@ -293,7 +293,8 @@ h2 {
 
 /* Indicate that you can click it */
 .comments-music p:hover {
-  color: #2e3192;
+  color: #4478cc;
+  cursor: default;
 }
 
 .comment {
