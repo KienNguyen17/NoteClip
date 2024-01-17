@@ -1,5 +1,7 @@
 # NoteClip
 
+Author: Kien Nguyen, Dan Bially Levy
+
 A music-blogging website. Users can create account that allows them to publish blog posts. Users can add text and embed music videos pulled from YouTube to each blog posts. They can add comments to different segments of the music video. Visitors to the site can view all published posts.
 
 ## Installation
